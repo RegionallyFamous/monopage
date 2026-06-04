@@ -79,6 +79,14 @@ npm run local:ready
 
 This starts wp-env, refreshes the saved front-page template from the bundled Canvas template, validates Monopage, smokes the rendered homepage, smokes authenticated Focus Mode admin behavior, prints status, and returns the home/admin/Site Editor URLs. Use `npm run local:ready -- --preserve-template` when intentionally preserving saved Site Editor edits during setup.
 
+When visual Canvas work needs local smoke checks, desktop/mobile screenshots, and a fresh Playground URL together, use:
+
+```bash
+npm run local:review
+```
+
+This runs `local:ready -- --capture`, then prints the generated Playground URL. Use it after hero, mobile, image, first-viewport, or default-template composition changes when wp-env and a local Chrome/Chromium browser are available.
+
 For a narrower template refresh, use:
 
 ```bash
@@ -95,7 +103,7 @@ npm run local:smoke
 
 This checks required starter copy, same-page body links, section anchors, and served Canvas image assets on the local homepage. Run it after `local:setup` or `local:refresh-template`.
 
-When visual layout, hero, mobile, image, or first-viewport composition changes are part of the work, also capture screenshots:
+When visual layout, hero, mobile, image, or first-viewport composition changes are part of the work and the broader local review flow is not needed, capture screenshots directly:
 
 ```bash
 npm run local:capture
@@ -154,8 +162,8 @@ This verifies chained `npm run ...`, `npm test`, and `node scripts/*.mjs` comman
 3. Back up before changing the site:
    - `wp --path=<target> db export monopage-backup-YYYYMMDD-HHMMSS.sql`
 4. Install and activate:
-   - `wp --path=<target> theme install build/monopage-canvas-0.2.33.zip --force --activate`
-   - `wp --path=<target> plugin install build/monopage-0.2.33.zip --force --activate`
+   - `wp --path=<target> theme install build/monopage-canvas-0.2.34.zip --force --activate`
+   - `wp --path=<target> plugin install build/monopage-0.2.34.zip --force --activate`
 5. Run setup:
    - `wp --path=<target> monopage setup`
    - Use `--force-home` only when the user explicitly wants Monopage to replace an existing static front page assignment.

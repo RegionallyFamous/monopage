@@ -46,11 +46,12 @@ npm run local:refresh-template
 When judging layout or visual changes, capture the local homepage at desktop and mobile sizes:
 
 ```bash
+npm run local:review
 npm run local:ready -- --capture
 npm run local:capture
 ```
 
-Screenshots are written to `build/screenshots/`.
+`local:review` refreshes the local template, runs the homepage/admin smoke checks, captures desktop and mobile screenshots, and prints the Playground URL. Screenshots are written to `build/screenshots/`.
 
 ## Development Checks
 
@@ -80,6 +81,7 @@ npm run check:scripts
 npm run check:playground
 npm run check:skill
 npm run check:versions
+npm run local:review:dry-run
 npm run local:ready -- --dry-run
 npm run local:capture:dry-run
 npm run local:admin-smoke
@@ -104,6 +106,8 @@ npm run package:verify
 `check:playground` confirms the Blueprint installs Monopage Canvas and the Monopage plugin from the expected repo paths, runs setup with template refresh, and that the generated Playground URL stays in seamless mode.
 
 `check:skill` confirms the bundled Codex skill still carries the required one-page, block-first, deployment safety, validation, image-generation, and Focus Mode guidance.
+
+`local:review` is the design-review shortcut. It runs `local:ready -- --capture`, then prints the Playground URL so local screenshots and the public demo path are checked together.
 
 `local:smoke` checks the rendered local homepage, required starter copy, same-page body links, section anchors, and the served Canvas image assets. Run it after `local:setup` or `local:refresh-template`.
 

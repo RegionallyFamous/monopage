@@ -144,11 +144,14 @@ npm run local:refresh-template
 For visual or layout changes, capture the rendered homepage after the template refresh:
 
 ```bash
+npm run local:review
 npm run local:ready -- --capture
 npm run local:capture
 ```
 
-`local:capture` saves desktop and mobile screenshots to `build/screenshots/` using a local Chrome or Chromium install. Set `MONOPAGE_CHROME=/path/to/browser` when the browser is installed outside the usual locations.
+`local:review` refreshes the local template, runs homepage and admin smoke checks, captures desktop and mobile screenshots, prints the Playground URL, and leaves screenshots in `build/screenshots/`.
+
+`local:capture` is the narrower screenshot-only command. It uses a local Chrome or Chromium install. Set `MONOPAGE_CHROME=/path/to/browser` when the browser is installed outside the usual locations.
 
 Local WordPress:
 
@@ -198,6 +201,7 @@ npm run check:js
 npm run check:docs
 npm run check:hygiene
 npm run check:scripts
+npm run local:review:dry-run
 npm run local:ready -- --dry-run
 npm run local:capture:dry-run
 npm run local:validate
@@ -218,6 +222,8 @@ npm run release:check
 ```
 
 `local:smoke` checks the rendered homepage, required starter copy, same-page body links, section anchors, and served Canvas image assets. Run it after `local:setup` or `local:refresh-template`.
+
+`local:review` is the preferred shortcut after visual Canvas changes. It runs local readiness with screenshots and then prints the Playground URL so local review and public-demo review stay paired.
 
 `local:capture` saves desktop and mobile homepage screenshots after local setup so hero, header, first-viewport, and mobile overflow changes can be reviewed without hand-building browser commands.
 
@@ -351,6 +357,7 @@ The `monopage-deploy` skill should guide agents to:
 - save project-bound images into the repo
 - run `npm test` before packaging
 - run `npm run release:check` before release-minded changes when Docker/wp-env are available
+- run `npm run local:review` after visual Canvas changes when wp-env and a local browser are available
 - run `npm run local:capture` after visual Canvas changes when a local browser is available
 - run `npm run local:admin-smoke` after Focus Mode, admin redirect, or Site Editor entrypoint changes when wp-env is available
 - run `wp monopage validate --require-focus` after setup when a WordPress runtime is available

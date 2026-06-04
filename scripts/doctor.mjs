@@ -28,6 +28,7 @@ const requiredFiles = [
   "scripts/check-skill.mjs",
   "scripts/homepage-smoke.mjs",
   "scripts/local-ready.mjs",
+  "scripts/local-review.mjs",
   "scripts/plugin-check.mjs",
 ];
 const commands = [
