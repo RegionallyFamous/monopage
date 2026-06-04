@@ -9,7 +9,7 @@ The vibe is simple: one page, all signal. A launch room for products, studios, s
 ## What It Includes
 
 - `plugins/monopage/`: Focus Mode, setup flow, admin controls, and WP-CLI commands.
-- `themes/monopage-canvas/`: A block-first one-page Canvas theme with a polished default `front-page.html`.
+- `themes/monopage-canvas/`: A block-first one-page Canvas theme with a polished default `front-page.html` and insertable section patterns.
 - `skills/monopage-deploy/`: A Codex skill for packaging, deploying, validating, and customizing Monopage sites.
 - `scripts/`: Validation, packaging, local setup, Plugin Check, Playground URL, and deploy helpers.
 - `docs/wiki/`: Developer documentation intended to mirror a GitHub wiki.
@@ -54,9 +54,9 @@ npm run check:links
 npm run check:versions
 ```
 
-`check:canvas` confirms the Canvas stylesheet is wired for both the Site Editor and the public front end, and that CSS asset references are packaged and reasonably sized.
+`check:canvas` confirms the Canvas stylesheet is wired for both the Site Editor and the public front end, that CSS asset references are packaged and reasonably sized, and that bundled pattern metadata is valid.
 
-`check:links` confirms the default front-page template only uses on-page links and that every `#anchor` target exists.
+`check:links` confirms the default front-page template and bundled patterns only use on-page links and that every `#anchor` target exists.
 
 ## Plugin Check
 
@@ -136,8 +136,21 @@ The skill bakes in the Monopage rules: same-page navigation, block-first theme w
 - The Site Editor `front-page` template is the visible homepage. The WordPress `Home` page is only the routing page.
 - Use core blocks first: Group, Columns, Navigation, Buttons, Details, Table, Quote, Separator, Spacer, Site Title, Heading, Paragraph, and List.
 - Prefer `theme.json` and block settings for global typography, colors, spacing, button defaults, Navigation styling, and Site Title styling.
+- Use bundled Monopage Canvas patterns when adding common sections so new content inherits the same one-page structure.
 - Use custom CSS only where it earns its keep: hero imagery, sticky header behavior, mobile safety, scroll margins, pseudo-elements, and editorial treatments core blocks cannot express cleanly.
 - Keep the default visual language cool and campaign-grade: Riso texture, sharp hierarchy, ink, white, electric blue, teal, coral, lime, and a little "Mad Men in the year 3000" energy.
+
+## Canvas Patterns
+
+Monopage Canvas ships a focused pattern set under the `Monopage Canvas` pattern category:
+
+- `Offer Lab`: three-card offer packaging.
+- `Proof Strip`: dark results/metrics band.
+- `Pricing Deck`: three-plan pricing section.
+- `Question Stack`: compact FAQ section.
+- `Final Push`: closing call-to-action band.
+
+Each pattern is built from core blocks, uses project-local Canvas classes, and keeps calls to action on the same page.
 
 ## Developer Wiki
 

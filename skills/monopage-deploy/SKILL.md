@@ -15,6 +15,8 @@ Use this skill to deploy, validate, and lightly customize Monopage sites safely 
 - The site title in Monopage Canvas should be non-linking in the starter template, because the header is a one-page scroll map rather than a site-wide navigation bar.
 - Use the core Navigation block for the header menu with custom `#anchor` links. Do not fake navigation with Button blocks plus custom CSS unless the user explicitly wants button-like nav.
 - Add new sections by giving the target block a stable anchor and linking to that anchor. Prefer clear section names over generic anchors.
+- Prefer bundled Monopage Canvas patterns for common sections such as offers, proof, pricing, FAQs, and final CTAs.
+- Bundled patterns must obey the same one-page link rule as the starter template.
 - Edit the saved `front-page` template in the Site Editor. Do not treat the routing `Home` page's blank content as the source of truth for the visible homepage.
 - If the backend Page editor appears blank, inspect or open the Site Editor `front-page` template. The routing `Home` page should redirect there on Monopage Canvas sites.
 - Focus Mode is UX cleanup only. WordPress capabilities remain the security boundary.
@@ -36,15 +38,16 @@ Use this skill to deploy, validate, and lightly customize Monopage sites safely 
 - Before adding CSS, ask whether the same effect belongs in `theme.json`, block `style` attributes, a core block setting, or a reusable block pattern.
 - Keep cards at 8px radius or less, avoid nested cards, and keep sections as full-width bands or block groups rather than decorative card stacks.
 - Use core blocks first: Group, Columns, Navigation, Buttons, Details, Table, Quote, Separator, Spacer, Site Title, Heading, Paragraph, and List.
+- Use Canvas patterns before inventing a new section from scratch when the requested section matches an existing pattern.
 - If changing theme assets or CSS, run `npm run check:canvas`.
 
-## Template Checks
+## Template And Pattern Checks
 
-When changing `themes/monopage-canvas/templates/front-page.html`:
+When changing `themes/monopage-canvas/templates/front-page.html` or `themes/monopage-canvas/patterns/*.php`:
 
 1. Keep all hard-coded links on-page.
 2. Run `npm run check:links`.
-3. Run `npm run check:canvas` when changing Canvas CSS, front-end styling, editor styling, or theme assets.
+3. Run `npm run check:canvas` when changing Canvas CSS, front-end styling, editor styling, theme assets, pattern category registration, or bundled pattern metadata.
 4. Run `npm test` before packaging or deploying.
 5. If a user explicitly asks for an off-page link, note that it is outside the default Monopage one-page rule and do not add it to the primary starter menu unless they confirm.
 
@@ -58,15 +61,15 @@ When changing `themes/monopage-canvas/templates/front-page.html`:
 3. Back up before changing the site:
    - `wp --path=<target> db export monopage-backup-YYYYMMDD-HHMMSS.sql`
 4. Install and activate:
-   - `wp --path=<target> theme install build/monopage-canvas-0.2.11.zip --force --activate`
-   - `wp --path=<target> plugin install build/monopage-0.2.11.zip --force --activate`
+   - `wp --path=<target> theme install build/monopage-canvas-0.2.12.zip --force --activate`
+   - `wp --path=<target> plugin install build/monopage-0.2.12.zip --force --activate`
 5. Run setup:
    - `wp --path=<target> monopage setup`
    - Use `--force-home` only when the user explicitly wants Monopage to replace an existing static front page assignment.
    - Use `--force-template` only when the user explicitly wants Monopage to replace saved Site Editor `front-page` template changes with the current Monopage Canvas default.
 6. Validate:
    - `wp --path=<target> monopage status --format=json`
-   - Confirm starter-template links target existing on-page anchors if the template was customized: `npm run check:links`
+   - Confirm starter-template and bundled-pattern links target existing on-page anchors if the template or patterns were customized: `npm run check:links`
    - Confirm Canvas styles and CSS assets are wired for both the Site Editor and front end if the theme was customized: `npm run check:canvas`
    - Run Plugin Check on a local or staging WordPress install before release: `npm run plugin:check`
    - Confirm the homepage URL loads.

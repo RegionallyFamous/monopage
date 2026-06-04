@@ -6,6 +6,7 @@
  */
 
 add_action( 'after_setup_theme', 'monopage_canvas_setup' );
+add_action( 'init', 'monopage_canvas_register_pattern_categories' );
 add_action( 'wp_enqueue_scripts', 'monopage_canvas_enqueue_styles' );
 
 /**
@@ -14,6 +15,22 @@ add_action( 'wp_enqueue_scripts', 'monopage_canvas_enqueue_styles' );
 function monopage_canvas_setup() {
 	add_theme_support( 'editor-styles' );
 	add_editor_style( 'style.css' );
+}
+
+/**
+ * Group bundled section patterns under a single editor category.
+ */
+function monopage_canvas_register_pattern_categories() {
+	if ( ! function_exists( 'register_block_pattern_category' ) ) {
+		return;
+	}
+
+	register_block_pattern_category(
+		'monopage-canvas',
+		array(
+			'label' => __( 'Monopage Canvas', 'monopage-canvas' ),
+		)
+	);
 }
 
 /**

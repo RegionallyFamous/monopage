@@ -7,7 +7,7 @@ It does not fork WordPress. It narrows the experience around a single editable h
 ## Architecture
 
 - `plugins/monopage/monopage.php` owns setup, Focus Mode, admin redirects, the Monopage settings page, and WP-CLI commands.
-- `themes/monopage-canvas/` owns the default block theme, `theme.json`, and `templates/front-page.html`.
+- `themes/monopage-canvas/` owns the default block theme, `theme.json`, `templates/front-page.html`, and bundled section patterns.
 - `skills/monopage-deploy/` teaches Codex agents how to package, deploy, customize, and validate Monopage sites.
 - `playground/blueprint.json` installs the plugin and theme into WordPress Playground.
 - `scripts/` contains validation, packaging, Plugin Check, local setup, and deployment helpers.
@@ -27,7 +27,7 @@ Template refresh preserves saved Site Editor edits unless `--force-template` is 
 
 ## One-Page Navigation
 
-Default Monopage links must stay on the same page.
+Default Monopage links must stay on the same page. This applies to the starter template and bundled Canvas patterns.
 
 Use anchors such as:
 
@@ -55,6 +55,26 @@ Validation:
 npm run check:links
 ```
 
+## Canvas Patterns
+
+Monopage Canvas ships insertable section patterns in `themes/monopage-canvas/patterns/`.
+
+Current patterns:
+
+- `monopage-canvas/offer-lab`
+- `monopage-canvas/proof-strip`
+- `monopage-canvas/pricing-deck`
+- `monopage-canvas/question-stack`
+- `monopage-canvas/final-push`
+
+Pattern rules:
+
+- Register patterns under the `monopage-canvas` category.
+- Use core blocks and existing Canvas classes before adding CSS.
+- Keep CTAs on-page with `#anchor` links.
+- Give new full-section patterns a stable, unique anchor.
+- Run `npm run check:links` and `npm run check:canvas` after pattern changes.
+
 ## Block-First Theme Work
 
 Use WordPress-native styling first.
@@ -64,6 +84,7 @@ Prefer:
 - `theme.json` for palette, font presets, button defaults, Navigation defaults, Site Title defaults, spacing scale, and layout sizes.
 - Block attributes for alignment, text alignment, block gaps, widths, colors, and core block behavior.
 - Core blocks for structure and content.
+- Bundled patterns for repeated one-page sections.
 
 Use custom CSS only when WordPress block settings cannot express the behavior cleanly:
 
@@ -136,7 +157,7 @@ The test suite runs:
 - JavaScript syntax checks
 - JSON validation
 - Canvas style and asset validation
-- one-page link validation
+- one-page link validation for templates and patterns
 - version metadata validation
 - package dry-run
 
@@ -219,6 +240,7 @@ The `monopage-deploy` skill should guide agents to:
 - keep links on-page
 - use the Site Editor `front-page` template as the visible homepage
 - prefer `theme.json` and block settings before custom CSS
+- use bundled Canvas patterns for common section work
 - use generated raster images when the theme or docs need real visual energy
 - save project-bound images into the repo
 - run `npm test` before packaging
