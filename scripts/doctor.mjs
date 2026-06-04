@@ -17,6 +17,7 @@ const requiredFiles = [
   "skills/monopage-deploy/SKILL.md",
   "playground/blueprint.json",
   "scripts/check-playground.mjs",
+  "scripts/check-skill.mjs",
   "scripts/homepage-smoke.mjs",
   "scripts/plugin-check.mjs",
 ];
@@ -38,6 +39,7 @@ runCheckVersions();
 runScriptCheck("canvas theme", "scripts/check-canvas-theme.mjs");
 runScriptCheck("template links", "scripts/check-template-links.mjs");
 runScriptCheck("Playground", "scripts/check-playground.mjs");
+runScriptCheck("skill contract", "scripts/check-skill.mjs");
 checkFiles();
 checkCommands();
 checkDockerDaemon();

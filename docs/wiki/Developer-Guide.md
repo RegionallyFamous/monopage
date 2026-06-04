@@ -167,6 +167,7 @@ The test suite runs:
 - Canvas style and asset validation
 - one-page link validation for templates and patterns
 - Playground Blueprint and seamless URL validation
+- Codex skill contract validation
 - version metadata validation
 - package dry-run
 
@@ -177,6 +178,7 @@ npm run doctor
 npm run local:validate
 npm run local:smoke
 npm run check:playground
+npm run check:skill
 npm run plugin:check
 npm run plugin:check:runtime
 ```
@@ -190,6 +192,8 @@ npm run release:check
 `local:smoke` checks the rendered homepage, required starter copy, same-page body links, section anchors, and served Canvas image assets. Run it after `local:setup` or `local:refresh-template`.
 
 `check:playground` checks that the public Blueprint installs the expected GitHub theme/plugin directories, refreshes the Canvas front-page template, lands in the Site Editor canvas, and that `playground:url` keeps the outer Playground toolbar hidden with seamless mode.
+
+`check:skill` checks that `skills/monopage-deploy/SKILL.md` and `agents/openai.yaml` preserve the required Monopage agent contract: one-page navigation, Site Editor `front-page` editing, block-first design, generated-image handling, deploy backups, force flag safety, and validation commands.
 
 `release:check` runs repository checks, doctor, a local template refresh plus runtime validation, a rendered-homepage smoke check, Plugin Check, package builds, deploy dry-run, and the Playground URL generator. Use `npm run release:check:dry-run` to inspect the sequence. Use `node scripts/release-check.mjs --skip-local --skip-plugin-check` only when Docker/wp-env is unavailable, then run those skipped gates on a real WordPress runtime before release.
 

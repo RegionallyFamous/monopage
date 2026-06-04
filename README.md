@@ -60,6 +60,7 @@ npm run doctor
 npm run check:canvas
 npm run check:links
 npm run check:playground
+npm run check:skill
 npm run check:versions
 npm run local:smoke
 ```
@@ -69,6 +70,8 @@ npm run local:smoke
 `check:links` confirms the default front-page template and bundled patterns only use on-page links and that every `#anchor` target exists.
 
 `check:playground` confirms the Blueprint installs Monopage Canvas and the Monopage plugin from the expected repo paths, runs setup with template refresh, and that the generated Playground URL stays in seamless mode.
+
+`check:skill` confirms the bundled Codex skill still carries the required one-page, block-first, deployment safety, validation, image-generation, and Focus Mode guidance.
 
 `local:smoke` checks the rendered local homepage, required starter copy, same-page body links, section anchors, and the served Canvas image assets. Run it after `local:setup` or `local:refresh-template`.
 
