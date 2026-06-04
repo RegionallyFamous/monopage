@@ -5,12 +5,13 @@ import { fileURLToPath } from "node:url";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const root = path.resolve(__dirname, "..");
+const options = parseArgs(process.argv.slice(2));
 const manifest = JSON.parse(fs.readFileSync(path.join(root, "package.json"), "utf8"));
 const version = manifest.version;
 const packages = [
   {
     label: "plugin",
-    zip: `build/monopage-${version}.zip`,
+    zip: options["plugin-zip"] || `build/monopage-${version}.zip`,
     root: "monopage/",
     required: [
       "monopage/monopage.php",
@@ -38,7 +39,7 @@ const packages = [
   },
   {
     label: "theme",
-    zip: `build/monopage-canvas-${version}.zip`,
+    zip: options["theme-zip"] || `build/monopage-canvas-${version}.zip`,
     root: "monopage-canvas/",
     required: [
       "monopage-canvas/functions.php",
@@ -90,16 +91,17 @@ if (failures.length) {
 console.log(`Package contents match Monopage ${version}.`);
 
 function checkPackage(packageSpec) {
-  const zipPath = path.join(root, packageSpec.zip);
+  const zipPath = path.isAbsolute(packageSpec.zip) ? packageSpec.zip : path.join(root, packageSpec.zip);
+  const zipLabel = path.isAbsolute(packageSpec.zip) ? packageSpec.zip : packageSpec.zip;
 
   if (!fs.existsSync(zipPath)) {
-    failures.push(`missing ${packageSpec.label} ZIP: ${packageSpec.zip}`);
+    failures.push(`missing ${packageSpec.label} ZIP: ${zipLabel}`);
     return;
   }
 
   const entries = listZipEntries(zipPath);
   if (!entries.length) {
-    failures.push(`${packageSpec.zip} has no entries`);
+    failures.push(`${zipLabel} has no entries`);
     return;
   }
 
@@ -107,19 +109,19 @@ function checkPackage(packageSpec) {
 
   for (const entry of entries) {
     if (!entry.startsWith(packageSpec.root)) {
-      failures.push(`${packageSpec.zip} has unexpected top-level path: ${entry}`);
+      failures.push(`${zipLabel} has unexpected top-level path: ${entry}`);
     }
 
     for (const forbidden of forbiddenPatterns) {
       if (forbidden.test(entry)) {
-        failures.push(`${packageSpec.zip} includes forbidden path: ${entry}`);
+        failures.push(`${zipLabel} includes forbidden path: ${entry}`);
       }
     }
   }
 
   for (const required of packageSpec.required) {
     if (!entrySet.has(required)) {
-      failures.push(`${packageSpec.zip} is missing required file: ${required}`);
+      failures.push(`${zipLabel} is missing required file: ${required}`);
     }
   }
 
@@ -132,9 +134,9 @@ function checkPackage(packageSpec) {
     const match = content.match(versionCheck.pattern);
 
     if (!match) {
-      failures.push(`${packageSpec.zip} ${versionCheck.label}: version not found in ${versionCheck.file}`);
+      failures.push(`${zipLabel} ${versionCheck.label}: version not found in ${versionCheck.file}`);
     } else if (match[1] !== version) {
-      failures.push(`${packageSpec.zip} ${versionCheck.label}: expected ${version}, found ${match[1]}`);
+      failures.push(`${zipLabel} ${versionCheck.label}: expected ${version}, found ${match[1]}`);
     }
   }
 }
@@ -166,4 +168,25 @@ function readZipFile(zipPath, entry) {
   }
 
   return result.stdout;
+}
+
+function parseArgs(args) {
+  const parsed = {};
+
+  for (const arg of args) {
+    if (!arg.startsWith("--")) {
+      continue;
+    }
+
+    const body = arg.slice(2);
+    const equals = body.indexOf("=");
+
+    if (equals === -1) {
+      parsed[body] = true;
+    } else {
+      parsed[body.slice(0, equals)] = body.slice(equals + 1);
+    }
+  }
+
+  return parsed;
 }

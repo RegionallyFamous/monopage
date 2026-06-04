@@ -280,19 +280,22 @@ node scripts/deploy-monopage.mjs --dry-run --path=/path/to/wordpress
 Real deploy:
 
 ```bash
-npm run package
 node scripts/deploy-monopage.mjs --path=/path/to/wordpress
 ```
 
+The deploy helper packages and verifies the plugin/theme ZIP contents before installing them. Use `--skip-package` only when the ZIPs are already built, and `--skip-package-verify` only when intentionally deploying custom ZIPs outside the current version contract.
+
 Deployment sequence:
 
-1. Confirm WordPress is installed.
-2. Export a database backup.
-3. Install and activate the Canvas theme ZIP.
-4. Install and activate the Monopage plugin ZIP.
-5. Run `wp monopage setup`.
-6. Run `wp monopage validate --require-focus`.
-7. Report `wp monopage status --format=json`.
+1. Package the plugin and Canvas theme ZIPs unless skipped.
+2. Verify built ZIP contents unless skipped.
+3. Confirm WordPress is installed.
+4. Export a database backup.
+5. Install and activate the Canvas theme ZIP.
+6. Install and activate the Monopage plugin ZIP.
+7. Run `wp monopage setup`.
+8. Run `wp monopage validate --require-focus`.
+9. Report `wp monopage status --format=json`.
 
 ## Codex Skill Expectations
 

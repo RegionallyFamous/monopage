@@ -96,8 +96,8 @@ This verifies the Blueprint installs the expected theme/plugin repo paths, refre
 3. Back up before changing the site:
    - `wp --path=<target> db export monopage-backup-YYYYMMDD-HHMMSS.sql`
 4. Install and activate:
-   - `wp --path=<target> theme install build/monopage-canvas-0.2.20.zip --force --activate`
-   - `wp --path=<target> plugin install build/monopage-0.2.20.zip --force --activate`
+   - `wp --path=<target> theme install build/monopage-canvas-0.2.21.zip --force --activate`
+   - `wp --path=<target> plugin install build/monopage-0.2.21.zip --force --activate`
 5. Run setup:
    - `wp --path=<target> monopage setup`
    - Use `--force-home` only when the user explicitly wants Monopage to replace an existing static front page assignment.
@@ -127,7 +127,7 @@ node scripts/deploy-monopage.mjs --dry-run --path=/path/to/wordpress
 node scripts/deploy-monopage.mjs --path=/path/to/wordpress
 ```
 
-The deploy script runs `wp monopage validate --require-focus` after setup and before status. Use `--check-http` on the deploy script only when homepage HTTP requests from WP-CLI are expected to work in the target environment. Do not use `--check-http` for normal `wp-env` validation because the CLI container may not be able to reach the host-facing `localhost` URL.
+The deploy script packages and verifies the plugin/theme ZIP contents before installing them, then runs `wp monopage validate --require-focus` after setup and before status. Use `--skip-package` only when the ZIPs are already built. Use `--skip-package-verify` only when intentionally deploying custom ZIPs outside the current version contract. Use `--check-http` only when homepage HTTP requests from WP-CLI are expected to work in the target environment. Do not use `--check-http` for normal `wp-env` validation because the CLI container may not be able to reach the host-facing `localhost` URL.
 
 Run WordPress Plugin Check through the local `wp-env` stack:
 

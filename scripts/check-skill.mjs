@@ -43,6 +43,7 @@ const skillRequirements = [
   ["status command", "wp --path=<target> monopage status --format=json"],
   ["Plugin Check command", "npm run plugin:check"],
   ["package verification command", "npm run package:verify"],
+  ["package verification skip safety", "Use `--skip-package-verify` only when intentionally deploying custom ZIPs"],
   ["force-home safety", "Do not pass `--force-home`"],
   ["force-template safety", "Do not pass `--force-template`"],
   ["skill install command", "npm run skill:install"],

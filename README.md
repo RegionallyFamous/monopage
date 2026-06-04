@@ -146,9 +146,10 @@ node scripts/deploy-monopage.mjs --dry-run --path=/path/to/wordpress
 Deploy to a real local WP-CLI target:
 
 ```bash
-npm run package
 node scripts/deploy-monopage.mjs --path=/path/to/wordpress
 ```
+
+The deploy helper packages and verifies the plugin/theme ZIP contents before installing them. Use `--skip-package` only when you already built the ZIPs, and `--skip-package-verify` only when intentionally deploying custom ZIPs outside the current version contract.
 
 Use `--force-home` only when Monopage should replace an existing static front page assignment.
 

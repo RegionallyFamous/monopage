@@ -15,6 +15,7 @@ const wpSsh = options.ssh || "";
 const forceHome = Boolean(options["force-home"]);
 const forceTemplate = Boolean(options["force-template"]);
 const skipPackage = Boolean(options["skip-package"]);
+const skipPackageVerify = Boolean(options["skip-package-verify"]);
 const checkHttp = Boolean(options["check-http"]);
 const pluginZip = path.resolve(root, options["plugin-zip"] || `build/monopage-${version}.zip`);
 const themeZip = path.resolve(root, options["theme-zip"] || `build/monopage-canvas-${version}.zip`);
@@ -25,14 +26,17 @@ if (!dryRun && (!options.path || wpPath === "/path/to/wordpress")) {
   fail("Missing --path=/path/to/wordpress for a real deployment.");
 }
 
-if (!dryRun && !skipPackage) {
-  run("node", [path.join(root, "scripts/package.mjs")], { cwd: root });
-}
-
-if (!dryRun) {
-  assertFile(pluginZip, "plugin ZIP");
-  assertFile(themeZip, "theme ZIP");
-}
+const packageCommand = ["node", path.join(root, "scripts/package.mjs")];
+const packageVerifyCommand = [
+  "node",
+  path.join(root, "scripts/check-package-contents.mjs"),
+  `--plugin-zip=${pluginZip}`,
+  `--theme-zip=${themeZip}`,
+];
+const preflightCommands = [
+  ...(!skipPackage ? [packageCommand] : []),
+  ...(!skipPackageVerify ? [packageVerifyCommand] : []),
+];
 
 const wpBase = ["wp"];
 if (wpSsh) {
@@ -57,6 +61,19 @@ const commands = [
   [...wpBase, "monopage", "validate", "--require-focus", ...(checkHttp ? ["--check-http"] : [])],
   [...wpBase, "monopage", "status", "--format=json"],
 ];
+
+for (const command of preflightCommands) {
+  if (dryRun) {
+    console.log(command.map(shellQuote).join(" "));
+  } else {
+    run(command[0], command.slice(1), { cwd: root });
+  }
+}
+
+if (!dryRun) {
+  assertFile(pluginZip, "plugin ZIP");
+  assertFile(themeZip, "theme ZIP");
+}
 
 for (const command of commands) {
   if (dryRun) {
