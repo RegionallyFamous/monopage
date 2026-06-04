@@ -44,9 +44,17 @@ body {
 .wpop-header-nav .wpop-nav-link .wp-block-button__link {
 	background: transparent;
 	border: 0;
+	box-shadow: none;
 	color: var(--wp--preset--color--ink);
 	padding-left: 0.1rem;
 	padding-right: 0.1rem;
+}
+
+.wpop-site-header .wpop-header-nav .wp-block-button.wpop-nav-link .wp-block-button__link {
+	background: transparent !important;
+	border: 0 !important;
+	box-shadow: none !important;
+	padding: 0.45rem 0.1rem !important;
 }
 
 .wpop-main {
