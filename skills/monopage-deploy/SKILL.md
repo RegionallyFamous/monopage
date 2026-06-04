@@ -204,7 +204,7 @@ This verifies chained `npm run ...`, `npm test`, and `node scripts/*.mjs` comman
    - Confirm starter-template and bundled-pattern links target existing on-page anchors if the template or patterns were customized: `npm run check:links`
    - Confirm Canvas styles and CSS assets are wired for both the Site Editor and front end if the theme was customized: `npm run check:canvas`
    - Smoke the rendered local homepage after Canvas template or asset changes: `npm run local:smoke`
-   - Smoke Focus Mode admin redirects and escape behavior on local wp-env after admin or Site Editor changes: `npm run local:admin-smoke`
+   - Smoke Focus Mode admin redirects and chrome hiding on local wp-env after admin or Site Editor changes: `npm run local:admin-smoke`
    - Confirm the public Playground demo path after Blueprint or URL changes: `npm run check:playground`
    - Confirm deploy plan ordering and default safety flags after deployment helper changes: `npm run check:deploy`
    - Run Plugin Check on a local or staging WordPress install before release: `npm run plugin:check`

@@ -6,9 +6,9 @@ It does not fork WordPress. It narrows the experience around a single editable h
 
 ## Documentation Model
 
-The README is the command-first technical reference for installing, developing, checking, releasing, deploying, using Plugin Check, opening Playground, and installing the Codex skill.
+The README is the public product overview. Keep it free of development commands, deployment workflows, release gates, package instructions, and contributor process.
 
-The wiki carries the broader material: product intent, one-page rules, architecture, theme principles, Canvas patterns, contribution workflow, and developer background. When practical commands need to appear in both places, keep the README concise and put the reasoning and edge cases here.
+The wiki is the developer source of truth. Product intent, one-page rules, architecture, theme principles, local development, command reference, validation, deployment, Plugin Check, Playground, Codex skill setup, and contributor workflow all belong here.
 
 ## Architecture
 
@@ -17,6 +17,15 @@ The wiki carries the broader material: product intent, one-page rules, architect
 - `skills/monopage-deploy/` teaches Codex agents how to package, deploy, customize, and validate Monopage sites.
 - `playground/blueprint.json` installs the plugin and theme into WordPress Playground and refreshes the default Canvas template for the demo.
 - `scripts/` contains validation, packaging, Plugin Check, local setup, and deployment helpers.
+
+## Project Layout
+
+- `plugins/monopage/`: setup, Focus Mode, admin redirects, Site Editor defaults, WP-CLI commands, and no dashboard settings menu.
+- `themes/monopage-canvas/`: the block-first Canvas theme, default `front-page.html`, Riso-style assets, and insertable one-page section patterns.
+- `scripts/`: local setup, validation, Plugin Check, responsive smoke tests, packaging, deploy helpers, and release gates.
+- `skills/monopage-deploy/`: the Codex skill for deploying, validating, and customizing Monopage sites.
+- `playground/blueprint.json`: the WordPress Playground demo blueprint.
+- `docs/wiki/`: repo-backed GitHub wiki source.
 
 ## Homepage Model
 
@@ -30,6 +39,22 @@ Do not edit the routing Home page as if it were the visible page. The visible ho
 Setup preserves an existing static front page unless `--force-home` is explicitly passed.
 
 Template refresh preserves saved Site Editor edits unless `--force-template` is explicitly passed.
+
+## Focus Mode Behavior
+
+Focus Mode is enabled by default. For users who can edit the site, it:
+
+- redirects `/wp-admin/` to the Site Editor front-page canvas
+- redirects generic admin screens back to the Site Editor
+- redirects attempts to edit the routing `Home` page into the Site Editor template
+- hides the admin menu and public admin bar
+- removes the Site Editor left navigation/sidebar toggle
+- keeps the top toolbar enabled
+- keeps Spotlight, focus-style, and Distraction Free editor modes disabled
+
+There is intentionally no Monopage dashboard menu, settings page, control panel, or in-admin escape hatch. Operational controls live in WP-CLI and Codex workflows so the authoring surface stays clean.
+
+Focus Mode is interface cleanup only. WordPress roles and capabilities remain the security boundary.
 
 ## Product Principles
 
@@ -191,6 +216,26 @@ http://localhost:8888
 
 If Docker is not running, `wp-env` and Plugin Check cannot run. `npm run doctor` reports this.
 
+## Playground
+
+Open the current public demo:
+
+https://playground.wordpress.net/?mode=seamless&blueprint-url=https%3A%2F%2Fraw.githubusercontent.com%2FRegionallyFamous%2Fmonopage%2Fmain%2Fplayground%2Fblueprint.json
+
+Generate the current URL:
+
+```bash
+npm run playground:url
+```
+
+The Blueprint installs Monopage Canvas, activates the Monopage plugin, logs in as `admin`, refreshes the default Canvas template, and lands in the Site Editor canvas without the outer Playground toolbar.
+
+When changing the Playground demo or URL behavior, run:
+
+```bash
+npm run check:playground
+```
+
 ## Contribution Workflow
 
 Use the current diff to choose checks instead of running the heaviest workflow every time:
@@ -327,6 +372,25 @@ npm run release:check
 ## Runtime Validation
 
 Monopage includes a WP-CLI health check for deployed or local installs:
+
+```bash
+wp monopage status
+wp monopage setup
+wp monopage focus enable
+wp monopage focus disable
+wp monopage validate --require-focus
+```
+
+Setup preserves an existing static front page by default. Use force flags only when you mean it:
+
+```bash
+wp monopage setup --force-home
+wp monopage setup --force-template
+```
+
+`--force-home` replaces the current static front page assignment. `--force-template` replaces saved Site Editor edits to the `front-page` template with the bundled Canvas default.
+
+Validation commands:
 
 ```bash
 wp monopage validate --require-focus
