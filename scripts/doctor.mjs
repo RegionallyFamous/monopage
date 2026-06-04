@@ -16,6 +16,7 @@ const requiredFiles = [
   "themes/monopage-canvas/theme.json",
   "skills/monopage-deploy/SKILL.md",
   "playground/blueprint.json",
+  "scripts/check-playground.mjs",
   "scripts/homepage-smoke.mjs",
   "scripts/plugin-check.mjs",
 ];
@@ -36,6 +37,7 @@ console.log("");
 runCheckVersions();
 runScriptCheck("canvas theme", "scripts/check-canvas-theme.mjs");
 runScriptCheck("template links", "scripts/check-template-links.mjs");
+runScriptCheck("Playground", "scripts/check-playground.mjs");
 checkFiles();
 checkCommands();
 checkDockerDaemon();

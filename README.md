@@ -59,6 +59,7 @@ Useful focused checks:
 npm run doctor
 npm run check:canvas
 npm run check:links
+npm run check:playground
 npm run check:versions
 npm run local:smoke
 ```
@@ -66,6 +67,8 @@ npm run local:smoke
 `check:canvas` confirms the Canvas stylesheet is wired for both the Site Editor and the public front end, that CSS asset references are packaged and reasonably sized, and that bundled pattern metadata is valid.
 
 `check:links` confirms the default front-page template and bundled patterns only use on-page links and that every `#anchor` target exists.
+
+`check:playground` confirms the Blueprint installs Monopage Canvas and the Monopage plugin from the expected repo paths, runs setup with template refresh, and that the generated Playground URL stays in seamless mode.
 
 `local:smoke` checks the rendered local homepage, required starter copy, same-page body links, section anchors, and the served Canvas image assets. Run it after `local:setup` or `local:refresh-template`.
 

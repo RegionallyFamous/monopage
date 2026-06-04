@@ -44,7 +44,7 @@
 		},
 		{
 			"step": "runPHP",
-			"code": "<?php require_once '/wordpress/wp-load.php'; update_option('blogname', 'Monopage Playground'); if (function_exists('monopage_setup_one_pager')) { monopage_setup_one_pager(array('force_home' => true)); }"
+			"code": "<?php require_once '/wordpress/wp-load.php'; update_option('blogname', 'Monopage Playground'); if (function_exists('monopage_setup_one_pager')) { monopage_setup_one_pager(array('force_home' => true, 'force_template' => true)); }"
 		}
 	]
 }
