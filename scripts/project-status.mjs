@@ -6,6 +6,8 @@ import { fileURLToPath } from "node:url";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const root = path.resolve(__dirname, "..");
+const options = parseArgs(process.argv.slice(2));
+const statusContext = options.context || process.env.MONOPAGE_STATUS_CONTEXT || "";
 const manifest = JSON.parse(fs.readFileSync(path.join(root, "package.json"), "utf8"));
 const version = manifest.version;
 const pluginZip = `build/monopage-${version}.zip`;
@@ -61,20 +63,55 @@ console.log(`- ${playground.stdout.trim() || "Could not generate Playground URL.
 
 console.log("");
 console.log("Next Commands");
-if (changedFiles.length) {
-  console.log("- npm run check:changed:run");
-  console.log("- npm run preflight");
-  console.log("- npm run release:check");
-} else {
-  console.log("- npm run preflight");
-  console.log("- npm run local:review");
-  console.log("- npm run release:check");
-}
+printNextCommands(changedFiles, statusContext);
 
 function changed() {
   const tracked = gitLines(["diff", "--name-only", "HEAD", "--"]);
   const untracked = gitLines(["ls-files", "--others", "--exclude-standard"]);
   return [...new Set([...tracked, ...untracked])].sort();
+}
+
+function printNextCommands(changedFiles, context) {
+  if ("preflight" === context) {
+    if (changedFiles.length) {
+      console.log("- npm run check:changed:run");
+    }
+
+    console.log("- npm run release:check");
+    return;
+  }
+
+  if (changedFiles.length) {
+    console.log("- npm run check:changed:run");
+    console.log("- npm run preflight");
+    console.log("- npm run release:check");
+    return;
+  }
+
+  console.log("- npm run preflight");
+  console.log("- npm run local:review");
+  console.log("- npm run release:check");
+}
+
+function parseArgs(args) {
+  const parsed = {};
+
+  for (const arg of args) {
+    if (!arg.startsWith("--")) {
+      continue;
+    }
+
+    const body = arg.slice(2);
+    const equals = body.indexOf("=");
+
+    if (equals === -1) {
+      parsed[body] = true;
+    } else {
+      parsed[body.slice(0, equals)] = body.slice(equals + 1);
+    }
+  }
+
+  return parsed;
 }
 
 function printArtifact(relativePath) {

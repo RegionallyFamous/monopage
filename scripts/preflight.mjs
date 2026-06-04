@@ -10,7 +10,7 @@ const npm = "win32" === process.platform ? "npm.cmd" : "npm";
 const steps = [
   {
     label: "project status",
-    command: [npm, "run", "status"],
+    command: [npm, "run", "status", "--", "--context=preflight"],
   },
   {
     label: "Docker-free CI gate",

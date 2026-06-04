@@ -178,8 +178,8 @@ This verifies chained `npm run ...`, `npm test`, and `node scripts/*.mjs` comman
 3. Back up before changing the site:
    - `wp --path=<target> db export monopage-backup-YYYYMMDD-HHMMSS.sql`
 4. Install and activate:
-   - `wp --path=<target> theme install build/monopage-canvas-0.2.40.zip --force --activate`
-   - `wp --path=<target> plugin install build/monopage-0.2.40.zip --force --activate`
+   - `wp --path=<target> theme install build/monopage-canvas-0.2.41.zip --force --activate`
+   - `wp --path=<target> plugin install build/monopage-0.2.41.zip --force --activate`
 5. Run setup:
    - `wp --path=<target> monopage setup`
    - Use `--force-home` only when the user explicitly wants Monopage to replace an existing static front page assignment.
