@@ -20,6 +20,16 @@
 					"name": "Paper"
 				},
 				{
+					"slug": "white",
+					"color": "#ffffff",
+					"name": "White"
+				},
+				{
+					"slug": "night",
+					"color": "#050910",
+					"name": "Night"
+				},
+				{
 					"slug": "blue",
 					"color": "#2868ff",
 					"name": "Blue"
@@ -48,6 +58,16 @@
 					"slug": "mist",
 					"color": "#eaf6f4",
 					"name": "Mist"
+				},
+				{
+					"slug": "wash",
+					"color": "#f8fafc",
+					"name": "Wash"
+				},
+				{
+					"slug": "glow",
+					"color": "#f4f7ff",
+					"name": "Glow"
 				},
 				{
 					"slug": "line",

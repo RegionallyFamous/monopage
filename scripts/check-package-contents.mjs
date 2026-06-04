@@ -56,6 +56,9 @@ const packages = [
       "monopage-canvas/assets/monopage-riso-hero.jpg",
       "monopage-canvas/assets/monopage-riso-flow.jpg",
       "monopage-canvas/assets/monopage-riso-launch.jpg",
+      "monopage-canvas/assets/images/monopage-riso-future-agency-hero.jpg",
+      "monopage-canvas/assets/images/monopage-riso-print-lab.jpg",
+      "monopage-canvas/assets/images/monopage-riso-skyline-banner.jpg",
     ],
     versionChecks: [
       {

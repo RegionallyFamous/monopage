@@ -4,6 +4,8 @@ Generated on 2026-06-04 with the built-in ImageGen tool for the default Monopage
 
 Source ImageGen originals remain in:
 
+- `/Users/nick/.codex/generated_images/019e9273-c25d-7b33-b167-f8b589c0704f/`
+- `/Users/nick/.codex/generated_images/019e9385-3853-7c11-99b2-54dea576eb87/`
 - `/Users/nick/.codex/generated_images/019e935b-4b13-7ad1-8dba-e3d482220d90/ig_0b06a95bbe91292a016a21a0c5d3988190a1a6a60761e5a5a9.png`
 - `/Users/nick/.codex/generated_images/019e935b-4b13-7ad1-8dba-e3d482220d90/ig_0b06a95bbe91292a016a21a10565188190bddda8b60146b175.png`
 - `/Users/nick/.codex/generated_images/019e935b-4b13-7ad1-8dba-e3d482220d90/ig_0b06a95bbe91292a016a21a162ecb881908caaf2e45fba3396.png`
@@ -19,6 +21,18 @@ Source ImageGen originals remain in:
 - `themes/monopage-canvas/assets/monopage-riso-launch.jpg`
   - Current placement: wired into the `.monopage-final-cta` background.
   - Composition note: wide creative proofing table with launch-console energy and strong premium polish.
+- `themes/monopage-canvas/assets/images/monopage-riso-future-agency-hero.jpg`
+  - Current placement: wired into the campaign-wall "future pitch room" tile.
+  - Composition note: Riso agency room with anonymous silhouettes, big boards, and strong editorial energy.
+- `themes/monopage-canvas/assets/images/monopage-riso-print-lab.jpg`
+  - Current placement: wired into the campaign-wall "print lab" tile.
+  - Composition note: vertical print factory wall; useful when the page needs tactile production energy.
+- `themes/monopage-canvas/assets/images/monopage-riso-skyline-banner.jpg`
+  - Current placement: wired into the campaign-wall "skyline takeover" tile.
+  - Composition note: wide city/ad takeover image; use for panoramic campaign moments.
+- `themes/monopage-canvas/assets/images/monopage-riso-orbital-lounge.jpg`
+  - Current placement: bundled as an alternate inspiration image.
+  - Composition note: square retrofuture strategy lounge with anonymous silhouettes and bright Riso color.
 
 ## CSS Placement
 
@@ -33,6 +47,8 @@ Suggested minimal theme wiring:
 ```
 
 The current theme uses CSS only for image-backed section backgrounds, overlays, responsive cropping, and sticky/header behavior. Keep typography, spacing, colors, and block defaults in `theme.json` or block settings wherever WordPress can express them cleanly.
+
+Campaign-wall tiles use the same CSS approach because WordPress block templates cannot reliably express theme-relative background images without a small class hook.
 
 ## Prompt Set
 

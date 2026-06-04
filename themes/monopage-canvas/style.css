@@ -3,7 +3,7 @@ Theme Name: Monopage Canvas
 Theme URI: https://github.com/RegionallyFamous/monopage
 Author: WeirdPress
 Description: A block theme for focused Monopage one-page sites.
-Version: 0.2.21
+Version: 0.2.22
 Requires at least: 6.5
 Requires PHP: 7.4
 License: GPL-2.0-or-later
@@ -47,13 +47,13 @@ body {
 }
 
 .monopage-hero {
-	background-image: linear-gradient(90deg, rgba(5, 9, 16, 0.9) 0%, rgba(5, 9, 16, 0.68) 36%, rgba(5, 9, 16, 0.08) 82%), url("assets/monopage-riso-hero.jpg");
+	background-image: linear-gradient(90deg, rgba(5, 9, 16, 0.92) 0%, rgba(5, 9, 16, 0.66) 38%, rgba(5, 9, 16, 0.06) 84%), url("assets/monopage-riso-hero.jpg");
 	background-position: right center;
 	background-size: cover;
-	color: #ffffff;
-	min-height: 72vh;
+	color: var(--wp--preset--color--white);
+	min-height: 76vh;
 	padding-bottom: 4.5rem;
-	padding-top: 5.5rem;
+	padding-top: 6rem;
 }
 
 .monopage-hero-copy {
@@ -68,12 +68,12 @@ body {
 
 .monopage-hero h1 {
 	max-width: 760px;
-	font-size: 2rem !important;
+	font-size: 2.8rem !important;
 	text-wrap: balance;
 }
 
 .monopage-hero-copy > p:not(.monopage-kicker) {
-	font-size: 1rem !important;
+	font-size: 1.1rem !important;
 	line-height: 1.5 !important;
 }
 
@@ -107,7 +107,7 @@ body {
 .monopage-hero .is-style-outline .wp-block-button__link {
 	background: rgba(255, 255, 255, 0.08);
 	border-color: rgba(255, 255, 255, 0.72);
-	color: #ffffff;
+	color: var(--wp--preset--color--white);
 }
 
 .monopage-hero-facts {
@@ -119,7 +119,7 @@ body {
 	background: rgba(255, 255, 255, 0.12);
 	border: 1px solid rgba(255, 255, 255, 0.18);
 	border-radius: 8px;
-	color: #ffffff;
+	color: var(--wp--preset--color--white);
 	font-size: 0.9rem;
 	font-weight: 800;
 	margin: 0;
@@ -163,7 +163,7 @@ body {
 
 .monopage-services,
 .monopage-pricing {
-	background: #ffffff;
+	background: var(--wp--preset--color--white);
 }
 
 .monopage-showcase {
@@ -173,12 +173,12 @@ body {
 }
 
 .monopage-results {
-	background: #101318;
-	color: #ffffff;
+	background: var(--wp--preset--color--ink);
+	color: var(--wp--preset--color--white);
 }
 
 .monopage-proof {
-	background: #ffffff;
+	background: var(--wp--preset--color--white);
 	padding-top: 0;
 }
 
@@ -209,7 +209,7 @@ body {
 .monopage-card,
 .monopage-price-card,
 .monopage-step {
-	background: #ffffff;
+	background: var(--wp--preset--color--white);
 	border: 1px solid var(--wp--preset--color--line);
 	box-shadow: 0 14px 34px rgba(17, 19, 24, 0.06);
 	padding: 1.5rem;
@@ -279,14 +279,14 @@ body {
 }
 
 .monopage-stack-panel {
-	background: #ffffff;
+	background: var(--wp--preset--color--white);
 	border: 1px solid rgba(17, 19, 24, 0.08);
 	box-shadow: 0 24px 60px rgba(17, 19, 24, 0.09);
 	padding: 1.2rem;
 }
 
 .monopage-stack-panel .wp-block-column {
-	background: #f8fafc;
+	background: var(--wp--preset--color--wash);
 	border: 1px solid rgba(17, 19, 24, 0.07);
 	border-radius: 8px;
 	padding: 1.25rem;
@@ -306,6 +306,47 @@ body {
 
 .monopage-showcase-visual .wp-block-spacer {
 	height: 440px !important;
+}
+
+.monopage-campaign-wall {
+	margin-top: 3rem;
+}
+
+.monopage-visual-card {
+	background: var(--wp--preset--color--white);
+	border: 1px solid rgba(17, 19, 24, 0.08);
+	border-radius: 8px;
+	box-shadow: 0 18px 44px rgba(17, 19, 24, 0.08);
+	height: 100%;
+	padding: 0.7rem 0.7rem 1.25rem;
+}
+
+.monopage-visual-tile {
+	background-position: center;
+	background-size: cover;
+	border-radius: 6px;
+	min-height: 230px;
+	overflow: hidden;
+}
+
+.monopage-visual-tile .wp-block-spacer {
+	height: 230px !important;
+}
+
+.monopage-visual-tile.is-future-agency {
+	background-image: url("assets/images/monopage-riso-future-agency-hero.jpg");
+}
+
+.monopage-visual-tile.is-print-lab {
+	background-image: url("assets/images/monopage-riso-print-lab.jpg");
+}
+
+.monopage-visual-tile.is-skyline {
+	background-image: url("assets/images/monopage-riso-skyline-banner.jpg");
+}
+
+.monopage-visual-card .monopage-kicker {
+	margin-top: 1rem;
 }
 
 .monopage-results .monopage-kicker,
@@ -348,7 +389,7 @@ body {
 }
 
 .monopage-quote {
-	background: #f4f7ff;
+	background: var(--wp--preset--color--glow);
 	border: 1px solid rgba(40, 104, 255, 0.12);
 	border-radius: 8px;
 	margin: 0;
@@ -386,7 +427,7 @@ body {
 .monopage-plan-badge {
 	background: var(--wp--preset--color--teal);
 	border-radius: 6px;
-	color: #ffffff;
+	color: var(--wp--preset--color--white);
 	font-size: 0.8rem;
 	font-weight: 800;
 	margin: -0.45rem 0 0.5rem;
@@ -439,7 +480,7 @@ body {
 }
 
 .monopage-comparison-table table {
-	background: #ffffff;
+	background: var(--wp--preset--color--white);
 	border: 1px solid var(--wp--preset--color--line);
 	border-collapse: collapse;
 	border-radius: 8px;
@@ -455,16 +496,16 @@ body {
 }
 
 .monopage-comparison-table th {
-	background: #f4f7ff;
+	background: var(--wp--preset--color--glow);
 	font-weight: 800;
 }
 
 .monopage-faq {
-	background: #f8fafc;
+	background: var(--wp--preset--color--wash);
 }
 
 .monopage-faq .wp-block-details {
-	background: #ffffff;
+	background: var(--wp--preset--color--white);
 	border: 1px solid var(--wp--preset--color--line);
 	border-radius: 8px;
 	margin-bottom: 0.75rem;
@@ -480,7 +521,7 @@ body {
 	background-image: linear-gradient(135deg, rgba(17, 19, 24, 0.94), rgba(13, 148, 136, 0.78)), url("assets/monopage-riso-launch.jpg");
 	background-position: center;
 	background-size: cover;
-	color: #ffffff;
+	color: var(--wp--preset--color--white);
 	padding-bottom: 4.8rem;
 	padding-top: 4.8rem;
 }
@@ -488,11 +529,11 @@ body {
 .monopage-final-cta .is-style-outline .wp-block-button__link {
 	background: transparent;
 	border-color: rgba(255, 255, 255, 0.82);
-	color: #ffffff;
+	color: var(--wp--preset--color--white);
 }
 
 .monopage-footer {
-	background: #ffffff;
+	background: var(--wp--preset--color--white);
 	border-top: 1px solid rgba(17, 19, 24, 0.1);
 	padding-bottom: 3rem;
 	padding-top: 3rem;
@@ -552,7 +593,7 @@ body {
 	}
 
 	.monopage-hero h1 {
-		font-size: 2rem !important;
+		font-size: 3rem !important;
 	}
 
 	.monopage-section h2,
@@ -584,7 +625,7 @@ body {
 	}
 
 	.monopage-hero h1 {
-		font-size: 2rem !important;
+		font-size: 2.45rem !important;
 		max-width: 100%;
 		overflow-wrap: break-word;
 	}
@@ -621,5 +662,14 @@ body {
 
 	.monopage-showcase-visual .wp-block-spacer {
 		height: 320px !important;
+	}
+
+	.monopage-visual-tile,
+	.monopage-visual-tile .wp-block-spacer {
+		min-height: 260px;
+	}
+
+	.monopage-visual-tile .wp-block-spacer {
+		height: 260px !important;
 	}
 }

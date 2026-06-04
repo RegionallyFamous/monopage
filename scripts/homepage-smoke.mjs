@@ -3,10 +3,10 @@ const baseUrl = normalizeBaseUrl(options.url || process.env.MONOPAGE_SMOKE_URL |
 const dryRun = Boolean(options["dry-run"]);
 const maxAssetBytes = 750 * 1024;
 const expectedCopy = [
-  "The pitch is the page.",
-  "Monopage Signal Lab",
-  "Run the scroll",
-  "Book the room",
+  "One page. All signal.",
+  "Monopage Agency 3000",
+  "Run the signal",
+  "Launch the brief",
   "Make the whole room point at one next move.",
 ];
 const requiredAnchors = [
@@ -23,6 +23,9 @@ const themeAssets = [
   "/wp-content/themes/monopage-canvas/assets/monopage-riso-hero.jpg",
   "/wp-content/themes/monopage-canvas/assets/monopage-riso-flow.jpg",
   "/wp-content/themes/monopage-canvas/assets/monopage-riso-launch.jpg",
+  "/wp-content/themes/monopage-canvas/assets/images/monopage-riso-future-agency-hero.jpg",
+  "/wp-content/themes/monopage-canvas/assets/images/monopage-riso-print-lab.jpg",
+  "/wp-content/themes/monopage-canvas/assets/images/monopage-riso-skyline-banner.jpg",
 ];
 
 if (dryRun) {
