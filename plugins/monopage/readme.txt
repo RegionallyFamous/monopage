@@ -2,9 +2,9 @@
 Contributors: weirdpress
 Tags: site editor, one page, block theme, wp-cli
 Requires at least: 6.5
-Tested up to: 6.9
+Tested up to: 7.0
 Requires PHP: 7.4
-Stable tag: 0.2.10
+Stable tag: 0.2.11
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -35,6 +35,9 @@ wp monopage focus enable
 wp monopage focus disable
 
 == Changelog ==
+
+= 0.2.11 =
+* Refine Canvas design, block-first styling, validation, and Plugin Check workflow.
 
 = 0.2.10 =
 * Load Canvas styles explicitly on the public front end.

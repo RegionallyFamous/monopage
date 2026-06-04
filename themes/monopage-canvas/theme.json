@@ -112,9 +112,19 @@
 					"name": "Extra Large"
 				},
 				{
+					"slug": "section-title",
+					"size": "3rem",
+					"name": "Section Title"
+				},
+				{
 					"slug": "xx-large",
 					"size": "4rem",
 					"name": "2X Large"
+				},
+				{
+					"slug": "hero",
+					"size": "4.8rem",
+					"name": "Hero"
 				}
 			]
 		}
@@ -167,10 +177,37 @@
 			}
 		},
 		"blocks": {
+			"core/button": {
+				"typography": {
+					"fontWeight": "750"
+				}
+			},
 			"core/navigation": {
+				"color": {
+					"text": "var(--wp--preset--color--ink)"
+				},
+				"elements": {
+					"link": {
+						"color": {
+							"text": "var(--wp--preset--color--ink)"
+						},
+						"typography": {
+							"textDecoration": "none"
+						}
+					}
+				},
+				"spacing": {
+					"blockGap": "1rem"
+				},
 				"typography": {
 					"fontSize": "0.95rem",
-					"fontWeight": "650"
+					"fontWeight": "700"
+				}
+			},
+			"core/site-title": {
+				"typography": {
+					"fontSize": "1.2rem",
+					"fontWeight": "800"
 				}
 			}
 		}

@@ -10,15 +10,19 @@ const requiredFiles = [
   "plugins/monopage/monopage.php",
   "plugins/monopage/assets/site-editor.js",
   "plugins/monopage/assets/admin.css",
+  "themes/monopage-canvas/functions.php",
+  "themes/monopage-canvas/style.css",
   "themes/monopage-canvas/templates/front-page.html",
   "themes/monopage-canvas/theme.json",
   "skills/monopage-deploy/SKILL.md",
   "playground/blueprint.json",
+  "scripts/plugin-check.mjs",
 ];
 const commands = [
   { name: "node", required: true, note: "JavaScript tooling" },
   { name: "php", required: true, note: "PHP linting" },
   { name: "zip", required: true, note: "package builds" },
+  { name: "docker", required: false, note: "wp-env and Plugin Check" },
   { name: "wp", required: false, note: "real-host deploys" },
   { name: "wp-env", required: false, note: "local WordPress smoke tests" },
 ];
@@ -29,8 +33,11 @@ console.log(`Repo: ${root}`);
 console.log("");
 
 runCheckVersions();
+runScriptCheck("canvas theme", "scripts/check-canvas-theme.mjs");
+runScriptCheck("template links", "scripts/check-template-links.mjs");
 checkFiles();
 checkCommands();
+checkDockerDaemon();
 checkSkillSymlink();
 
 if (failures.length) {
@@ -62,6 +69,26 @@ function runCheckVersions() {
   }
 }
 
+function runScriptCheck(label, script) {
+  const result = spawnSync("node", [path.join(root, script)], {
+    cwd: root,
+    encoding: "utf8",
+  });
+
+  if (result.status === 0) {
+    console.log(`OK ${label}: ${result.stdout.trim()}`);
+    return;
+  }
+
+  failures.push(`${label} check failed`);
+  if (result.stderr.trim()) {
+    console.error(result.stderr.trim());
+  }
+  if (result.stdout.trim()) {
+    console.error(result.stdout.trim());
+  }
+}
+
 function checkFiles() {
   for (const file of requiredFiles) {
     const fullPath = path.join(root, file);
@@ -88,6 +115,23 @@ function checkCommands() {
       console.log(`WARN ${message}`);
     }
   }
+}
+
+function checkDockerDaemon() {
+  if (!commandExists("docker")) {
+    return;
+  }
+
+  const result = spawnSync("docker", ["info"], {
+    encoding: "utf8",
+  });
+
+  if (result.status === 0) {
+    console.log("OK docker daemon: running");
+    return;
+  }
+
+  console.log("WARN docker daemon is not running; wp-env and Plugin Check cannot run yet.");
 }
 
 function checkSkillSymlink() {

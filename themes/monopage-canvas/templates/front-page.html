@@ -2,35 +2,27 @@
 <header class="wp-block-group alignfull monopage-site-header">
 	<!-- wp:group {"align":"wide","layout":{"type":"flex","flexWrap":"wrap","justifyContent":"space-between","verticalAlignment":"center"}} -->
 	<div class="wp-block-group alignwide">
-		<!-- wp:site-title {"level":0,"isLink":false,"style":{"typography":{"fontSize":"1.2rem","fontWeight":"800"}}} /-->
+		<!-- wp:site-title {"level":0,"isLink":false} /-->
 
-		<!-- wp:buttons {"className":"monopage-header-nav","layout":{"type":"flex","justifyContent":"right","flexWrap":"wrap"}} -->
-		<div class="wp-block-buttons monopage-header-nav">
-			<!-- wp:button {"className":"is-style-outline monopage-nav-link"} -->
-			<div class="wp-block-button is-style-outline monopage-nav-link"><a class="wp-block-button__link wp-element-button" href="#promise">Promise</a></div>
-			<!-- /wp:button -->
+		<!-- wp:group {"style":{"spacing":{"blockGap":"1rem"}},"layout":{"type":"flex","flexWrap":"wrap","justifyContent":"right","verticalAlignment":"center"}} -->
+		<div class="wp-block-group">
+			<!-- wp:navigation {"overlayMenu":"mobile","layout":{"type":"flex","justifyContent":"right","flexWrap":"wrap"}} -->
+				<!-- wp:navigation-link {"label":"Promise","url":"#promise","kind":"custom","isTopLevelLink":true} /-->
+				<!-- wp:navigation-link {"label":"Services","url":"#services","kind":"custom","isTopLevelLink":true} /-->
+				<!-- wp:navigation-link {"label":"Showcase","url":"#showcase","kind":"custom","isTopLevelLink":true} /-->
+				<!-- wp:navigation-link {"label":"Pricing","url":"#pricing","kind":"custom","isTopLevelLink":true} /-->
+				<!-- wp:navigation-link {"label":"FAQ","url":"#questions","kind":"custom","isTopLevelLink":true} /-->
+			<!-- /wp:navigation -->
 
-			<!-- wp:button {"className":"is-style-outline monopage-nav-link"} -->
-			<div class="wp-block-button is-style-outline monopage-nav-link"><a class="wp-block-button__link wp-element-button" href="#services">Services</a></div>
-			<!-- /wp:button -->
-
-			<!-- wp:button {"className":"is-style-outline monopage-nav-link"} -->
-			<div class="wp-block-button is-style-outline monopage-nav-link"><a class="wp-block-button__link wp-element-button" href="#showcase">Showcase</a></div>
-			<!-- /wp:button -->
-
-			<!-- wp:button {"className":"is-style-outline monopage-nav-link"} -->
-			<div class="wp-block-button is-style-outline monopage-nav-link"><a class="wp-block-button__link wp-element-button" href="#pricing">Pricing</a></div>
-			<!-- /wp:button -->
-
-			<!-- wp:button {"className":"is-style-outline monopage-nav-link"} -->
-			<div class="wp-block-button is-style-outline monopage-nav-link"><a class="wp-block-button__link wp-element-button" href="#questions">FAQ</a></div>
-			<!-- /wp:button -->
-
-			<!-- wp:button -->
-			<div class="wp-block-button"><a class="wp-block-button__link wp-element-button" href="#start">Start</a></div>
-			<!-- /wp:button -->
+			<!-- wp:buttons -->
+			<div class="wp-block-buttons">
+				<!-- wp:button -->
+				<div class="wp-block-button"><a class="wp-block-button__link wp-element-button" href="#start">Start</a></div>
+				<!-- /wp:button -->
+			</div>
+			<!-- /wp:buttons -->
 		</div>
-		<!-- /wp:buttons -->
+		<!-- /wp:group -->
 	</div>
 	<!-- /wp:group -->
 </header>
@@ -40,28 +32,28 @@
 <main class="wp-block-group alignfull monopage-main">
 	<!-- wp:group {"tagName":"section","align":"full","anchor":"top","className":"monopage-hero","layout":{"type":"constrained","contentSize":"1180px"}} -->
 	<section class="wp-block-group alignfull monopage-hero" id="top">
-		<!-- wp:group {"align":"wide","className":"monopage-hero-copy","layout":{"type":"constrained","contentSize":"780px","justifyContent":"left"}} -->
-		<div class="wp-block-group alignwide monopage-hero-copy">
+		<!-- wp:group {"className":"monopage-hero-copy","layout":{"type":"constrained","contentSize":"780px","justifyContent":"left"}} -->
+		<div class="wp-block-group monopage-hero-copy">
 			<!-- wp:paragraph {"className":"monopage-kicker"} -->
 			<p class="monopage-kicker">Monopage</p>
 			<!-- /wp:paragraph -->
 
-			<!-- wp:heading {"level":1,"style":{"typography":{"fontSize":"4.8rem","lineHeight":"0.98","fontWeight":"820"}}} -->
-			<h1 class="wp-block-heading" style="font-size:4.8rem;font-weight:820;line-height:0.98">One-page sites that sell the next step.</h1>
+			<!-- wp:heading {"level":1,"fontSize":"hero","style":{"typography":{"lineHeight":"0.98","fontWeight":"820"}}} -->
+			<h1 class="wp-block-heading has-hero-font-size" style="font-weight:820;line-height:0.98">Launch<br>one electric page.</h1>
 			<!-- /wp:heading -->
 
 			<!-- wp:paragraph {"style":{"typography":{"fontSize":"1.25rem","lineHeight":"1.55"}}} -->
-			<p style="font-size:1.25rem;line-height:1.55">A polished homepage canvas for services, products, events, and launches. Edit every section with standard WordPress blocks, then publish from one focused Site Editor surface.</p>
+			<p style="font-size:1.25rem;line-height:1.55">Campaign-grade canvas.<br>Pitch, proof, pricing, close.<br>All in one focused WordPress surface.</p>
 			<!-- /wp:paragraph -->
 
 			<!-- wp:buttons {"layout":{"type":"flex","flexWrap":"wrap"}} -->
 			<div class="wp-block-buttons">
 				<!-- wp:button -->
-				<div class="wp-block-button"><a class="wp-block-button__link wp-element-button" href="#start">Build the page</a></div>
+				<div class="wp-block-button"><a class="wp-block-button__link wp-element-button" href="#start">Launch the page</a></div>
 				<!-- /wp:button -->
 
 				<!-- wp:button {"className":"is-style-outline"} -->
-				<div class="wp-block-button is-style-outline"><a class="wp-block-button__link wp-element-button" href="#showcase">See the blocks</a></div>
+				<div class="wp-block-button is-style-outline"><a class="wp-block-button__link wp-element-button" href="#showcase">Tour the sections</a></div>
 				<!-- /wp:button -->
 			</div>
 			<!-- /wp:buttons -->
@@ -71,7 +63,7 @@
 				<!-- wp:column -->
 				<div class="wp-block-column">
 					<!-- wp:paragraph {"className":"monopage-mini-value"} -->
-					<p class="monopage-mini-value">12 sections</p>
+					<p class="monopage-mini-value">Signal</p>
 					<!-- /wp:paragraph -->
 				</div>
 				<!-- /wp:column -->
@@ -79,7 +71,7 @@
 				<!-- wp:column -->
 				<div class="wp-block-column">
 					<!-- wp:paragraph {"className":"monopage-mini-value"} -->
-					<p class="monopage-mini-value">Anchor nav</p>
+					<p class="monopage-mini-value">Proof</p>
 					<!-- /wp:paragraph -->
 				</div>
 				<!-- /wp:column -->
@@ -87,7 +79,7 @@
 				<!-- wp:column -->
 				<div class="wp-block-column">
 					<!-- wp:paragraph {"className":"monopage-mini-value"} -->
-					<p class="monopage-mini-value">Block native</p>
+					<p class="monopage-mini-value">Close</p>
 					<!-- /wp:paragraph -->
 				</div>
 				<!-- /wp:column -->
@@ -103,15 +95,15 @@
 		<!-- wp:group {"align":"wide","layout":{"type":"flex","flexWrap":"wrap","justifyContent":"space-between","verticalAlignment":"center"}} -->
 		<div class="wp-block-group alignwide">
 			<!-- wp:paragraph {"className":"monopage-logo-label"} -->
-			<p class="monopage-logo-label">Use it for</p>
+			<p class="monopage-logo-label">Built for</p>
 			<!-- /wp:paragraph -->
 
 			<!-- wp:paragraph {"className":"monopage-logo-pill"} -->
-			<p class="monopage-logo-pill">Product launches</p>
+			<p class="monopage-logo-pill">Launches</p>
 			<!-- /wp:paragraph -->
 
 			<!-- wp:paragraph {"className":"monopage-logo-pill"} -->
-			<p class="monopage-logo-pill">Local services</p>
+			<p class="monopage-logo-pill">Studios</p>
 			<!-- /wp:paragraph -->
 
 			<!-- wp:paragraph {"className":"monopage-logo-pill"} -->
@@ -119,7 +111,7 @@
 			<!-- /wp:paragraph -->
 
 			<!-- wp:paragraph {"className":"monopage-logo-pill"} -->
-			<p class="monopage-logo-pill">Studios</p>
+			<p class="monopage-logo-pill">Services</p>
 			<!-- /wp:paragraph -->
 
 			<!-- wp:paragraph {"className":"monopage-logo-pill"} -->
@@ -140,12 +132,12 @@
 				<p class="monopage-kicker">The promise</p>
 				<!-- /wp:paragraph -->
 
-				<!-- wp:heading {"style":{"typography":{"fontSize":"3rem","lineHeight":"1.04"}}} -->
-				<h2 class="wp-block-heading" style="font-size:3rem;line-height:1.04">Everything a visitor needs, arranged in one confident scroll.</h2>
+				<!-- wp:heading {"fontSize":"section-title","style":{"typography":{"lineHeight":"1.04"}}} -->
+				<h2 class="wp-block-heading has-section-title-font-size" style="line-height:1.04">A whole campaign, composed into one confident scroll.</h2>
 				<!-- /wp:heading -->
 
 				<!-- wp:paragraph -->
-				<p>Monopage Canvas starts with the sections a strong single-page marketing site usually needs: a clear offer, trust signals, services, proof, a product-style walkthrough, pricing, answers, and a final conversion point.</p>
+				<p>Monopage Canvas starts like a smart agency deck: a clear offer, trust signals, services, proof, a product-style walkthrough, pricing, answers, and one final conversion point.</p>
 				<!-- /wp:paragraph -->
 
 				<!-- wp:separator {"className":"is-style-wide monopage-separator"} -->
@@ -252,8 +244,8 @@
 			<p class="has-text-align-center monopage-kicker">Services</p>
 			<!-- /wp:paragraph -->
 
-			<!-- wp:heading {"textAlign":"center","style":{"typography":{"fontSize":"3rem","lineHeight":"1.04"}}} -->
-			<h2 class="wp-block-heading has-text-align-center" style="font-size:3rem;line-height:1.04">A complete offer grid, ready to rewrite.</h2>
+			<!-- wp:heading {"textAlign":"center","fontSize":"section-title","style":{"typography":{"lineHeight":"1.04"}}} -->
+			<h2 class="wp-block-heading has-text-align-center has-section-title-font-size" style="line-height:1.04">Modular offers with just enough swagger.</h2>
 			<!-- /wp:heading -->
 
 			<!-- wp:paragraph {"align":"center"} -->
@@ -402,8 +394,8 @@
 				<p class="monopage-kicker">Showcase</p>
 				<!-- /wp:paragraph -->
 
-				<!-- wp:heading {"style":{"typography":{"fontSize":"3rem","lineHeight":"1.04"}}} -->
-				<h2 class="wp-block-heading" style="font-size:3rem;line-height:1.04">Visual rhythm without custom page-builder tricks.</h2>
+				<!-- wp:heading {"fontSize":"section-title","style":{"typography":{"lineHeight":"1.04"}}} -->
+				<h2 class="wp-block-heading has-section-title-font-size" style="line-height:1.04">Retrofuture polish, built from ordinary blocks.</h2>
 				<!-- /wp:heading -->
 
 				<!-- wp:paragraph -->
@@ -446,8 +438,8 @@
 			<p class="has-text-align-center monopage-kicker">Results</p>
 			<!-- /wp:paragraph -->
 
-			<!-- wp:heading {"textAlign":"center","style":{"typography":{"fontSize":"3rem","lineHeight":"1.04"}}} -->
-			<h2 class="wp-block-heading has-text-align-center" style="font-size:3rem;line-height:1.04">Proof, process, and outcomes in one section family.</h2>
+			<!-- wp:heading {"textAlign":"center","fontSize":"section-title","style":{"typography":{"lineHeight":"1.04"}}} -->
+			<h2 class="wp-block-heading has-text-align-center has-section-title-font-size" style="line-height:1.04">Momentum you can measure before the page ends.</h2>
 			<!-- /wp:heading -->
 		</div>
 		<!-- /wp:group -->
@@ -597,8 +589,8 @@
 			<p class="has-text-align-center monopage-kicker">Pricing</p>
 			<!-- /wp:paragraph -->
 
-			<!-- wp:heading {"textAlign":"center","style":{"typography":{"fontSize":"3rem","lineHeight":"1.04"}}} -->
-			<h2 class="wp-block-heading has-text-align-center" style="font-size:3rem;line-height:1.04">A pricing section with real decision support.</h2>
+			<!-- wp:heading {"textAlign":"center","fontSize":"section-title","style":{"typography":{"lineHeight":"1.04"}}} -->
+			<h2 class="wp-block-heading has-text-align-center has-section-title-font-size" style="line-height:1.04">Pricing that feels like a choice, not a chore.</h2>
 			<!-- /wp:heading -->
 
 			<!-- wp:paragraph {"align":"center"} -->
@@ -740,8 +732,8 @@
 		<p class="has-text-align-center monopage-kicker">FAQ</p>
 		<!-- /wp:paragraph -->
 
-		<!-- wp:heading {"textAlign":"center","style":{"typography":{"fontSize":"3rem","lineHeight":"1.04"}}} -->
-		<h2 class="wp-block-heading has-text-align-center" style="font-size:3rem;line-height:1.04">Questions before you start?</h2>
+		<!-- wp:heading {"textAlign":"center","fontSize":"section-title","style":{"typography":{"lineHeight":"1.04"}}} -->
+		<h2 class="wp-block-heading has-text-align-center has-section-title-font-size" style="line-height:1.04">Questions before you start?</h2>
 		<!-- /wp:heading -->
 
 		<!-- wp:details -->
@@ -806,7 +798,7 @@
 	<div class="wp-block-columns alignwide">
 		<!-- wp:column {"width":"40%"} -->
 		<div class="wp-block-column" style="flex-basis:40%">
-			<!-- wp:site-title {"level":0,"isLink":false,"style":{"typography":{"fontSize":"1.35rem","fontWeight":"800"}}} /-->
+			<!-- wp:site-title {"level":0,"isLink":false,"fontSize":"large"} /-->
 			<!-- wp:paragraph -->
 			<p>A focused one-page WordPress starter for clear offers and quick launches.</p>
 			<!-- /wp:paragraph -->

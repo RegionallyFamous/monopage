@@ -3,7 +3,7 @@ Theme Name: Monopage Canvas
 Theme URI: https://github.com/RegionallyFamous/monopage
 Author: WeirdPress
 Description: A block theme for focused Monopage one-page sites.
-Version: 0.2.10
+Version: 0.2.11
 Requires at least: 6.5
 Requires PHP: 7.4
 License: GPL-2.0-or-later
@@ -18,6 +18,7 @@ html {
 body {
 	background: var(--wp--preset--color--paper);
 	min-height: 100vh;
+	overflow-x: hidden;
 }
 
 .wp-site-blocks {
@@ -34,22 +35,6 @@ body {
 	z-index: 20;
 }
 
-.monopage-header-nav {
-	gap: 0.7rem;
-}
-
-.monopage-header-nav .wp-block-button__link {
-	white-space: nowrap;
-}
-
-.monopage-site-header .monopage-header-nav .wp-block-button.monopage-nav-link .wp-block-button__link {
-	background: transparent !important;
-	border: 0 !important;
-	box-shadow: none !important;
-	color: var(--wp--preset--color--ink);
-	padding: 0.45rem 0.1rem !important;
-}
-
 .monopage-main {
 	overflow: hidden;
 }
@@ -62,7 +47,7 @@ body {
 }
 
 .monopage-hero {
-	background-image: linear-gradient(90deg, rgba(5, 9, 16, 0.96) 0%, rgba(5, 9, 16, 0.78) 42%, rgba(5, 9, 16, 0.18) 100%), url("assets/monopage-hero-v2.jpg");
+	background-image: linear-gradient(90deg, rgba(5, 9, 16, 0.86) 0%, rgba(5, 9, 16, 0.58) 42%, rgba(5, 9, 16, 0.1) 100%), url("assets/monopage-riso-hero.jpg");
 	background-position: right center;
 	background-size: cover;
 	color: #ffffff;
@@ -72,14 +57,37 @@ body {
 }
 
 .monopage-hero-copy {
-	margin-left: auto;
-	margin-right: auto;
+	box-sizing: border-box;
+	margin-left: 0;
+	margin-right: 0;
+	max-width: min(100%, 350px);
+	padding-left: 0;
+	padding-right: 0;
 	width: 100%;
 }
 
 .monopage-hero h1 {
 	max-width: 760px;
+	font-size: 2rem !important;
 	text-wrap: balance;
+}
+
+.monopage-hero-copy > p:not(.monopage-kicker) {
+	font-size: 1rem !important;
+	line-height: 1.5 !important;
+}
+
+.monopage-hero .wp-block-buttons {
+	align-items: stretch;
+	flex-direction: column;
+	max-width: min(100%, 310px);
+}
+
+.monopage-hero .wp-block-button,
+.monopage-hero .wp-block-button__link {
+	box-sizing: border-box;
+	text-align: center;
+	width: 100%;
 }
 
 .monopage-kicker {
@@ -285,38 +293,15 @@ body {
 }
 
 .monopage-showcase-visual {
-	background: linear-gradient(135deg, #12151b 0%, #27324a 62%, #0d9488 100%);
+	background-image: linear-gradient(180deg, rgba(5, 9, 16, 0.04), rgba(5, 9, 16, 0.18)), url("assets/monopage-riso-flow.jpg");
+	background-position: center;
+	background-size: cover;
 	border: 1px solid rgba(255, 255, 255, 0.16);
 	border-radius: 8px;
 	box-shadow: 0 26px 70px rgba(17, 19, 24, 0.2);
 	min-height: 440px;
 	overflow: hidden;
 	position: relative;
-}
-
-.monopage-showcase-visual::before,
-.monopage-showcase-visual::after {
-	background: rgba(255, 255, 255, 0.9);
-	border: 1px solid rgba(255, 255, 255, 0.3);
-	border-radius: 8px;
-	box-shadow: 0 18px 42px rgba(0, 0, 0, 0.18);
-	content: "";
-	position: absolute;
-}
-
-.monopage-showcase-visual::before {
-	height: 64%;
-	left: 9%;
-	top: 12%;
-	width: 66%;
-}
-
-.monopage-showcase-visual::after {
-	background: linear-gradient(135deg, #ffffff, #eaf6f4);
-	height: 42%;
-	right: 8%;
-	top: 31%;
-	width: 46%;
 }
 
 .monopage-showcase-visual .wp-block-spacer {
@@ -527,9 +512,45 @@ body {
 	text-decoration: underline;
 }
 
-@media (max-width: 900px) {
+@media (min-width: 901px) {
+	.monopage-hero-copy {
+		margin-left: auto;
+		margin-right: auto;
+		max-width: 780px;
+	}
+
 	.monopage-hero h1 {
-		font-size: 3.2rem !important;
+		font-size: var(--wp--preset--font-size--hero) !important;
+	}
+
+	.monopage-hero-copy > p:not(.monopage-kicker) {
+		font-size: 1.25rem !important;
+		line-height: 1.55 !important;
+	}
+
+	.monopage-hero .wp-block-buttons {
+		align-items: center;
+		flex-direction: row;
+	}
+
+	.monopage-hero .wp-block-button,
+	.monopage-hero .wp-block-button__link {
+		width: auto;
+	}
+}
+
+@media (max-width: 900px) {
+	.monopage-hero-copy {
+		max-width: min(100%, 350px);
+	}
+
+	.monopage-hero-copy > * {
+		box-sizing: border-box;
+		max-width: 100% !important;
+	}
+
+	.monopage-hero h1 {
+		font-size: 2rem !important;
 	}
 
 	.monopage-section h2,
@@ -547,20 +568,40 @@ body {
 		position: static;
 	}
 
-	.monopage-header-nav {
-		justify-content: flex-start;
-	}
-
 	.monopage-hero {
-		background-image: linear-gradient(180deg, rgba(5, 9, 16, 0.92), rgba(5, 9, 16, 0.68)), url("assets/monopage-hero-v2.jpg");
+		background-image: linear-gradient(180deg, rgba(5, 9, 16, 0.9), rgba(5, 9, 16, 0.62)), url("assets/monopage-riso-hero.jpg");
 		background-position: center;
+		box-sizing: border-box;
 		min-height: 68vh;
 		padding-bottom: 3rem;
 		padding-top: 3.2rem;
 	}
 
+	.monopage-hero-copy {
+		max-width: 100%;
+	}
+
 	.monopage-hero h1 {
-		font-size: 2.8rem !important;
+		font-size: 2rem !important;
+		max-width: 100%;
+		overflow-wrap: break-word;
+	}
+
+	.monopage-main .wp-block-columns {
+		flex-wrap: wrap !important;
+	}
+
+	.monopage-main .wp-block-column {
+		flex-basis: 100% !important;
+	}
+
+	.monopage-logo-strip .is-layout-flex {
+		gap: 0.65rem;
+		justify-content: flex-start;
+	}
+
+	.monopage-logo-pill {
+		font-size: 0.95rem;
 	}
 
 	.monopage-section {

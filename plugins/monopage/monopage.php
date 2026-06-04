@@ -3,7 +3,7 @@
  * Plugin Name:       Monopage
  * Plugin URI:        https://github.com/RegionallyFamous/monopage
  * Description:       Monopage focuses WordPress around the Site Editor and a single homepage template.
- * Version:           0.2.10
+ * Version:           0.2.11
  * Requires at least: 6.5
  * Requires PHP:      7.4
  * Author:            WeirdPress
@@ -16,7 +16,7 @@
 
 defined( 'ABSPATH' ) || exit;
 
-define( 'MONOPAGE_VERSION', '0.2.10' );
+define( 'MONOPAGE_VERSION', '0.2.11' );
 define( 'MONOPAGE_FILE', __FILE__ );
 define( 'MONOPAGE_DIR', plugin_dir_path( __FILE__ ) );
 define( 'MONOPAGE_URL', plugin_dir_url( __FILE__ ) );
@@ -163,7 +163,7 @@ function monopage_maybe_redirect_admin() {
 		return;
 	}
 
-	if ( 'admin.php' === $pagenow && isset( $_GET['page'] ) && 0 === strpos( sanitize_key( wp_unslash( $_GET['page'] ) ), 'monopage' ) ) {
+	if ( 'admin.php' === $pagenow && 0 === strpos( monopage_get_query_key( 'page' ), 'monopage' ) ) {
 		return;
 	}
 
@@ -267,6 +267,57 @@ function monopage_is_site_editor_admin_screen( $hook_suffix ) {
 }
 
 /**
+ * Get a scalar query parameter as a sanitized key.
+ *
+ * @param string $key Query parameter name.
+ * @return string
+ */
+function monopage_get_query_key( $key ) {
+	$value = monopage_get_request_value( $_GET, $key ); // phpcs:ignore WordPress.Security.NonceVerification.Recommended
+
+	return '' === $value ? '' : sanitize_key( $value );
+}
+
+/**
+ * Get a scalar query parameter as sanitized text.
+ *
+ * @param string $key Query parameter name.
+ * @return string
+ */
+function monopage_get_query_text( $key ) {
+	$value = monopage_get_request_value( $_GET, $key ); // phpcs:ignore WordPress.Security.NonceVerification.Recommended
+
+	return '' === $value ? '' : sanitize_text_field( $value );
+}
+
+/**
+ * Read a checkbox-style POST flag.
+ *
+ * @param string $key POST field name.
+ * @return bool
+ */
+function monopage_get_post_flag( $key ) {
+	$value = monopage_get_request_value( $_POST, $key ); // phpcs:ignore WordPress.Security.NonceVerification.Missing
+
+	return '1' === sanitize_text_field( $value );
+}
+
+/**
+ * Get a scalar request value without assuming PHP's superglobal shape.
+ *
+ * @param array  $source Request source.
+ * @param string $key    Request key.
+ * @return string
+ */
+function monopage_get_request_value( $source, $key ) {
+	if ( ! isset( $source[ $key ] ) || ! is_scalar( $source[ $key ] ) ) {
+		return '';
+	}
+
+	return wp_unslash( (string) $source[ $key ] );
+}
+
+/**
  * Render a small Focus Mode notice for admins.
  */
 function monopage_render_focus_notice() {
@@ -302,9 +353,9 @@ function monopage_render_admin_page() {
 	$focus_enabled      = monopage_get_focus_enabled();
 	$full_dashboard     = monopage_current_user_has_full_dashboard();
 	$can_manage_options = current_user_can( 'manage_options' );
-	$setup_result       = isset( $_GET['monopage_setup'] ) ? sanitize_key( wp_unslash( $_GET['monopage_setup'] ) ) : '';
-	$focus_result       = isset( $_GET['monopage_focus'] ) ? sanitize_key( wp_unslash( $_GET['monopage_focus'] ) ) : '';
-	$dashboard_result   = isset( $_GET['monopage_dashboard'] ) ? sanitize_key( wp_unslash( $_GET['monopage_dashboard'] ) ) : '';
+	$setup_result       = monopage_get_query_key( 'monopage_setup' );
+	$focus_result       = monopage_get_query_key( 'monopage_focus' );
+	$dashboard_result   = monopage_get_query_key( 'monopage_dashboard' );
 	$setup_error        = get_transient( 'monopage_setup_error_' . get_current_user_id() );
 
 	if ( $setup_error ) {
@@ -348,7 +399,11 @@ function monopage_render_admin_page() {
 					</div>
 					<div>
 						<dt><?php esc_html_e( 'Editable template', 'monopage' ); ?></dt>
-						<dd><?php echo esc_html( $status['front_template_saved'] ? sprintf( __( 'Front Page #%d', 'monopage' ), $status['front_template_id'] ) : __( 'Theme file fallback', 'monopage' ) ); ?></dd>
+						<dd><?php echo esc_html( $status['front_template_saved'] ? sprintf(
+							/* translators: %d: Saved front-page template post ID. */
+							__( 'Front Page #%d', 'monopage' ),
+							$status['front_template_id']
+						) : __( 'Theme file fallback', 'monopage' ) ); ?></dd>
 					</div>
 				</dl>
 				<p class="description"><?php esc_html_e( 'The visible homepage is edited in the Site Editor front-page template. The Home page is only the WordPress routing page.', 'monopage' ); ?></p>
@@ -398,14 +453,14 @@ function monopage_render_admin_page() {
 					<form method="post" action="<?php echo esc_url( admin_url( 'admin-post.php' ) ); ?>">
 						<?php wp_nonce_field( 'monopage_toggle_focus' ); ?>
 						<input type="hidden" name="action" value="monopage_toggle_focus">
-						<input type="hidden" name="enabled" value="<?php echo $focus_enabled ? '0' : '1'; ?>">
+						<input type="hidden" name="enabled" value="<?php echo esc_attr( $focus_enabled ? '0' : '1' ); ?>">
 						<p><button class="button" type="submit"><?php echo esc_html( $focus_enabled ? __( 'Disable Focus Mode', 'monopage' ) : __( 'Enable Focus Mode', 'monopage' ) ); ?></button></p>
 					</form>
 
 					<form method="post" action="<?php echo esc_url( admin_url( 'admin-post.php' ) ); ?>">
 						<?php wp_nonce_field( 'monopage_toggle_full_dashboard' ); ?>
 						<input type="hidden" name="action" value="monopage_toggle_full_dashboard">
-						<input type="hidden" name="enabled" value="<?php echo $full_dashboard ? '0' : '1'; ?>">
+						<input type="hidden" name="enabled" value="<?php echo esc_attr( $full_dashboard ? '0' : '1' ); ?>">
 						<p><button class="button" type="submit"><?php echo esc_html( $full_dashboard ? __( 'Return To Focus Mode', 'monopage' ) : __( 'Use Full WordPress Dashboard', 'monopage' ) ); ?></button></p>
 					</form>
 				<?php endif; ?>
@@ -451,8 +506,8 @@ function monopage_maybe_redirect_home_page_editor() {
 		return;
 	}
 
-	$post_id = isset( $_GET['post'] ) && is_scalar( $_GET['post'] ) ? absint( wp_unslash( $_GET['post'] ) ) : 0;
-	$action  = isset( $_GET['action'] ) && is_scalar( $_GET['action'] ) ? sanitize_key( wp_unslash( $_GET['action'] ) ) : '';
+	$post_id = absint( monopage_get_query_text( 'post' ) );
+	$action  = monopage_get_query_key( 'action' );
 
 	if ( ! $post_id || 'edit' !== $action || ! monopage_is_routing_home_page( $post_id ) ) {
 		return;
@@ -472,7 +527,7 @@ function monopage_handle_toggle_focus() {
 
 	check_admin_referer( 'monopage_toggle_focus' );
 
-	$enabled = isset( $_POST['enabled'] ) && '1' === sanitize_text_field( wp_unslash( $_POST['enabled'] ) );
+	$enabled = monopage_get_post_flag( 'enabled' );
 	update_option( MONOPAGE_FOCUS_OPTION, $enabled ? '1' : '0' );
 
 	wp_safe_redirect( add_query_arg( 'monopage_focus', $enabled ? 'enabled' : 'disabled', admin_url( 'admin.php?page=monopage' ) ) );
@@ -489,7 +544,7 @@ function monopage_handle_toggle_full_dashboard() {
 
 	check_admin_referer( 'monopage_toggle_full_dashboard' );
 
-	$enabled = isset( $_POST['enabled'] ) && '1' === sanitize_text_field( wp_unslash( $_POST['enabled'] ) );
+	$enabled = monopage_get_post_flag( 'enabled' );
 	update_user_meta( get_current_user_id(), MONOPAGE_FULL_DASHBOARD_META, $enabled ? '1' : '0' );
 
 	wp_safe_redirect( add_query_arg( 'monopage_dashboard', $enabled ? 'full' : 'focus', admin_url( 'admin.php?page=monopage' ) ) );
@@ -508,8 +563,8 @@ function monopage_handle_run_setup() {
 
 	$result = monopage_setup_one_pager(
 		array(
-			'force_home'     => isset( $_POST['force_home'] ) && '1' === sanitize_text_field( wp_unslash( $_POST['force_home'] ) ),
-			'force_template' => isset( $_POST['force_template'] ) && '1' === sanitize_text_field( wp_unslash( $_POST['force_template'] ) ),
+			'force_home'     => monopage_get_post_flag( 'force_home' ),
+			'force_template' => monopage_get_post_flag( 'force_template' ),
 		)
 	);
 
@@ -677,26 +732,15 @@ function monopage_seed_default_front_page_template( $force_template = false ) {
  * @return WP_Post|null
  */
 function monopage_get_saved_front_page_template( $theme ) {
-	$query = new WP_Query(
-		array(
-			'post_type'              => 'wp_template',
-			'post_status'            => 'any',
-			'post_name__in'          => array( 'front-page' ),
-			'posts_per_page'         => 1,
-			'no_found_rows'          => true,
-			'update_post_meta_cache' => false,
-			'update_post_term_cache' => false,
-			'tax_query'              => array(
-				array(
-					'taxonomy' => 'wp_theme',
-					'field'    => 'name',
-					'terms'    => $theme,
-				),
-			),
-		)
-	);
+	$template = function_exists( 'get_block_template' ) ? get_block_template( $theme . '//front-page', 'wp_template' ) : null;
 
-	return isset( $query->posts[0] ) && $query->posts[0] instanceof WP_Post ? $query->posts[0] : null;
+	if ( ! $template || empty( $template->wp_id ) ) {
+		return null;
+	}
+
+	$post = get_post( $template->wp_id );
+
+	return $post instanceof WP_Post ? $post : null;
 }
 
 /**
@@ -871,7 +915,7 @@ function monopage_maybe_redirect_site_editor_to_canvas() {
 	$is_target  = true;
 
 	foreach ( $query_args as $key => $expected ) {
-		$actual = isset( $_GET[ $key ] ) ? sanitize_text_field( wp_unslash( $_GET[ $key ] ) ) : '';
+		$actual = monopage_get_query_text( $key );
 		if ( $expected !== $actual ) {
 			$is_target = false;
 			break;
@@ -880,20 +924,6 @@ function monopage_maybe_redirect_site_editor_to_canvas() {
 
 	if ( $is_target ) {
 		return;
-	}
-
-	$reserved_keys = array_unique( array_merge( array_keys( $query_args ), array( 'canvas', 'postType', 'postId', 'p' ) ) );
-
-	foreach ( $_GET as $key => $value ) {
-		if ( ! is_scalar( $value ) || ! preg_match( '/^[A-Za-z0-9_-]+$/', (string) $key ) ) {
-			continue;
-		}
-
-		if ( in_array( (string) $key, $reserved_keys, true ) ) {
-			continue;
-		}
-
-		$query_args[ (string) $key ] = sanitize_text_field( wp_unslash( (string) $value ) );
 	}
 
 	wp_safe_redirect( add_query_arg( $query_args, admin_url( 'site-editor.php' ) ) );
@@ -1145,39 +1175,4 @@ if ( defined( 'WP_CLI' ) && WP_CLI ) {
 	}
 
 	WP_CLI::add_command( 'monopage', 'Monopage_CLI_Command' );
-	WP_CLI::add_command( 'wpop', 'Monopage_CLI_Command' );
-}
-
-if ( ! function_exists( 'wpop_setup_one_pager' ) ) {
-	/**
-	 * Legacy WPOP setup alias.
-	 *
-	 * @param array $args Setup arguments.
-	 * @return array|WP_Error
-	 */
-	function wpop_setup_one_pager( $args = array() ) {
-		return monopage_setup_one_pager( $args );
-	}
-}
-
-if ( ! function_exists( 'wpop_get_status' ) ) {
-	/**
-	 * Legacy WPOP status alias.
-	 *
-	 * @return array
-	 */
-	function wpop_get_status() {
-		return monopage_get_status();
-	}
-}
-
-if ( ! function_exists( 'wpop_get_site_editor_url' ) ) {
-	/**
-	 * Legacy WPOP Site Editor URL alias.
-	 *
-	 * @return string
-	 */
-	function wpop_get_site_editor_url() {
-		return monopage_get_site_editor_url();
-	}
 }

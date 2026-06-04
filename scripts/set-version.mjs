@@ -21,6 +21,7 @@ if (!readme.includes(`= ${version} =`) && !changelog.trim()) {
 }
 
 updatePackageJson();
+updatePackageLock();
 replaceInFile("plugins/monopage/monopage.php", [
   [/Version:\s*[0-9]+\.[0-9]+\.[0-9]+/, `Version:           ${version}`],
   [/define\(\s*'MONOPAGE_VERSION',\s*'[^']+'\s*\)/, `define( 'MONOPAGE_VERSION', '${version}' )`],
@@ -56,6 +57,32 @@ function updatePackageJson() {
 
   manifest.version = version;
   writeFile(file, `${JSON.stringify(manifest, null, 2)}\n`);
+}
+
+function updatePackageLock() {
+  const file = "package-lock.json";
+  const fullPath = path.join(root, file);
+
+  if (!fs.existsSync(fullPath)) {
+    return;
+  }
+
+  const lockfile = JSON.parse(fs.readFileSync(fullPath, "utf8"));
+  let changed = false;
+
+  if (lockfile.version !== version) {
+    lockfile.version = version;
+    changed = true;
+  }
+
+  if (lockfile.packages && lockfile.packages[""] && lockfile.packages[""].version !== version) {
+    lockfile.packages[""].version = version;
+    changed = true;
+  }
+
+  if (changed) {
+    writeFile(file, `${JSON.stringify(lockfile, null, 2)}\n`);
+  }
 }
 
 function ensureChangelogEntry() {
