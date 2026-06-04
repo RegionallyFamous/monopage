@@ -188,11 +188,11 @@ function wpop_enqueue_admin_assets( $hook_suffix ) {
 		WPOP_VERSION
 	);
 
-	if ( 'site-editor.php' === $hook_suffix && wpop_is_focus_active_for_current_user() ) {
+	if ( wpop_is_site_editor_admin_screen( $hook_suffix ) && wpop_is_focus_active_for_current_user() ) {
 		wp_enqueue_script(
 			'wpop-site-editor',
 			WPOP_URL . 'assets/site-editor.js',
-			array( 'wp-data', 'wp-dom-ready' ),
+			array( 'wp-data', 'wp-dom-ready', 'wp-preferences' ),
 			WPOP_VERSION,
 			true
 		);
@@ -211,6 +211,27 @@ function wpop_admin_body_class( $classes ) {
 	}
 
 	return $classes;
+}
+
+/**
+ * Check whether the current admin screen is the Site Editor.
+ *
+ * @param string $hook_suffix Current admin page hook.
+ * @return bool
+ */
+function wpop_is_site_editor_admin_screen( $hook_suffix ) {
+	global $pagenow;
+
+	if ( 'site-editor.php' === $hook_suffix || 'site-editor.php' === $pagenow ) {
+		return true;
+	}
+
+	$screen = function_exists( 'get_current_screen' ) ? get_current_screen() : null;
+	if ( $screen && ( false !== strpos( $screen->id, 'site-editor' ) || false !== strpos( $screen->base, 'site-editor' ) ) ) {
+		return true;
+	}
+
+	return false;
 }
 
 /**
