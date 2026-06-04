@@ -16,6 +16,11 @@ const packages = [
     required: [
       "monopage/monopage.php",
       "monopage/readme.txt",
+      "monopage/includes/core.php",
+      "monopage/includes/setup.php",
+      "monopage/includes/focus-mode.php",
+      "monopage/includes/validation.php",
+      "monopage/includes/wp-cli.php",
       "monopage/assets/admin.css",
       "monopage/assets/site-editor.js",
     ],

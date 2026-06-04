@@ -144,7 +144,7 @@ When checking Focus Mode admin behavior on the local wp-env runtime, use:
 npm run local:admin-smoke
 ```
 
-This logs in as the local admin user, confirms the public homepage hides the WordPress admin bar, confirms `/wp-admin/` redirects to the Site Editor front-page canvas, confirms generic Site Editor entrypoints redirect to the canvas, confirms direct Media Library requests redirect to the Site Editor, confirms legacy Monopage admin URLs are not reachable as control surfaces, and confirms the routing Home page editor redirects to the Site Editor. It restores the global Focus Mode option after the check.
+This logs in as the local admin user, confirms the public homepage hides the WordPress admin bar, confirms `/wp-admin/` redirects to the Site Editor front-page canvas, confirms generic Site Editor entrypoints redirect to the canvas, confirms direct Media Library requests redirect to the Site Editor, and confirms the routing Home page editor redirects to the Site Editor. It restores the global Focus Mode option after the check.
 
 When changing the Playground demo or URL behavior, use:
 
@@ -267,7 +267,7 @@ node scripts/deploy-monopage.mjs --dry-run --ssh=user@example.com:/site --path=/
 npm run skill:install
 ```
 
-The installer creates the `monopage-deploy` skill symlink under `$CODEX_HOME/skills` or `~/.codex/skills`. It removes the old `wpop-deploy` entry only when that legacy entry is a symlink.
+The installer creates the `monopage-deploy` skill symlink under `$CODEX_HOME/skills` or `~/.codex/skills`.
 
 To preview the install:
 

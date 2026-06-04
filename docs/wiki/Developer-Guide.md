@@ -12,7 +12,12 @@ The wiki is the developer source of truth. Product intent, one-page rules, archi
 
 ## Architecture
 
-- `plugins/monopage/monopage.php` owns setup, Focus Mode, admin redirects, the hidden public admin bar, and WP-CLI commands. It intentionally does not add a Monopage dashboard menu or settings page.
+- `plugins/monopage/monopage.php` is the plugin bootstrap. Runtime behavior lives in `plugins/monopage/includes/`.
+- `plugins/monopage/includes/core.php` registers hooks and shared request/Site Editor helpers.
+- `plugins/monopage/includes/setup.php` owns routing Home page setup and Canvas template seeding.
+- `plugins/monopage/includes/focus-mode.php` owns admin redirects, admin chrome cleanup, the hidden public admin bar, and Site Editor focus behavior.
+- `plugins/monopage/includes/validation.php` owns status, template-link validation, and deployment checks.
+- `plugins/monopage/includes/wp-cli.php` owns WP-CLI commands and is loaded only when WP-CLI is running.
 - `themes/monopage-canvas/` owns the default block theme, `theme.json`, and `templates/front-page.html`.
 - `skills/monopage-deploy/` teaches Codex agents how to package, deploy, customize, and validate Monopage sites.
 - `playground/blueprint.json` installs the plugin and theme into WordPress Playground and refreshes the default Canvas template for the demo.
@@ -20,7 +25,7 @@ The wiki is the developer source of truth. Product intent, one-page rules, archi
 
 ## Project Layout
 
-- `plugins/monopage/`: setup, Focus Mode, admin redirects, Site Editor defaults, WP-CLI commands, and no dashboard settings menu.
+- `plugins/monopage/`: plugin bootstrap, focused includes, admin assets, WP-CLI commands, and no dashboard settings menu.
 - `themes/monopage-canvas/`: the block-first Canvas theme, default `front-page.html`, and Riso-style assets.
 - `scripts/`: local setup, validation, Plugin Check, responsive smoke tests, packaging, deploy helpers, and release gates.
 - `skills/monopage-deploy/`: the Codex skill for deploying, validating, and customizing Monopage sites.
@@ -344,7 +349,7 @@ npm run release:check
 
 `check:js` discovers JavaScript files in `plugins/`, `themes/`, and `scripts/`, then runs `node --check` on each file. Add new helper scripts normally; the syntax gate picks them up without editing `package.json`.
 
-`local:admin-smoke` logs in to the local wp-env admin and checks Focus Mode admin redirect behavior, generic Site Editor canvas redirection, direct Media Library redirection, legacy Monopage admin URL removal, and routing Home page editor redirection. It restores the global Focus Mode option after the check.
+`local:admin-smoke` logs in to the local wp-env admin and checks Focus Mode admin redirect behavior, generic Site Editor canvas redirection, direct Media Library redirection, and routing Home page editor redirection. It restores the global Focus Mode option after the check.
 
 `check:playground` checks that the public Blueprint installs the expected GitHub theme/plugin directories, refreshes the Canvas front-page template, lands in the Site Editor canvas, and that `playground:url` keeps the outer Playground toolbar hidden with seamless mode.
 

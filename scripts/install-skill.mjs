@@ -8,19 +8,13 @@ const root = path.resolve(__dirname, "..");
 const options = parseArgs(process.argv.slice(2));
 const dryRun = Boolean(options["dry-run"]);
 const force = Boolean(options.force);
-const unlinkLegacy = Boolean(options["unlink-legacy"]);
 const codexHome = path.resolve(options["codex-home"] || process.env.CODEX_HOME || path.join(os.homedir(), ".codex"));
 const skillsDir = path.resolve(options["skills-dir"] || path.join(codexHome, "skills"));
 const source = path.join(root, "skills", "monopage-deploy");
 const target = path.join(skillsDir, "monopage-deploy");
-const legacyTarget = path.join(skillsDir, "wpop-deploy");
 
 assertSkillSource(source);
 installSkillLink(source, target);
-
-if (unlinkLegacy) {
-  unlinkLegacySkill(legacyTarget);
-}
 
 if (dryRun) {
   console.log("Dry run complete. No files changed.");
@@ -53,21 +47,6 @@ function installSkillLink(sourcePath, targetPath) {
 
   removeSymlink(targetPath);
   createSymlink(sourcePath, targetPath);
-}
-
-function unlinkLegacySkill(targetPath) {
-  const existing = lstatMaybe(targetPath);
-  if (!existing) {
-    return;
-  }
-
-  if (!existing.isSymbolicLink()) {
-    console.warn(`Leaving legacy skill in place because it is not a symlink: ${targetPath}`);
-    return;
-  }
-
-  removeSymlink(targetPath);
-  console.log(`Removed legacy skill symlink: ${targetPath}`);
 }
 
 function ensureDirectory(directory) {

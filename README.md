@@ -2,35 +2,38 @@
 
 ![Riso-style illustration of a continuous Monopage campaign page with modular blocks and anchor navigation](docs/assets/monopage-riso-hero.jpg)
 
-Monopage turns WordPress into a focused one-page site studio.
+Monopage is WordPress for one great page.
 
-It keeps WordPress core intact, activates a block theme, creates a routing Home page, and sends authoring directly to the editable Site Editor homepage template. The visible product is simple: one page, one canvas, one calm editing surface.
+It gives you a focused canvas for a launch, offer, waitlist, event, product, portfolio, or tiny brand site. No maze of pages. No dashboard scavenger hunt. Just one page with sections that move people from hello to yes.
 
-## The Idea
+## Why It Exists
 
-Most marketing sites do not need a maze of posts, pages, archives, menus, and settings. They need a strong offer, a clear scroll, proof, pricing, answers, and a next move.
+Most people using AI to make a website are not trying to manage a publishing empire. They want to make something cool, edit it fast, and put it online without learning every corner of WordPress first.
 
-Monopage narrows WordPress around that job. Visitors move up and down the same page. Editors land on the actual homepage canvas. The rest of WordPress stays intact, but it gets out of the way.
+Monopage keeps the good part: the Site Editor, blocks, media, themes, and real WordPress hosting. Then it clears the room so the first thing you see is the page you are making.
 
-## What It Feels Like
+## What You Get
 
-- One polished page instead of a small website pretending to be a big one.
-- Same-page anchor navigation instead of page-to-page menus.
-- A block-first Canvas theme with Riso texture and a retrofuture agency mood.
-- A focused Site Editor experience with the top toolbar on and distracting WordPress chrome hidden.
-- No Monopage dashboard, settings panel, sidebar maze, or in-admin control center.
+- A polished one-page starter site with bold sections, proof, pricing, FAQs, and a final call to action.
+- Same-page navigation, so every menu item moves up or down the page instead of sending visitors somewhere else.
+- A calm editing experience that opens straight to the homepage canvas.
+- A visual style made to inspire: Riso texture, sharp campaign energy, and a little Mad Men in the year 3000.
+- A Codex-ready workflow for turning ideas into real WordPress pages.
 
-Monopage does not fork WordPress, replace capabilities, or treat hidden menus as security. WordPress roles and capabilities still define access. Monopage simply makes the authoring experience feel like editing one sharp campaign page.
+## Try It
 
-## Playground
-
-Try the current demo in WordPress Playground:
+Open the live WordPress Playground demo:
 
 [Launch Monopage Playground](https://playground.wordpress.net/?mode=seamless&blueprint-url=https%3A%2F%2Fraw.githubusercontent.com%2FRegionallyFamous%2Fmonopage%2Fmain%2Fplayground%2Fblueprint.json)
 
-## For Developers
+## The Promise
 
-All developer documentation, command references, local setup, validation, packaging, deployment, Plugin Check, Playground details, and Codex skill instructions live in the wiki:
+Monopage is not a fake website builder sitting beside WordPress. It is WordPress, focused.
 
-- [Developer Guide](docs/wiki/Developer-Guide.md)
-- [Wiki Home](docs/wiki/Home.md)
+You can still use real hosting, real blocks, real media, and real Site Editor customization. Monopage just keeps the experience centered on the one page that matters.
+
+## For Builders
+
+Technical notes, local setup, validation, deployment, and contributor docs live in the wiki:
+
+[Monopage Developer Wiki](docs/wiki/Home.md)

@@ -1,6 +1,6 @@
 {
   "name": "monopage",
-  "version": "0.2.47",
+  "version": "0.2.49",
   "private": true,
   "description": "Monopage plugin, canvas theme, and Codex deployment skill.",
   "scripts": {
@@ -33,8 +33,8 @@
     "plugin:check:dry-run": "node scripts/plugin-check.mjs --wp-env --runtime --dry-run",
     "release:check": "node scripts/release-check.mjs",
     "release:check:dry-run": "node scripts/release-check.mjs --dry-run",
-    "skill:install": "node scripts/install-skill.mjs --unlink-legacy",
-    "skill:install:dry-run": "node scripts/install-skill.mjs --dry-run --unlink-legacy",
+    "skill:install": "node scripts/install-skill.mjs",
+    "skill:install:dry-run": "node scripts/install-skill.mjs --dry-run",
     "version:set": "node scripts/set-version.mjs",
     "local:start": "wp-env start",
     "local:stop": "wp-env stop",

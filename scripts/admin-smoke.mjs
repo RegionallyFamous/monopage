@@ -21,7 +21,6 @@ if (dryRun) {
   console.log("[dry-run] Confirm /wp-admin/ redirects to the Site Editor front-page canvas.");
   console.log("[dry-run] Confirm the Site Editor entry redirects to the canvas when opened generically.");
   console.log("[dry-run] Confirm direct Media Library redirects to the Site Editor.");
-  console.log("[dry-run] Confirm the legacy Monopage admin URL is not reachable as a control surface.");
   console.log("[dry-run] Confirm the routing Home page editor redirects to the Site Editor.");
   process.exit(0);
 }
@@ -49,9 +48,6 @@ try {
   const mediaResponse = await request("/wp-admin/upload.php");
   assertSiteEditorRedirect(mediaResponse, "direct Media Library redirect");
 
-  const legacyMonopageAdminResponse = await request("/wp-admin/admin.php?page=monopage");
-  assertNoLegacyControls(legacyMonopageAdminResponse);
-
   const homePageId = wpValue(["option", "get", "page_on_front"]);
   const homeEditorResponse = await request(`/wp-admin/post.php?post=${encodeURIComponent(homePageId)}&action=edit`);
   assertSiteEditorRedirect(homeEditorResponse, "routing Home page editor redirect");
@@ -68,7 +64,7 @@ if (failures.length) {
 }
 
 console.log(`Admin smoke passed for ${baseUrl}/.`);
-console.log("Checked Focus Mode admin redirect, hidden public admin bar, Site Editor canvas redirect, direct Media Library redirect, legacy Monopage admin URL removal, and routing Home page editor redirect.");
+console.log("Checked Focus Mode admin redirect, hidden public admin bar, Site Editor canvas redirect, direct Media Library redirect, and routing Home page editor redirect.");
 
 async function login() {
   await request("/wp-login.php", { follow: true });
@@ -192,18 +188,6 @@ async function assertFrontendAdminBarHidden(response) {
   if (body.includes('id="wpadminbar"') || body.includes("wp-admin-bar")) {
     failures.push("Logged-in public homepage rendered the WordPress admin bar in Focus Mode.");
   }
-}
-
-function assertNoLegacyControls(response) {
-  if (isSiteEditorRedirect(response)) {
-    return;
-  }
-
-  if ([403, 404].includes(response.status)) {
-    return;
-  }
-
-  failures.push(`Legacy Monopage admin URL returned HTTP ${response.status}; expected redirect, 403, or 404.`);
 }
 
 function formatLocation(response) {

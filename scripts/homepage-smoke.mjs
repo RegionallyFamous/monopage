@@ -6,7 +6,6 @@ const expectedCopy = [
   "One page. All signal.",
   "Monopage Agency 3000",
   "Run the signal",
-  "Launch the brief",
   "Make the whole room point at one next move.",
 ];
 const requiredAnchors = [

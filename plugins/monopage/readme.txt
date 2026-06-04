@@ -4,7 +4,7 @@ Tags: site editor, one page, block theme, wp-cli
 Requires at least: 6.5
 Tested up to: 7.0
 Requires PHP: 7.4
-Stable tag: 0.2.47
+Stable tag: 0.2.49
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -38,11 +38,17 @@ wp monopage focus disable
 
 == Changelog ==
 
+= 0.2.49 =
+* Split the plugin into focused includes and refresh the README for creators.
+
+= 0.2.48 =
+* Remove the header brief button from the default Canvas template.
+
 = 0.2.47 =
 * Improve the saved Canvas template description and remove bundled Canvas patterns.
 
 = 0.2.46 =
-* Trim legacy plugin compatibility and hide the Site Editor view toggle container.
+* Trim the plugin surface and hide the Site Editor view toggle container.
 
 = 0.2.45 =
 * Simplify Focus Mode and add responsive review checks.
