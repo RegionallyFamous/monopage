@@ -204,7 +204,7 @@ npm run release:check
 
 `package:verify` checks the current version's built plugin and theme ZIPs for required files, correct version metadata, expected top-level folders, and forbidden bundled paths.
 
-`release:check` runs repository checks, doctor, a local template refresh plus runtime validation, a rendered-homepage smoke check, an authenticated admin smoke check, Plugin Check, package builds, package content verification, deploy plan safety validation, deploy dry-run, and the Playground URL generator. Use `npm run release:check:dry-run` to inspect the sequence. Use `node scripts/release-check.mjs --skip-local --skip-plugin-check` only when Docker/wp-env is unavailable, then run those skipped gates on a real WordPress runtime before release.
+`release:check` runs repository checks, doctor, local readiness, Plugin Check, package builds, package content verification, deploy plan safety validation, deploy dry-run, and the Playground URL generator. The local readiness step runs the same `local:ready` workflow used during day-to-day development. Use `npm run release:check:dry-run` to inspect the sequence. Use `node scripts/release-check.mjs --skip-local --skip-plugin-check` only when Docker/wp-env is unavailable, then run those skipped gates on a real WordPress runtime before release.
 
 ## Runtime Validation
 

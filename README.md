@@ -89,7 +89,7 @@ Run the full release gate before publishing or pushing a release-minded change:
 npm run release:check
 ```
 
-Use `npm run release:check:dry-run` to preview the sequence. The release gate refreshes the local saved `front-page` template before runtime validation, then smokes the rendered homepage so it tests the current bundled Canvas template and public route. In environments without Docker or wp-env, use `node scripts/release-check.mjs --skip-local --skip-plugin-check` and run those checks later on a WordPress runtime.
+Use `npm run release:check:dry-run` to preview the sequence. The release gate runs `local:ready` so local validation, homepage smoke, admin smoke, and status all use the same readiness path as day-to-day development. In environments without Docker or wp-env, use `node scripts/release-check.mjs --skip-local --skip-plugin-check` and run those checks later on a WordPress runtime.
 
 ## Plugin Check
 

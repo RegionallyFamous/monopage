@@ -20,18 +20,8 @@ const steps = [
     command: ["npm", "run", "doctor"],
   },
   {
-    label: "local Monopage template refresh and validation",
-    command: ["npm", "run", "local:refresh-template"],
-    skip: Boolean(options["skip-local"]),
-  },
-  {
-    label: "local homepage smoke",
-    command: ["npm", "run", "local:smoke"],
-    skip: Boolean(options["skip-local"]),
-  },
-  {
-    label: "local admin smoke",
-    command: ["npm", "run", "local:admin-smoke"],
+    label: "local readiness",
+    command: ["npm", "run", "local:ready"],
     skip: Boolean(options["skip-local"]),
   },
   {

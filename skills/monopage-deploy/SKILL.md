@@ -59,7 +59,7 @@ Before a release-minded commit or deploy from the Monopage repo, prefer:
 npm run release:check
 ```
 
-This runs repository checks, doctor, a local template refresh plus Monopage validation, a rendered-homepage smoke check, authenticated admin smoke check, Playground Blueprint validation, Plugin Check, package builds, package content verification, deploy plan safety validation, deploy dry-run, and Playground URL generation. Use `npm run release:check:dry-run` to inspect the sequence. If Docker/wp-env is unavailable, use `node scripts/release-check.mjs --skip-local --skip-plugin-check` and run the skipped checks later on a WordPress runtime.
+This runs repository checks, doctor, local readiness, Plugin Check, package builds, package content verification, deploy plan safety validation, deploy dry-run, and Playground URL generation. The local readiness step uses `npm run local:ready` so validation, homepage smoke, admin smoke, and status stay in one workflow. Use `npm run release:check:dry-run` to inspect the sequence. If Docker/wp-env is unavailable, use `node scripts/release-check.mjs --skip-local --skip-plugin-check` and run the skipped checks later on a WordPress runtime.
 
 When preparing a local demo or checking the full local runtime, use:
 
@@ -120,8 +120,8 @@ This verifies the dry-run deploy plan keeps package verification before WP-CLI c
 3. Back up before changing the site:
    - `wp --path=<target> db export monopage-backup-YYYYMMDD-HHMMSS.sql`
 4. Install and activate:
-   - `wp --path=<target> theme install build/monopage-canvas-0.2.25.zip --force --activate`
-   - `wp --path=<target> plugin install build/monopage-0.2.25.zip --force --activate`
+   - `wp --path=<target> theme install build/monopage-canvas-0.2.26.zip --force --activate`
+   - `wp --path=<target> plugin install build/monopage-0.2.26.zip --force --activate`
 5. Run setup:
    - `wp --path=<target> monopage setup`
    - Use `--force-home` only when the user explicitly wants Monopage to replace an existing static front page assignment.
