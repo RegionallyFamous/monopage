@@ -3,7 +3,7 @@
  * Plugin Name:       Monopage
  * Plugin URI:        https://github.com/RegionallyFamous/monopage
  * Description:       Monopage focuses WordPress around the Site Editor and a single homepage template.
- * Version:           0.2.44
+ * Version:           0.2.45
  * Requires at least: 6.5
  * Requires PHP:      7.4
  * Author:            WeirdPress
@@ -16,33 +16,27 @@
 
 defined( 'ABSPATH' ) || exit;
 
-define( 'MONOPAGE_VERSION', '0.2.44' );
+define( 'MONOPAGE_VERSION', '0.2.45' );
 define( 'MONOPAGE_FILE', __FILE__ );
 define( 'MONOPAGE_DIR', plugin_dir_path( __FILE__ ) );
 define( 'MONOPAGE_URL', plugin_dir_url( __FILE__ ) );
 define( 'MONOPAGE_FOCUS_OPTION', 'monopage_focus_enabled' );
 define( 'MONOPAGE_VERSION_OPTION', 'monopage_version' );
-define( 'MONOPAGE_FULL_DASHBOARD_META', 'monopage_full_dashboard' );
 define( 'MONOPAGE_CANVAS_THEME', 'monopage-canvas' );
 define( 'MONOPAGE_LEGACY_FOCUS_OPTION', 'wpop_focus_enabled' );
 define( 'MONOPAGE_LEGACY_VERSION_OPTION', 'wpop_version' );
-define( 'MONOPAGE_LEGACY_FULL_DASHBOARD_META', 'wpop_full_dashboard' );
 
 register_activation_hook( __FILE__, 'monopage_activate' );
 
-add_action( 'admin_menu', 'monopage_register_admin_menu', 5 );
 add_action( 'admin_menu', 'monopage_prune_admin_menu', 999 );
 add_action( 'admin_init', 'monopage_maybe_redirect_home_page_editor', 1 );
 add_action( 'admin_init', 'monopage_maybe_redirect_admin' );
 add_action( 'admin_enqueue_scripts', 'monopage_enqueue_admin_assets' );
-add_action( 'admin_notices', 'monopage_render_focus_notice' );
 add_action( 'admin_bar_menu', 'monopage_prune_admin_bar', 999 );
-add_action( 'admin_post_monopage_toggle_focus', 'monopage_handle_toggle_focus' );
-add_action( 'admin_post_monopage_toggle_full_dashboard', 'monopage_handle_toggle_full_dashboard' );
-add_action( 'admin_post_monopage_run_setup', 'monopage_handle_run_setup' );
 add_action( 'after_switch_theme', 'monopage_maybe_setup_canvas_defaults' );
 add_filter( 'admin_body_class', 'monopage_admin_body_class' );
 add_filter( 'login_redirect', 'monopage_login_redirect', 10, 3 );
+add_filter( 'show_admin_bar', 'monopage_maybe_hide_frontend_admin_bar' );
 
 /**
  * Register default plugin options.
@@ -74,30 +68,6 @@ function monopage_migrate_legacy_settings() {
 }
 
 /**
- * Register the Monopage control center.
- */
-function monopage_register_admin_menu() {
-	add_menu_page(
-		__( 'Monopage', 'monopage' ),
-		__( 'Monopage', 'monopage' ),
-		'edit_theme_options',
-		'monopage',
-		'monopage_render_admin_page',
-		'dashicons-welcome-widgets-menus',
-		3
-	);
-
-	add_submenu_page(
-		'monopage',
-		__( 'Edit Homepage', 'monopage' ),
-		__( 'Edit Homepage', 'monopage' ),
-		'edit_theme_options',
-		'monopage-edit-homepage',
-		'monopage_render_edit_homepage_redirect'
-	);
-}
-
-/**
  * Remove distracting admin menus when Focus Mode is active.
  *
  * This is interface cleanup only. WordPress capabilities still control access.
@@ -109,12 +79,6 @@ function monopage_prune_admin_menu() {
 
 	foreach ( monopage_get_hidden_menu_slugs() as $menu_slug ) {
 		remove_menu_page( $menu_slug );
-	}
-
-	if ( ! current_user_can( 'manage_options' ) ) {
-		remove_menu_page( 'plugins.php' );
-		remove_menu_page( 'users.php' );
-		remove_menu_page( 'options-general.php' );
 	}
 }
 
@@ -128,20 +92,23 @@ function monopage_prune_admin_bar( $wp_admin_bar ) {
 		return;
 	}
 
-	foreach ( array( 'comments', 'new-content', 'customize', 'themes', 'widgets', 'menus', 'edit' ) as $node_id ) {
+	foreach ( array( 'comments', 'new-content', 'customize', 'themes', 'widgets', 'menus', 'edit', 'wp-logo', 'site-name', 'view-site', 'updates', 'search' ) as $node_id ) {
 		$wp_admin_bar->remove_node( $node_id );
 	}
+}
 
-	$wp_admin_bar->add_node(
-		array(
-			'id'    => 'monopage-edit-homepage',
-			'title' => __( 'Edit Homepage', 'monopage' ),
-			'href'  => monopage_get_site_editor_url(),
-			'meta'  => array(
-				'class' => 'monopage-admin-bar-edit-homepage',
-			),
-		)
-	);
+/**
+ * Hide the public-site admin bar for focused editors.
+ *
+ * @param bool $show Whether the admin bar should show.
+ * @return bool
+ */
+function monopage_maybe_hide_frontend_admin_bar( $show ) {
+	if ( monopage_is_focus_active_for_current_user() ) {
+		return false;
+	}
+
+	return $show;
 }
 
 /**
@@ -163,18 +130,12 @@ function monopage_maybe_redirect_admin() {
 		return;
 	}
 
-	if ( 'admin.php' === $pagenow && 0 === strpos( monopage_get_query_key( 'page' ), 'monopage' ) ) {
-		return;
-	}
-
 	if ( in_array( $pagenow, monopage_get_allowed_focus_pages(), true ) ) {
 		return;
 	}
 
-	if ( 'admin.php' === $pagenow || in_array( $pagenow, monopage_get_redirected_admin_pages(), true ) ) {
-		wp_safe_redirect( monopage_get_site_editor_url() );
-		exit;
-	}
+	wp_safe_redirect( monopage_get_site_editor_url() );
+	exit;
 }
 
 /**
@@ -190,13 +151,7 @@ function monopage_login_redirect( $redirect_to, $requested_redirect_to, $user ) 
 		return $redirect_to;
 	}
 
-	$full_dashboard = get_user_meta( $user->ID, MONOPAGE_FULL_DASHBOARD_META, true );
-
-	if ( '' === $full_dashboard ) {
-		$full_dashboard = get_user_meta( $user->ID, MONOPAGE_LEGACY_FULL_DASHBOARD_META, true );
-	}
-
-	if ( monopage_get_focus_enabled() && ! $full_dashboard ) {
+	if ( monopage_get_focus_enabled() ) {
 		return monopage_get_site_editor_url();
 	}
 
@@ -209,7 +164,7 @@ function monopage_login_redirect( $redirect_to, $requested_redirect_to, $user ) 
  * @param string $hook_suffix Current admin page hook.
  */
 function monopage_enqueue_admin_assets( $hook_suffix ) {
-	if ( false === strpos( $hook_suffix, 'monopage' ) && ! monopage_is_focus_active_for_current_user() ) {
+	if ( ! monopage_is_focus_active_for_current_user() ) {
 		return;
 	}
 
@@ -291,18 +246,6 @@ function monopage_get_query_text( $key ) {
 }
 
 /**
- * Read a checkbox-style POST flag.
- *
- * @param string $key POST field name.
- * @return bool
- */
-function monopage_get_post_flag( $key ) {
-	$value = monopage_get_request_value( $_POST, $key ); // phpcs:ignore WordPress.Security.NonceVerification.Missing
-
-	return '1' === sanitize_text_field( $value );
-}
-
-/**
  * Get a scalar request value without assuming PHP's superglobal shape.
  *
  * @param array  $source Request source.
@@ -315,177 +258,6 @@ function monopage_get_request_value( $source, $key ) {
 	}
 
 	return wp_unslash( (string) $source[ $key ] );
-}
-
-/**
- * Render a small Focus Mode notice for admins.
- */
-function monopage_render_focus_notice() {
-	if ( ! monopage_is_focus_active_for_current_user() || ! current_user_can( 'manage_options' ) ) {
-		return;
-	}
-
-	$screen = function_exists( 'get_current_screen' ) ? get_current_screen() : null;
-	if ( $screen && false !== strpos( $screen->id, 'monopage' ) ) {
-		return;
-	}
-
-	?>
-	<div class="notice notice-info monopage-focus-notice">
-		<p>
-			<strong><?php esc_html_e( 'Monopage Focus Mode is active.', 'monopage' ); ?></strong>
-			<?php esc_html_e( 'WordPress is still here; Monopage is only narrowing the interface.', 'monopage' ); ?>
-			<a href="<?php echo esc_url( admin_url( 'admin.php?page=monopage' ) ); ?>"><?php esc_html_e( 'Open Monopage controls', 'monopage' ); ?></a>
-		</p>
-	</div>
-	<?php
-}
-
-/**
- * Render the Monopage control center.
- */
-function monopage_render_admin_page() {
-	if ( ! current_user_can( 'edit_theme_options' ) ) {
-		wp_die( esc_html__( 'You do not have permission to manage Monopage.', 'monopage' ) );
-	}
-
-	$status             = monopage_get_status();
-	$focus_enabled      = monopage_get_focus_enabled();
-	$full_dashboard     = monopage_current_user_has_full_dashboard();
-	$can_manage_options = current_user_can( 'manage_options' );
-	$setup_result       = monopage_get_query_key( 'monopage_setup' );
-	$focus_result       = monopage_get_query_key( 'monopage_focus' );
-	$dashboard_result   = monopage_get_query_key( 'monopage_dashboard' );
-	$setup_error        = get_transient( 'monopage_setup_error_' . get_current_user_id() );
-
-	if ( $setup_error ) {
-		delete_transient( 'monopage_setup_error_' . get_current_user_id() );
-	}
-
-	?>
-	<div class="wrap monopage-wrap">
-		<h1><?php esc_html_e( 'Monopage', 'monopage' ); ?></h1>
-		<p class="monopage-lede"><?php esc_html_e( 'Monopage keeps the authoring experience focused on the editable homepage template.', 'monopage' ); ?></p>
-
-		<?php if ( 'error' === $setup_result ) : ?>
-			<div class="notice notice-error inline"><p><?php echo esc_html( $setup_error ? $setup_error : __( 'Monopage setup failed.', 'monopage' ) ); ?></p></div>
-		<?php elseif ( $setup_result ) : ?>
-			<div class="notice notice-success inline"><p><?php esc_html_e( 'Monopage setup finished.', 'monopage' ); ?></p></div>
-		<?php endif; ?>
-
-		<?php if ( $focus_result ) : ?>
-			<div class="notice notice-success inline"><p><?php esc_html_e( 'Focus Mode setting updated.', 'monopage' ); ?></p></div>
-		<?php endif; ?>
-
-		<?php if ( $dashboard_result ) : ?>
-			<div class="notice notice-success inline"><p><?php esc_html_e( 'Dashboard preference updated.', 'monopage' ); ?></p></div>
-		<?php endif; ?>
-
-		<div class="monopage-grid">
-			<section class="monopage-panel">
-				<h2><?php esc_html_e( 'Homepage', 'monopage' ); ?></h2>
-				<dl class="monopage-status-list">
-					<div>
-						<dt><?php esc_html_e( 'Static front page', 'monopage' ); ?></dt>
-						<dd><?php echo esc_html( $status['home_title'] ? $status['home_title'] : __( 'Not set', 'monopage' ) ); ?></dd>
-					</div>
-					<div>
-						<dt><?php esc_html_e( 'Active theme', 'monopage' ); ?></dt>
-						<dd><?php echo esc_html( $status['active_theme'] ); ?></dd>
-					</div>
-					<div>
-						<dt><?php esc_html_e( 'Block theme', 'monopage' ); ?></dt>
-						<dd><?php echo esc_html( monopage_bool_label( $status['block_theme'] ) ); ?></dd>
-					</div>
-					<div>
-						<dt><?php esc_html_e( 'Editable template', 'monopage' ); ?></dt>
-						<dd><?php echo esc_html( $status['front_template_saved'] ? sprintf(
-							/* translators: %d: Saved front-page template post ID. */
-							__( 'Front Page #%d', 'monopage' ),
-							$status['front_template_id']
-						) : __( 'Theme file fallback', 'monopage' ) ); ?></dd>
-					</div>
-				</dl>
-				<p class="description"><?php esc_html_e( 'The visible homepage is edited in the Site Editor front-page template. The Home page is only the WordPress routing page.', 'monopage' ); ?></p>
-				<p class="monopage-actions">
-					<a class="button button-primary" href="<?php echo esc_url( monopage_get_site_editor_url() ); ?>"><?php esc_html_e( 'Edit Homepage', 'monopage' ); ?></a>
-					<a class="button" href="<?php echo esc_url( home_url( '/' ) ); ?>"><?php esc_html_e( 'View Site', 'monopage' ); ?></a>
-				</p>
-			</section>
-
-			<section class="monopage-panel">
-				<h2><?php esc_html_e( 'Setup', 'monopage' ); ?></h2>
-				<p><?php esc_html_e( 'Setup creates or reuses a Home page and points WordPress reading settings at it. Existing static homepages are preserved unless forced.', 'monopage' ); ?></p>
-				<?php if ( $can_manage_options ) : ?>
-					<form method="post" action="<?php echo esc_url( admin_url( 'admin-post.php' ) ); ?>">
-						<?php wp_nonce_field( 'monopage_run_setup' ); ?>
-						<input type="hidden" name="action" value="monopage_run_setup">
-						<label class="monopage-checkbox">
-							<input type="checkbox" name="force_home" value="1">
-							<?php esc_html_e( 'Replace the current static front page assignment', 'monopage' ); ?>
-						</label>
-						<label class="monopage-checkbox">
-							<input type="checkbox" name="force_template" value="1">
-							<?php esc_html_e( 'Refresh the editable front-page template from Monopage Canvas', 'monopage' ); ?>
-						</label>
-						<p class="description"><?php esc_html_e( 'Refreshing the template replaces saved Site Editor changes for the front-page template.', 'monopage' ); ?></p>
-						<p><button class="button" type="submit"><?php esc_html_e( 'Run Setup', 'monopage' ); ?></button></p>
-					</form>
-				<?php else : ?>
-					<p><?php esc_html_e( 'Ask an administrator to run Monopage setup.', 'monopage' ); ?></p>
-				<?php endif; ?>
-			</section>
-
-			<section class="monopage-panel">
-				<h2><?php esc_html_e( 'Focus Mode', 'monopage' ); ?></h2>
-				<dl class="monopage-status-list">
-					<div>
-						<dt><?php esc_html_e( 'Global focus', 'monopage' ); ?></dt>
-						<dd><?php echo esc_html( monopage_bool_label( $focus_enabled ) ); ?></dd>
-					</div>
-					<div>
-						<dt><?php esc_html_e( 'Your full dashboard escape', 'monopage' ); ?></dt>
-						<dd><?php echo esc_html( monopage_bool_label( $full_dashboard ) ); ?></dd>
-					</div>
-				</dl>
-
-				<?php if ( $can_manage_options ) : ?>
-					<form method="post" action="<?php echo esc_url( admin_url( 'admin-post.php' ) ); ?>">
-						<?php wp_nonce_field( 'monopage_toggle_focus' ); ?>
-						<input type="hidden" name="action" value="monopage_toggle_focus">
-						<input type="hidden" name="enabled" value="<?php echo esc_attr( $focus_enabled ? '0' : '1' ); ?>">
-						<p><button class="button" type="submit"><?php echo esc_html( $focus_enabled ? __( 'Disable Focus Mode', 'monopage' ) : __( 'Enable Focus Mode', 'monopage' ) ); ?></button></p>
-					</form>
-
-					<form method="post" action="<?php echo esc_url( admin_url( 'admin-post.php' ) ); ?>">
-						<?php wp_nonce_field( 'monopage_toggle_full_dashboard' ); ?>
-						<input type="hidden" name="action" value="monopage_toggle_full_dashboard">
-						<input type="hidden" name="enabled" value="<?php echo esc_attr( $full_dashboard ? '0' : '1' ); ?>">
-						<p><button class="button" type="submit"><?php echo esc_html( $full_dashboard ? __( 'Return To Focus Mode', 'monopage' ) : __( 'Use Full WordPress Dashboard', 'monopage' ) ); ?></button></p>
-					</form>
-				<?php endif; ?>
-			</section>
-
-			<section class="monopage-panel">
-				<h2><?php esc_html_e( 'WP-CLI', 'monopage' ); ?></h2>
-				<pre><code>wp monopage status
-wp monopage setup
-wp monopage setup --force-home
-wp monopage setup --force-template
-wp monopage focus enable
-wp monopage focus disable</code></pre>
-			</section>
-		</div>
-	</div>
-	<?php
-}
-
-/**
- * Redirect the submenu page directly to the Site Editor.
- */
-function monopage_render_edit_homepage_redirect() {
-	wp_safe_redirect( monopage_get_site_editor_url() );
-	exit;
 }
 
 /**
@@ -514,66 +286,6 @@ function monopage_maybe_redirect_home_page_editor() {
 	}
 
 	wp_safe_redirect( monopage_get_site_editor_url() );
-	exit;
-}
-
-/**
- * Handle Focus Mode global toggle.
- */
-function monopage_handle_toggle_focus() {
-	if ( ! current_user_can( 'manage_options' ) ) {
-		wp_die( esc_html__( 'You do not have permission to change Monopage settings.', 'monopage' ) );
-	}
-
-	check_admin_referer( 'monopage_toggle_focus' );
-
-	$enabled = monopage_get_post_flag( 'enabled' );
-	update_option( MONOPAGE_FOCUS_OPTION, $enabled ? '1' : '0' );
-
-	wp_safe_redirect( add_query_arg( 'monopage_focus', $enabled ? 'enabled' : 'disabled', admin_url( 'admin.php?page=monopage' ) ) );
-	exit;
-}
-
-/**
- * Handle per-admin full dashboard escape toggle.
- */
-function monopage_handle_toggle_full_dashboard() {
-	if ( ! current_user_can( 'manage_options' ) ) {
-		wp_die( esc_html__( 'You do not have permission to change Monopage settings.', 'monopage' ) );
-	}
-
-	check_admin_referer( 'monopage_toggle_full_dashboard' );
-
-	$enabled = monopage_get_post_flag( 'enabled' );
-	update_user_meta( get_current_user_id(), MONOPAGE_FULL_DASHBOARD_META, $enabled ? '1' : '0' );
-
-	wp_safe_redirect( add_query_arg( 'monopage_dashboard', $enabled ? 'full' : 'focus', admin_url( 'admin.php?page=monopage' ) ) );
-	exit;
-}
-
-/**
- * Handle setup from the Monopage admin page.
- */
-function monopage_handle_run_setup() {
-	if ( ! current_user_can( 'manage_options' ) ) {
-		wp_die( esc_html__( 'You do not have permission to run Monopage setup.', 'monopage' ) );
-	}
-
-	check_admin_referer( 'monopage_run_setup' );
-
-	$result = monopage_setup_one_pager(
-		array(
-			'force_home'     => monopage_get_post_flag( 'force_home' ),
-			'force_template' => monopage_get_post_flag( 'force_template' ),
-		)
-	);
-
-	if ( is_wp_error( $result ) ) {
-		set_transient( 'monopage_setup_error_' . get_current_user_id(), $result->get_error_message(), MINUTE_IN_SECONDS );
-	}
-
-	$query_args = array( 'monopage_setup' => is_wp_error( $result ) ? 'error' : 'done' );
-	wp_safe_redirect( add_query_arg( $query_args, admin_url( 'admin.php?page=monopage' ) ) );
 	exit;
 }
 
@@ -1430,37 +1142,12 @@ function monopage_get_focus_enabled() {
 }
 
 /**
- * Check whether the current admin has enabled the full-dashboard escape hatch.
- *
- * @return bool
- */
-function monopage_current_user_has_full_dashboard() {
-	$user_id = get_current_user_id();
-
-	if ( ! $user_id || ! current_user_can( 'manage_options' ) ) {
-		return false;
-	}
-
-	$value = get_user_meta( $user_id, MONOPAGE_FULL_DASHBOARD_META, true );
-
-	if ( '' === $value ) {
-		$value = get_user_meta( $user_id, MONOPAGE_LEGACY_FULL_DASHBOARD_META, true );
-	}
-
-	return (bool) $value;
-}
-
-/**
  * Check whether Focus Mode applies to the current request user.
  *
  * @return bool
  */
 function monopage_is_focus_active_for_current_user() {
 	if ( ! monopage_get_focus_enabled() ) {
-		return false;
-	}
-
-	if ( current_user_can( 'manage_options' ) && monopage_current_user_has_full_dashboard() ) {
 		return false;
 	}
 
@@ -1479,6 +1166,9 @@ function monopage_get_hidden_menu_slugs() {
 		'edit.php?post_type=page',
 		'edit-comments.php',
 		'themes.php',
+		'plugins.php',
+		'users.php',
+		'options-general.php',
 		'tools.php',
 	);
 }
@@ -1491,52 +1181,10 @@ function monopage_get_hidden_menu_slugs() {
 function monopage_get_allowed_focus_pages() {
 	return array(
 		'site-editor.php',
-		'upload.php',
-		'media-new.php',
 		'async-upload.php',
 		'admin-ajax.php',
 		'admin-post.php',
-		'plugins.php',
-		'plugin-install.php',
-		'users.php',
-		'user-new.php',
-		'profile.php',
-		'options-general.php',
-		'options-reading.php',
-		'options-permalink.php',
-		'update-core.php',
-		'update.php',
 	);
-}
-
-/**
- * Admin pages redirected to the Site Editor during Focus Mode.
- *
- * @return string[]
- */
-function monopage_get_redirected_admin_pages() {
-	return array(
-		'index.php',
-		'edit.php',
-		'post.php',
-		'post-new.php',
-		'edit-comments.php',
-		'themes.php',
-		'customize.php',
-		'widgets.php',
-		'nav-menus.php',
-		'tools.php',
-	);
-}
-
-/**
- * Human-readable boolean label.
- *
- * @param bool $value Boolean value.
- * @return string
- */
-function monopage_bool_label( $value ) {
-	return $value ? __( 'Yes', 'monopage' ) : __( 'No', 'monopage' );
 }
 
 if ( defined( 'WP_CLI' ) && WP_CLI ) {

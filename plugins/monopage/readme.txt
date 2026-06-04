@@ -4,7 +4,7 @@ Tags: site editor, one page, block theme, wp-cli
 Requires at least: 6.5
 Tested up to: 7.0
 Requires PHP: 7.4
-Stable tag: 0.2.44
+Stable tag: 0.2.45
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -18,10 +18,9 @@ V1 features:
 
 * Setup helper that creates or reuses a Home page and configures it as the static front page.
 * Launch-ready one-page marketing homepage saved as the editable front-page template when Monopage Canvas is active.
-* Focus Mode that hides distracting admin menus and redirects generic admin entrypoints to the Site Editor.
-* Site Editor focus defaults that open the canvas directly and keep the top toolbar enabled.
+* Focus Mode that opens generic admin entrypoints directly to the one-page Site Editor canvas.
+* Site Editor focus defaults that open the canvas directly, keep the top toolbar enabled, and keep Spotlight/Distraction Free modes off.
 * Bundled Monopage Canvas section patterns for offers, proof, pricing, FAQs, and closing CTAs.
-* Admin escape hatch for full WordPress dashboard access.
 * WP-CLI commands for status, setup, and Focus Mode toggles.
 * Designed to pair with the Monopage Canvas block theme.
 
@@ -39,6 +38,9 @@ wp monopage focus enable
 wp monopage focus disable
 
 == Changelog ==
+
+= 0.2.45 =
+* Simplify Focus Mode and add responsive review checks.
 
 = 0.2.44 =
 * Improve mobile Canvas responsiveness.

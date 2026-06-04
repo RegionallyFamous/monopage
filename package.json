@@ -1,6 +1,6 @@
 {
   "name": "monopage",
-  "version": "0.2.44",
+  "version": "0.2.45",
   "private": true,
   "description": "Monopage plugin, canvas theme, and Codex deployment skill.",
   "scripts": {
@@ -44,6 +44,8 @@
     "local:setup": "node scripts/local-setup.mjs",
     "local:refresh-template": "node scripts/local-setup.mjs --force-template",
     "local:smoke": "node scripts/homepage-smoke.mjs",
+    "local:responsive": "node scripts/responsive-smoke.mjs",
+    "local:responsive:dry-run": "node scripts/responsive-smoke.mjs --dry-run",
     "local:capture": "node scripts/capture-homepage.mjs",
     "local:capture:dry-run": "node scripts/capture-homepage.mjs --dry-run",
     "local:admin-smoke": "node scripts/admin-smoke.mjs",

@@ -19,6 +19,10 @@ const steps = [
     command: [npm, ...localReadyArgs],
   },
   {
+    label: "responsive smoke",
+    command: [npm, "run", "local:responsive"],
+  },
+  {
     label: "Playground URL",
     command: [npm, "run", "playground:url"],
   },
@@ -33,6 +37,7 @@ if (!dryRun) {
   console.log("Visual review is ready:");
   console.log("- Desktop screenshot: build/screenshots/monopage-home-desktop.png");
   console.log("- Mobile screenshot: build/screenshots/monopage-home-mobile.png");
+  console.log("- Responsive smoke: passed");
 }
 
 function runStep(step) {

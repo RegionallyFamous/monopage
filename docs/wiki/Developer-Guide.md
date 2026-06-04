@@ -2,11 +2,17 @@
 
 Monopage is a WordPress plugin, block theme, and Codex deployment skill for building one-page marketing sites with the Site Editor.
 
-It does not fork WordPress. It narrows the experience around a single editable homepage template, keeps the real WordPress admin available through an escape hatch, and uses WP-CLI for deployment.
+It does not fork WordPress. It narrows the experience around a single editable homepage template and uses WP-CLI for setup, validation, deployment, and Focus Mode changes.
+
+## Documentation Model
+
+The README is the command-first technical reference for installing, developing, checking, releasing, deploying, using Plugin Check, opening Playground, and installing the Codex skill.
+
+The wiki carries the broader material: product intent, one-page rules, architecture, theme principles, Canvas patterns, contribution workflow, and developer background. When practical commands need to appear in both places, keep the README concise and put the reasoning and edge cases here.
 
 ## Architecture
 
-- `plugins/monopage/monopage.php` owns setup, Focus Mode, admin redirects, the Monopage settings page, and WP-CLI commands.
+- `plugins/monopage/monopage.php` owns setup, Focus Mode, admin redirects, the hidden public admin bar, and WP-CLI commands. It intentionally does not add a Monopage dashboard menu or settings page.
 - `themes/monopage-canvas/` owns the default block theme, `theme.json`, `templates/front-page.html`, and bundled section patterns.
 - `skills/monopage-deploy/` teaches Codex agents how to package, deploy, customize, and validate Monopage sites.
 - `playground/blueprint.json` installs the plugin and theme into WordPress Playground and refreshes the default Canvas template for the demo.
@@ -24,6 +30,25 @@ Do not edit the routing Home page as if it were the visible page. The visible ho
 Setup preserves an existing static front page unless `--force-home` is explicitly passed.
 
 Template refresh preserves saved Site Editor edits unless `--force-template` is explicitly passed.
+
+## Product Principles
+
+<p>
+  <img src="../assets/monopage-riso-editor-focus.jpg" alt="Riso-style focused editor canvas with modular blocks and a top toolbar" width="49%">
+  <img src="../assets/monopage-riso-anchor-navigation.jpg" alt="Riso-style one-page layout with anchor navigation moving between sections" width="49%">
+</p>
+
+Monopage is meant to feel like one sharp campaign page, not a trimmed-down multi-page site. A visitor should move through sections on the same page; an editor should land on the actual Site Editor canvas; and a deploy should keep WordPress recognizable, reversible, and inspectable.
+
+Working principles:
+
+- One page means one page. Header navigation, footer navigation, and starter CTAs move to anchors on the same page.
+- The Site Editor `front-page` template is the visible homepage. The WordPress `Home` page is only the routing page.
+- Focus Mode simplifies the authoring path, but WordPress capabilities remain the security boundary.
+- Use core blocks first: Group, Columns, Navigation, Buttons, Details, Table, Quote, Separator, Spacer, Site Title, Heading, Paragraph, and List.
+- Prefer `theme.json` and block settings for global typography, colors, spacing, button defaults, Navigation styling, and Site Title styling.
+- Use bundled Monopage Canvas patterns when adding common sections so new content inherits the same one-page structure.
+- Use custom CSS only where it earns its keep: hero imagery, sticky header behavior, mobile safety, scroll margins, pseudo-elements, and editorial treatments core blocks cannot express cleanly.
 
 ## One-Page Navigation
 
@@ -61,11 +86,11 @@ Monopage Canvas ships insertable section patterns in `themes/monopage-canvas/pat
 
 Current patterns:
 
-- `monopage-canvas/offer-lab`
-- `monopage-canvas/proof-strip`
-- `monopage-canvas/pricing-deck`
-- `monopage-canvas/question-stack`
-- `monopage-canvas/final-push`
+- `Offer Lab` (`monopage-canvas/offer-lab`): three-card offer packaging.
+- `Proof Strip` (`monopage-canvas/proof-strip`): dark results/metrics band.
+- `Pricing Deck` (`monopage-canvas/pricing-deck`): three-plan pricing section.
+- `Question Stack` (`monopage-canvas/question-stack`): compact FAQ section.
+- `Final Push` (`monopage-canvas/final-push`): closing call-to-action band.
 
 Pattern rules:
 
@@ -74,6 +99,8 @@ Pattern rules:
 - Keep CTAs on-page with `#anchor` links.
 - Give new full-section patterns a stable, unique anchor.
 - Run `npm run check:links` and `npm run check:canvas` after pattern changes.
+
+Patterns should be useful campaign sections, not decorative filler. They should give editors a complete section they can insert, retitle, and tune without leaving the one-page model.
 
 ## Block-First Theme Work
 
@@ -126,6 +153,8 @@ Avoid:
 - fake UI labels
 - official WordPress logos unless sourced and used accurately
 
+Keep the default visual language cool and campaign-grade: Riso texture, sharp hierarchy, ink, white, electric blue, teal, coral, lime, and a little "Mad Men in the year 3000" energy.
+
 ## Local Development
 
 ```bash
@@ -147,9 +176,10 @@ For visual or layout changes, capture the rendered homepage after the template r
 npm run local:review
 npm run local:ready -- --capture
 npm run local:capture
+npm run local:responsive
 ```
 
-`local:review` refreshes the local template, runs homepage and admin smoke checks, captures desktop and mobile screenshots, prints the Playground URL, and leaves screenshots in `build/screenshots/`.
+`local:review` refreshes the local template, runs homepage and admin smoke checks, captures desktop and mobile screenshots, runs the responsive smoke check, prints the Playground URL, and leaves screenshots in `build/screenshots/`.
 
 `local:capture` is the narrower screenshot-only command. It uses a local Chrome or Chromium install. Set `MONOPAGE_CHROME=/path/to/browser` when the browser is installed outside the usual locations.
 
@@ -160,6 +190,38 @@ http://localhost:8888
 ```
 
 If Docker is not running, `wp-env` and Plugin Check cannot run. `npm run doctor` reports this.
+
+## Contribution Workflow
+
+Use the current diff to choose checks instead of running the heaviest workflow every time:
+
+```bash
+npm run status
+npm run check:changed
+npm run check:changed:run
+```
+
+For documentation-only edits, run:
+
+```bash
+npm run check:docs
+```
+
+For Canvas template, pattern, or theme work, keep the one-page link and block-first rules in view, then run the matching checks:
+
+```bash
+npm run check:links
+npm run check:canvas
+npm run local:review
+```
+
+For release-minded changes, do not rely on the fast CI gate alone. Use the release gate when Docker, wp-env, and a local WordPress runtime are available:
+
+```bash
+npm run release:check
+```
+
+If Docker or wp-env is unavailable, document what was skipped and run the skipped local readiness and Plugin Check steps later on a WordPress runtime.
 
 ## Validation Gates
 
@@ -201,18 +263,22 @@ npm run status
 npm run preflight:dry-run
 npm run check:changed
 npm run check:js
+npm run check:canvas
 npm run check:docs
 npm run check:hygiene
+npm run check:links
 npm run check:scripts
 npm run local:review:dry-run
 npm run local:ready -- --dry-run
 npm run local:capture:dry-run
+npm run local:responsive:dry-run
 npm run local:validate
 npm run local:admin-smoke
 npm run local:smoke
 npm run check:deploy
 npm run check:playground
 npm run check:skill
+npm run check:versions
 npm run package:verify
 npm run plugin:check
 npm run plugin:check:runtime
@@ -232,13 +298,15 @@ npm run release:check
 
 `check:changed` inspects changed files and recommends the focused checks that match them, such as `check:links` for template edits, `local:review` for visual Canvas edits, or Plugin Check for plugin PHP edits. Actual diffs skip visual and runtime checks for version-only plugin/theme metadata changes; `--files` previews stay conservative. Use `npm run check:changed:run` to execute the recommendations.
 
-`local:review` is the preferred shortcut after visual Canvas changes. It runs local readiness with screenshots and then prints the Playground URL so local review and public-demo review stay paired.
+`local:review` is the preferred shortcut after visual Canvas changes. It runs local readiness with screenshots, checks desktop/tablet/mobile responsive safety, and then prints the Playground URL so local review and public-demo review stay paired.
 
 `local:capture` saves desktop and mobile homepage screenshots after local setup so hero, header, first-viewport, and mobile overflow changes can be reviewed without hand-building browser commands.
 
+`local:responsive` opens the local homepage in Chrome at desktop, tablet, and mobile sizes. It fails on horizontal page overflow, clipped hero buttons, hidden mobile navigation, or cropped logo-strip pills.
+
 `check:js` discovers JavaScript files in `plugins/`, `themes/`, and `scripts/`, then runs `node --check` on each file. Add new helper scripts normally; the syntax gate picks them up without editing `package.json`.
 
-`local:admin-smoke` logs in to the local wp-env admin and checks Focus Mode admin redirect behavior, generic Site Editor canvas redirection, Media Library reachability, Monopage controls, routing Home page editor redirection, and the full-dashboard escape. It restores Focus Mode and user escape state after the check.
+`local:admin-smoke` logs in to the local wp-env admin and checks Focus Mode admin redirect behavior, generic Site Editor canvas redirection, direct Media Library redirection, legacy Monopage admin URL removal, and routing Home page editor redirection. It restores the global Focus Mode option after the check.
 
 `check:playground` checks that the public Blueprint installs the expected GitHub theme/plugin directories, refreshes the Canvas front-page template, lands in the Site Editor canvas, and that `playground:url` keeps the outer Playground toolbar hidden with seamless mode.
 

@@ -2,27 +2,33 @@
 
 ![Riso-style illustration of a continuous Monopage campaign page with modular blocks and anchor navigation](docs/assets/monopage-riso-hero.jpg)
 
-Monopage turns WordPress into a focused one-page site studio. It keeps WordPress core intact, activates a block theme, creates a routing Home page, and sends the authoring experience straight to the editable Site Editor `front-page` template.
+Monopage turns WordPress into a focused one-page site studio. It keeps WordPress core intact, activates a block theme, creates a routing Home page, and sends authoring straight to the editable Site Editor `front-page` template.
 
-The vibe is simple: one page, all signal. A launch room for products, studios, services, events, experiments, and anything else that should move a visitor down the same page instead of sending them wandering.
+This README is the practical command reference. The deeper product model, architecture, theme rules, and contributor guidance live in the [developer wiki](docs/wiki/Developer-Guide.md).
 
-## What It Includes
+## What Ships
 
-- `plugins/monopage/`: Focus Mode, setup flow, admin controls, and WP-CLI commands.
-- `themes/monopage-canvas/`: A block-first one-page Canvas theme with a polished default `front-page.html` and insertable section patterns.
-- `skills/monopage-deploy/`: A Codex skill for packaging, deploying, validating, and customizing Monopage sites.
+- `plugins/monopage/`: setup flow, Focus Mode, admin redirects, hidden public admin bar, and WP-CLI commands without a dashboard settings menu.
+- `themes/monopage-canvas/`: The block-first one-page Canvas theme, default `front-page.html`, and insertable section patterns.
 - `scripts/`: Validation, packaging, local setup, Plugin Check, Playground URL, and deploy helpers.
-- `docs/wiki/`: Developer documentation intended to mirror a GitHub wiki.
+- `skills/monopage-deploy/`: The Codex skill for packaging, deploying, validating, and customizing Monopage sites.
+- `docs/wiki/`: Repo-backed source for the GitHub wiki.
 
-## Try It
+## Playground
 
 Open Monopage in WordPress Playground without the outer Playground toolbar:
 
 https://playground.wordpress.net/?mode=seamless&blueprint-url=https%3A%2F%2Fraw.githubusercontent.com%2FRegionallyFamous%2Fmonopage%2Fmain%2Fplayground%2Fblueprint.json
 
-The Blueprint installs Monopage Canvas, activates the Monopage plugin, logs in as `admin`, runs setup, and lands in the Site Editor canvas.
+Generate the current Playground URL:
 
-## Quick Start
+```bash
+npm run playground:url
+```
+
+The Blueprint installs Monopage Canvas, activates the Monopage plugin, logs in as `admin`, runs setup with a template refresh, and lands in the Site Editor canvas.
+
+## Install And Local Development
 
 ```bash
 npm install
@@ -35,36 +41,57 @@ Local WordPress runs at:
 http://localhost:8888
 ```
 
-After changing the bundled Canvas template, refresh the saved local Site Editor template before judging the runtime:
+`local:ready` starts wp-env, refreshes the saved front-page template from the bundled Canvas template, validates Monopage, smokes the rendered homepage, smokes authenticated Focus Mode admin behavior, prints status, and returns the home/admin/Site Editor URLs.
+
+Use these when you need a narrower local workflow:
 
 ```bash
+npm run local:start
 npm run local:refresh-template
+npm run local:ready -- --preserve-template
+npm run local:smoke
+npm run local:admin-smoke
+npm run local:validate
 ```
 
-`local:ready` runs that refresh, validates Monopage, checks the rendered homepage, checks authenticated Focus Mode admin behavior, prints status, and then gives you the home/admin/Site Editor URLs. Use `npm run local:ready -- --preserve-template` when you want to keep existing saved Site Editor edits during the setup step.
-
-When judging layout or visual changes, capture the local homepage at desktop and mobile sizes:
+For visual or responsive review:
 
 ```bash
 npm run local:review
 npm run local:ready -- --capture
 npm run local:capture
+npm run local:responsive
 ```
 
-`local:review` refreshes the local template, runs the homepage/admin smoke checks, captures desktop and mobile screenshots, and prints the Playground URL. Screenshots are written to `build/screenshots/`.
+Useful local dry runs:
 
-## Development Checks
+```bash
+npm run local:review:dry-run
+npm run local:ready -- --dry-run
+npm run local:capture:dry-run
+npm run local:responsive:dry-run
+```
 
-Run the full validation suite before packaging or deploying:
+Screenshots are written to `build/screenshots/`. Set `MONOPAGE_CHROME=/path/to/browser` if Chrome or Chromium is installed somewhere unusual.
+
+## Checks
+
+Run the full repository test suite:
 
 ```bash
 npm test
 ```
 
-Run the Docker-free CI gate locally before a normal push:
+Run the Docker-free local gate before a normal push:
 
 ```bash
 npm run preflight
+```
+
+Run the release gate before publishing or release-minded deploys:
+
+```bash
+npm run release:check
 ```
 
 Useful focused checks:
@@ -73,9 +100,10 @@ Useful focused checks:
 npm run doctor
 npm run status
 npm run preflight:dry-run
+npm run check:changed
+npm run check:changed:run
 npm run check:js
 npm run check:canvas
-npm run check:changed
 npm run check:deploy
 npm run check:docs
 npm run check:hygiene
@@ -84,57 +112,36 @@ npm run check:scripts
 npm run check:playground
 npm run check:skill
 npm run check:versions
-npm run local:review:dry-run
-npm run local:ready -- --dry-run
-npm run local:capture:dry-run
-npm run local:admin-smoke
-npm run local:smoke
 npm run package:verify
 ```
 
-`check:canvas` confirms the Canvas stylesheet is wired for both the Site Editor and the public front end, that CSS asset references are packaged and reasonably sized, and that bundled pattern metadata is valid.
+`check:changed` recommends checks for the current diff. `check:docs` verifies documented `npm run ...`, `npm test`, and `node scripts/*.mjs` commands in the README, wiki, and Codex skill.
 
-`status` prints the Monopage version, branch, latest commit, working-tree summary, focused check recommendations, current package artifact status and freshness, Codex skill install state, local URLs, and the Playground URL.
+`preflight` runs `status` and the Docker-free `ci` gate. GitHub Actions runs `ci` on pushes and pull requests, builds the plugin/theme ZIPs, verifies package contents, and stores the ZIPs as workflow artifacts.
 
-`preflight` runs `status` and then the Docker-free `ci` gate. Use it before a normal commit or push; use `release:check` when runtime validation and Plugin Check matter.
+## Release And Packaging
 
-`check:changed` inspects the current working tree and recommends focused checks for the files that changed. Actual diffs skip visual and runtime checks for version-only plugin/theme metadata changes; `--files` previews stay conservative. Use `npm run check:changed:run` to run the recommended list.
-
-`check:js` discovers JavaScript files in `plugins/`, `themes/`, and `scripts/`, then runs `node --check` on each one so new helpers are covered automatically.
-
-`check:deploy` confirms the dry-run deployment plan packages and verifies before WP-CLI changes, backs up before installs, installs the theme before the plugin, validates before status, and keeps force/HTTP flags opt-in by default.
-
-`check:docs` confirms documented `npm run ...`, `npm test`, and `node scripts/*.mjs` commands in the README, developer wiki, and Codex skill still point to real package scripts and helper files.
-
-`check:hygiene` confirms ignored and export-ignored release debris stays out of tracked source and GitHub source archives, including package ZIPs, SQL backups, env files, debug logs, local wp-env data, and dependency folders.
-
-`check:links` confirms the default front-page template and bundled patterns only use on-page links and that every `#anchor` target exists.
-
-`check:scripts` confirms package scripts reference real package scripts and helper files.
-
-`check:playground` confirms the Blueprint installs Monopage Canvas and the Monopage plugin from the expected repo paths, runs setup with template refresh, and that the generated Playground URL stays in seamless mode.
-
-`check:skill` confirms the bundled Codex skill still carries the required one-page, block-first, deployment safety, validation, image-generation, and Focus Mode guidance.
-
-`local:review` is the design-review shortcut. It runs `local:ready -- --capture`, then prints the Playground URL so local screenshots and the public demo path are checked together.
-
-`local:smoke` checks the rendered local homepage, required starter copy, same-page body links, section anchors, and the served Canvas image assets. Run it after `local:setup` or `local:refresh-template`.
-
-`local:capture` uses a local Chrome or Chromium install to save desktop and mobile homepage screenshots into `build/screenshots/`. Set `MONOPAGE_CHROME=/path/to/browser` if Chrome is installed somewhere unusual.
-
-`local:admin-smoke` logs in to the local wp-env admin and checks Focus Mode redirects, the Site Editor canvas target, Media Library reachability, Monopage controls, the routing Home page editor redirect, and the full-dashboard escape.
-
-`package:verify` checks the current version's built plugin and theme ZIPs for required files, correct version metadata, expected top-level folders, and forbidden bundled paths such as env files, backups, archives, build output, dependency folders, and local metadata.
-
-`ci` runs the repository checks, builds the plugin and theme ZIPs, then verifies the package contents. `preflight` wraps it with the project dashboard. GitHub Actions runs `ci` on pushes and pull requests, and stores the generated ZIPs as workflow artifacts. It does not run `wp-env` or Plugin Check; use the release gate for runtime validation.
-
-Run the full release gate before publishing or pushing a release-minded change:
+Update release metadata:
 
 ```bash
-npm run release:check
+npm run version:set -- <next-version> --changelog="Short release note"
 ```
 
-Use `npm run release:check:dry-run` to preview the sequence. The release gate runs `local:ready` so local validation, homepage smoke, admin smoke, and status all use the same readiness path as day-to-day development. In environments without Docker or wp-env, use `node scripts/release-check.mjs --skip-local --skip-plugin-check` and run those checks later on a WordPress runtime.
+Build and verify the plugin/theme ZIPs:
+
+```bash
+npm run package
+npm run package:verify
+```
+
+Preview or adapt the release gate:
+
+```bash
+npm run release:check:dry-run
+node scripts/release-check.mjs --skip-local --skip-plugin-check
+```
+
+Use the skipped release-check path only when Docker or wp-env is unavailable, then run the local/runtime checks later on a WordPress runtime.
 
 ## Plugin Check
 
@@ -144,6 +151,7 @@ With Docker running:
 npm run local:start
 npm run plugin:check
 npm run plugin:check:runtime
+npm run plugin:check:dry-run
 ```
 
 Against another WP-CLI target:
@@ -160,29 +168,15 @@ Validate a configured Monopage install through WP-CLI:
 
 ```bash
 wp monopage validate --require-focus
+wp monopage validate --require-focus --format=json
 wp monopage validate --require-focus --check-http
 ```
 
-`validate` checks the static front-page assignment, routing Home page, active block theme, saved `front-page` template, template anchor links, registered Canvas patterns, bundled pattern anchor links, Focus Mode, and generated home/editor URLs.
-
-Use `--check-http` only when `home_url()` is reachable from the WP-CLI runtime. For local `wp-env`, use `npm run local:validate` without the HTTP check.
-
-## Packaging
-
-Update release metadata with one command:
+Use `--check-http` only when `home_url()` is reachable from the WP-CLI runtime. For local `wp-env`, use:
 
 ```bash
-npm run version:set -- <next-version> --changelog="Short release note"
+npm run local:validate
 ```
-
-Build the plugin and theme ZIPs:
-
-```bash
-npm run package
-npm run package:verify
-```
-
-Artifacts are written into `build/`.
 
 ## Deploy
 
@@ -206,49 +200,17 @@ Use `--force-home` only when Monopage should replace an existing static front pa
 
 Use `--force-template` only when Monopage should replace saved Site Editor edits to the `front-page` template with the current Canvas default.
 
-Add `--check-http` to the deploy script when the target environment can serve the homepage back to WP-CLI during validation.
+Add `--check-http` only when the target environment can serve the homepage back to WP-CLI during validation.
 
 ## Install The Codex Skill
 
 ```bash
 npm run skill:install
-```
-
-Preview the install without changing your Codex skill folder:
-
-```bash
 npm run skill:install:dry-run
 ```
 
-The skill bakes in the Monopage rules: same-page navigation, block-first theme work, WP-CLI deploys, backups before changes, Plugin Check, and Canvas validation.
+The skill bakes in the Monopage rules for same-page navigation, block-first theme work, WP-CLI deploys, backups, Plugin Check, and Canvas validation.
 
-## Design Principles
+## Wiki
 
-<p>
-  <img src="docs/assets/monopage-riso-editor-focus.jpg" alt="Riso-style focused editor canvas with modular blocks and a top toolbar" width="49%">
-  <img src="docs/assets/monopage-riso-anchor-navigation.jpg" alt="Riso-style one-page layout with anchor navigation moving between sections" width="49%">
-</p>
-
-- One page means one page. Header navigation, footer navigation, and starter CTAs move to anchors on the same page.
-- The Site Editor `front-page` template is the visible homepage. The WordPress `Home` page is only the routing page.
-- Use core blocks first: Group, Columns, Navigation, Buttons, Details, Table, Quote, Separator, Spacer, Site Title, Heading, Paragraph, and List.
-- Prefer `theme.json` and block settings for global typography, colors, spacing, button defaults, Navigation styling, and Site Title styling.
-- Use bundled Monopage Canvas patterns when adding common sections so new content inherits the same one-page structure.
-- Use custom CSS only where it earns its keep: hero imagery, sticky header behavior, mobile safety, scroll margins, pseudo-elements, and editorial treatments core blocks cannot express cleanly.
-- Keep the default visual language cool and campaign-grade: Riso texture, sharp hierarchy, ink, white, electric blue, teal, coral, lime, and a little "Mad Men in the year 3000" energy.
-
-## Canvas Patterns
-
-Monopage Canvas ships a focused pattern set under the `Monopage Canvas` pattern category:
-
-- `Offer Lab`: three-card offer packaging.
-- `Proof Strip`: dark results/metrics band.
-- `Pricing Deck`: three-plan pricing section.
-- `Question Stack`: compact FAQ section.
-- `Final Push`: closing call-to-action band.
-
-Each pattern is built from core blocks, uses project-local Canvas classes, and keeps calls to action on the same page.
-
-## Developer Wiki
-
-Start with [docs/wiki/Developer-Guide.md](docs/wiki/Developer-Guide.md).
+Start with [docs/wiki/Home.md](docs/wiki/Home.md) and [docs/wiki/Developer-Guide.md](docs/wiki/Developer-Guide.md) for architecture, design principles, Canvas patterns, contribution workflow, and long-form developer guidance.

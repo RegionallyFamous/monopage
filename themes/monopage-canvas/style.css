@@ -3,7 +3,7 @@ Theme Name: Monopage Canvas
 Theme URI: https://github.com/RegionallyFamous/monopage
 Author: WeirdPress
 Description: A block theme for focused Monopage one-page sites.
-Version: 0.2.44
+Version: 0.2.45
 Requires at least: 6.5
 Requires PHP: 7.4
 License: GPL-2.0-or-later
@@ -150,6 +150,7 @@ body {
 	background: rgba(255, 255, 255, 0.72);
 	border: 1px solid rgba(17, 19, 24, 0.14);
 	border-radius: 999px;
+	box-sizing: border-box;
 	color: var(--wp--preset--color--ink);
 	font-weight: 750;
 	margin: 0;
@@ -610,6 +611,7 @@ body {
 		display: grid !important;
 		grid-template-columns: minmax(0, 1fr);
 		row-gap: 0.75rem;
+		width: 100% !important;
 	}
 
 	.monopage-site-header > .wp-block-group > .wp-block-group {
@@ -619,6 +621,8 @@ body {
 	}
 
 	.monopage-site-header .wp-block-navigation {
+		margin-left: 0 !important;
+		margin-right: 0 !important;
 		max-width: 100%;
 		overflow-x: auto;
 		padding-bottom: 0.1rem;
@@ -628,6 +632,7 @@ body {
 	.monopage-site-header .wp-block-navigation__container {
 		flex-wrap: nowrap !important;
 		gap: 0.5rem !important;
+		justify-content: flex-start !important;
 		width: max-content;
 	}
 
@@ -648,8 +653,8 @@ body {
 		background-position: 58% center;
 		box-sizing: border-box;
 		min-height: auto;
-		padding-bottom: 2.4rem;
-		padding-top: 2.6rem;
+		padding-bottom: 2.15rem;
+		padding-top: 2.25rem;
 	}
 
 	.monopage-hero-copy {
@@ -658,13 +663,19 @@ body {
 		max-width: min(100%, 340px);
 	}
 
+	.monopage-hero-copy > * + * {
+		margin-block-start: 1rem !important;
+	}
+
 	.monopage-hero h1 {
-		font-size: 2.2rem !important;
+		font-size: 2.1rem !important;
 		max-width: 11ch !important;
 		overflow-wrap: break-word;
 	}
 
 	.monopage-hero-copy > p:not(.monopage-kicker) {
+		font-size: 1rem !important;
+		line-height: 1.45 !important;
 		max-width: 31ch !important;
 	}
 
@@ -744,6 +755,18 @@ body {
 
 	.monopage-site-header .wp-block-navigation {
 		font-size: 0.86rem;
+		overflow-x: visible;
+	}
+
+	.monopage-site-header .wp-block-navigation__container {
+		flex-wrap: wrap !important;
+		gap: 0.35rem !important;
+		width: 100%;
+	}
+
+	.monopage-site-header .wp-block-navigation-item__content {
+		font-size: 0.78rem;
+		padding: 0.32rem 0.5rem;
 	}
 
 	.monopage-kicker {
@@ -761,9 +784,16 @@ body {
 		width: 100%;
 	}
 
+	.monopage-hero .wp-block-button__link {
+		font-size: 0.95rem;
+		font-weight: 800;
+		padding-bottom: 0.68rem;
+		padding-top: 0.68rem;
+	}
+
 	.monopage-mini-value {
-		font-size: 0.68rem;
-		padding: 0.48rem 0.4rem;
+		font-size: 0.64rem;
+		padding: 0.42rem 0.32rem;
 	}
 
 	.monopage-logo-strip {
@@ -782,10 +812,11 @@ body {
 	}
 
 	.monopage-logo-pill {
+		font-size: 0.82rem;
 		justify-self: stretch;
 		max-width: 100%;
 		min-width: 0;
-		padding: 0.38rem 0.6rem;
+		padding: 0.36rem 0.48rem;
 		width: 100% !important;
 	}
 

@@ -7,6 +7,8 @@
 
 	var disabledNavigationToggles = new WeakSet();
 	var updateScheduled = false;
+	var editorPreferenceScopes = ["core", "core/edit-site", "core/edit-post"];
+	var disabledEditorModes = ["distractionFree", "focusMode", "spotlightMode"];
 	var navigationToggleSelectors = [
 		".edit-site-layout__view-mode-toggle",
 		".edit-site-layout__view-mode-toggle-button",
@@ -32,36 +34,53 @@
 		return true;
 	}
 
-	function forceTopToolbar() {
-		if (setPreference("core", "fixedToolbar", true)) {
-			setPreference("core", "distractionFree", false);
-			return;
-		}
+	function setEditorPreference(key, value) {
+		var changed = false;
+
+		editorPreferenceScopes.forEach(function (scope) {
+			changed = setPreference(scope, key, value) || changed;
+		});
+
+		return changed;
+	}
+
+	function forceEditorPreferences() {
+		setEditorPreference("fixedToolbar", true);
+		disabledEditorModes.forEach(function (mode) {
+			setEditorPreference(mode, false);
+		});
 
 		["core/edit-site", "core/edit-post"].forEach(function (storeName) {
 			var store = wp.data.select(storeName);
 			var dispatch = wp.data.dispatch(storeName);
 
-			if (
-				store &&
-				dispatch &&
-				store.isFeatureActive &&
-				dispatch.toggleFeature &&
-				!store.isFeatureActive("fixedToolbar")
-			) {
-				dispatch.toggleFeature("fixedToolbar");
-			}
+			setFeatureActive(store, dispatch, "fixedToolbar", true);
 
-			if (
-				store &&
-				dispatch &&
-				store.isFeatureActive &&
-				dispatch.toggleFeature &&
-				store.isFeatureActive("distractionFree")
-			) {
-				dispatch.toggleFeature("distractionFree");
-			}
+			disabledEditorModes.forEach(function (mode) {
+				setFeatureActive(store, dispatch, mode, false);
+			});
 		});
+	}
+
+	function setFeatureActive(store, dispatch, feature, active) {
+		var current;
+
+		if (
+			!store ||
+			!dispatch ||
+			!store.isFeatureActive ||
+			!dispatch.toggleFeature
+		) {
+			return;
+		}
+
+		current = store.isFeatureActive(feature);
+
+		if ("boolean" !== typeof current || current === active) {
+			return;
+		}
+
+		dispatch.toggleFeature(feature);
 	}
 
 	function blockNavigationToggle(event) {
@@ -105,7 +124,7 @@
 	}
 
 	function refreshEditorChrome() {
-		forceTopToolbar();
+		forceEditorPreferences();
 		disableSiteEditorNavigationToggle();
 	}
 

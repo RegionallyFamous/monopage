@@ -10,30 +10,31 @@ const dryRun = Boolean(options["dry-run"]);
 const baseUrl = normalizeBaseUrl(options.url || process.env.MONOPAGE_SMOKE_URL || "http://localhost:8888");
 const username = options.user || process.env.MONOPAGE_SMOKE_USER || "admin";
 const password = options.password || process.env.MONOPAGE_SMOKE_PASSWORD || "password";
-const userId = options["user-id"] || process.env.MONOPAGE_SMOKE_USER_ID || "1";
 const wpEnv = resolveWpEnv();
 const cookies = new Map();
 const failures = [];
 
 if (dryRun) {
   console.log(`[dry-run] Log in to ${baseUrl}/wp-login.php as ${username}.`);
-  console.log("[dry-run] Enable Focus Mode and clear the full-dashboard escape for the smoke user.");
+  console.log("[dry-run] Enable Focus Mode for the smoke user.");
+  console.log("[dry-run] Confirm the logged-in public homepage does not show the WordPress admin bar.");
   console.log("[dry-run] Confirm /wp-admin/ redirects to the Site Editor front-page canvas.");
   console.log("[dry-run] Confirm the Site Editor entry redirects to the canvas when opened generically.");
-  console.log("[dry-run] Confirm Media Library and Monopage controls stay reachable.");
+  console.log("[dry-run] Confirm direct Media Library redirects to the Site Editor.");
+  console.log("[dry-run] Confirm the legacy Monopage admin URL is not reachable as a control surface.");
   console.log("[dry-run] Confirm the routing Home page editor redirects to the Site Editor.");
-  console.log("[dry-run] Confirm the full-dashboard escape stops the /wp-admin/ redirect.");
   process.exit(0);
 }
 
 const originalFocus = wpValue(["option", "get", "monopage_focus_enabled"]);
-const originalFullDashboard = wpValue(["user", "meta", "get", userId, "monopage_full_dashboard"], { allowFailure: true });
 
 try {
   wp(["option", "update", "monopage_focus_enabled", "1"]);
-  wp(["user", "meta", "delete", userId, "monopage_full_dashboard"], { allowFailure: true });
 
   await login();
+
+  const homeResponse = await request("/", { follow: true });
+  await assertFrontendAdminBarHidden(homeResponse);
 
   const adminResponse = await request("/wp-admin/");
   assertSiteEditorRedirect(adminResponse, "/wp-admin/ Focus Mode redirect");
@@ -46,26 +47,14 @@ try {
   assertStatus(targetEditorResponse, 200, "Site Editor canvas target");
 
   const mediaResponse = await request("/wp-admin/upload.php");
-  assertStatus(mediaResponse, 200, "Media Library");
+  assertSiteEditorRedirect(mediaResponse, "direct Media Library redirect");
 
-  const controlsResponse = await request("/wp-admin/admin.php?page=monopage", { follow: true });
-  assertStatus(controlsResponse, 200, "Monopage controls");
-  const controlsBody = await controlsResponse.text();
-  if (!controlsBody.includes("Focus Mode") || !controlsBody.includes("Use Full WordPress Dashboard")) {
-    failures.push("Monopage controls page did not render expected Focus Mode controls.");
-  }
+  const legacyMonopageAdminResponse = await request("/wp-admin/admin.php?page=monopage");
+  assertNoLegacyControls(legacyMonopageAdminResponse);
 
   const homePageId = wpValue(["option", "get", "page_on_front"]);
   const homeEditorResponse = await request(`/wp-admin/post.php?post=${encodeURIComponent(homePageId)}&action=edit`);
   assertSiteEditorRedirect(homeEditorResponse, "routing Home page editor redirect");
-
-  wp(["user", "meta", "update", userId, "monopage_full_dashboard", "1"]);
-  const fullDashboardResponse = await request("/wp-admin/");
-  if (isSiteEditorRedirect(fullDashboardResponse)) {
-    failures.push("Full-dashboard escape still redirected /wp-admin/ to the Site Editor.");
-  } else {
-    assertStatus(fullDashboardResponse, 200, "Full-dashboard escape /wp-admin/");
-  }
 } finally {
   restoreState();
 }
@@ -79,7 +68,7 @@ if (failures.length) {
 }
 
 console.log(`Admin smoke passed for ${baseUrl}/.`);
-console.log("Checked Focus Mode admin redirect, Site Editor canvas redirect, Media Library, Monopage controls, routing Home editor redirect, and full-dashboard escape.");
+console.log("Checked Focus Mode admin redirect, hidden public admin bar, Site Editor canvas redirect, direct Media Library redirect, legacy Monopage admin URL removal, and routing Home page editor redirect.");
 
 async function login() {
   await request("/wp-login.php", { follow: true });
@@ -196,6 +185,27 @@ function assertStatus(response, expected, label) {
   }
 }
 
+async function assertFrontendAdminBarHidden(response) {
+  assertStatus(response, 200, "logged-in public homepage");
+
+  const body = await response.text();
+  if (body.includes('id="wpadminbar"') || body.includes("wp-admin-bar")) {
+    failures.push("Logged-in public homepage rendered the WordPress admin bar in Focus Mode.");
+  }
+}
+
+function assertNoLegacyControls(response) {
+  if (isSiteEditorRedirect(response)) {
+    return;
+  }
+
+  if ([403, 404].includes(response.status)) {
+    return;
+  }
+
+  failures.push(`Legacy Monopage admin URL returned HTTP ${response.status}; expected redirect, 403, or 404.`);
+}
+
 function formatLocation(response) {
   const location = response.headers.get("location");
   return location ? ` location=${location}` : "";
@@ -234,12 +244,6 @@ function restoreState() {
     wp(["option", "delete", "monopage_focus_enabled"], { allowFailure: true });
   } else {
     wp(["option", "update", "monopage_focus_enabled", originalFocus], { allowFailure: true });
-  }
-
-  if (null === originalFullDashboard || "" === originalFullDashboard) {
-    wp(["user", "meta", "delete", userId, "monopage_full_dashboard"], { allowFailure: true });
-  } else {
-    wp(["user", "meta", "update", userId, "monopage_full_dashboard", originalFullDashboard], { allowFailure: true });
   }
 }
 

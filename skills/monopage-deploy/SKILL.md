@@ -19,6 +19,10 @@ Use this skill to deploy, validate, and lightly customize Monopage sites safely 
 - Bundled patterns must obey the same one-page link rule as the starter template.
 - Edit the saved `front-page` template in the Site Editor. Do not treat the routing `Home` page's blank content as the source of truth for the visible homepage.
 - If the backend Page editor appears blank, inspect or open the Site Editor `front-page` template. The routing `Home` page should redirect there on Monopage Canvas sites.
+- Focus Mode should keep the Site Editor canvas direct and calm: top toolbar enabled, Distraction Free mode disabled, Spotlight/focus mode disabled, and the left navigation/sidebar toggle unavailable.
+- Focus Mode should hide the public-site admin bar for focused editors so logged-in previews do not expose unrelated WordPress navigation.
+- Monopage should not add a dashboard menu, settings page, or control panel. Setup, validation, deployment, and Focus Mode changes belong in WP-CLI and Codex workflows.
+- The authoring experience should not teach users about unrelated WordPress admin areas. Keep the visible workflow centered on editing the one page; mention broader WordPress internals only in developer-facing docs or safety notes.
 - Focus Mode is UX cleanup only. WordPress capabilities remain the security boundary.
 
 ## Design Rules
@@ -101,7 +105,15 @@ When visual Canvas work needs local smoke checks, desktop/mobile screenshots, an
 npm run local:review
 ```
 
-This runs `local:ready -- --capture`, then prints the generated Playground URL. Use it after hero, mobile, image, first-viewport, or default-template composition changes when wp-env and a local Chrome/Chromium browser are available.
+This runs `local:ready -- --capture`, checks desktop/tablet/mobile responsive safety, then prints the generated Playground URL. Use it after hero, mobile, image, first-viewport, or default-template composition changes when wp-env and a local Chrome/Chromium browser are available.
+
+When checking responsive layout directly, use:
+
+```bash
+npm run local:responsive
+```
+
+This opens the local homepage in Chrome at desktop, tablet, and mobile sizes. It fails on horizontal page overflow, clipped hero buttons, hidden mobile navigation, or cropped logo-strip pills.
 
 For a narrower template refresh, use:
 
@@ -133,7 +145,7 @@ When checking Focus Mode admin behavior on the local wp-env runtime, use:
 npm run local:admin-smoke
 ```
 
-This logs in as the local admin user, confirms `/wp-admin/` redirects to the Site Editor front-page canvas, confirms generic Site Editor entrypoints redirect to the canvas, confirms Media Library and Monopage controls remain reachable, confirms the routing Home page editor redirects to the Site Editor, and confirms the full-dashboard escape disables the admin redirect. It restores Focus Mode and user escape state after the check.
+This logs in as the local admin user, confirms the public homepage hides the WordPress admin bar, confirms `/wp-admin/` redirects to the Site Editor front-page canvas, confirms generic Site Editor entrypoints redirect to the canvas, confirms direct Media Library requests redirect to the Site Editor, confirms legacy Monopage admin URLs are not reachable as control surfaces, and confirms the routing Home page editor redirects to the Site Editor. It restores the global Focus Mode option after the check.
 
 When changing the Playground demo or URL behavior, use:
 
@@ -200,7 +212,7 @@ This verifies chained `npm run ...`, `npm test`, and `node scripts/*.mjs` comman
    - Confirm the homepage URL loads.
    - Confirm `/wp-admin/site-editor.php` loads for an authenticated user.
    - Confirm `/wp-admin/` redirects to the Site Editor while Focus Mode is active.
-   - Confirm Media Library remains reachable.
+   - Confirm direct Media Library/admin screens redirect back to the Site Editor while editor upload endpoints still work through the editor.
 
 ## Helper Script
 
