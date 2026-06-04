@@ -6,19 +6,21 @@ import { fileURLToPath } from "node:url";
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const root = path.resolve(__dirname, "..");
 const dryRun = process.argv.includes("--dry-run");
+const manifest = JSON.parse(fs.readFileSync(path.join(root, "package.json"), "utf8"));
+const version = manifest.version;
 
 const artifacts = [
   {
     label: "plugin",
     cwd: path.join(root, "plugins"),
     source: "wpop",
-    zip: path.join(root, "build", "wpop-0.1.0.zip"),
+    zip: path.join(root, "build", `wpop-${version}.zip`),
   },
   {
     label: "theme",
     cwd: path.join(root, "themes"),
     source: "wpop-canvas",
-    zip: path.join(root, "build", "wpop-canvas-0.1.0.zip"),
+    zip: path.join(root, "build", `wpop-canvas-${version}.zip`),
   },
 ];
 

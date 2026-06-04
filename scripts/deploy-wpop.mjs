@@ -5,6 +5,8 @@ import { fileURLToPath } from "node:url";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const root = path.resolve(__dirname, "..");
+const manifest = JSON.parse(fs.readFileSync(path.join(root, "package.json"), "utf8"));
+const version = manifest.version;
 
 const options = parseArgs(process.argv.slice(2));
 const dryRun = Boolean(options["dry-run"]);
@@ -12,8 +14,8 @@ const wpPath = options.path || "/path/to/wordpress";
 const wpSsh = options.ssh || "";
 const forceHome = Boolean(options["force-home"]);
 const skipPackage = Boolean(options["skip-package"]);
-const pluginZip = path.resolve(root, options["plugin-zip"] || "build/wpop-0.1.0.zip");
-const themeZip = path.resolve(root, options["theme-zip"] || "build/wpop-canvas-0.1.0.zip");
+const pluginZip = path.resolve(root, options["plugin-zip"] || `build/wpop-${version}.zip`);
+const themeZip = path.resolve(root, options["theme-zip"] || `build/wpop-canvas-${version}.zip`);
 const backupName = `wpop-backup-${timestamp()}.sql`;
 const backupFile = options["backup-file"] || `${wpPath.replace(/\/$/, "")}/${backupName}`;
 

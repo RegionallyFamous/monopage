@@ -3,7 +3,7 @@
  * Plugin Name:       WPOP
  * Plugin URI:        https://github.com/RegionallyFamous/wpop
  * Description:       WordPress One Pager focuses WordPress around the Site Editor and a single homepage template.
- * Version:           0.1.0
+ * Version:           0.1.1
  * Requires at least: 6.5
  * Requires PHP:      7.4
  * Author:            WeirdPress
@@ -16,7 +16,7 @@
 
 defined( 'ABSPATH' ) || exit;
 
-define( 'WPOP_VERSION', '0.1.0' );
+define( 'WPOP_VERSION', '0.1.1' );
 define( 'WPOP_FILE', __FILE__ );
 define( 'WPOP_DIR', plugin_dir_path( __FILE__ ) );
 define( 'WPOP_URL', plugin_dir_url( __FILE__ ) );

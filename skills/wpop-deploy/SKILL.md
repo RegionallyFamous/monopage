@@ -17,8 +17,8 @@ Use this skill to deploy WPOP sites safely through WP-CLI.
 3. Back up before changing the site:
    - `wp --path=<target> db export wpop-backup-YYYYMMDD-HHMMSS.sql`
 4. Install and activate:
-   - `wp --path=<target> theme install build/wpop-canvas-0.1.0.zip --force --activate`
-   - `wp --path=<target> plugin install build/wpop-0.1.0.zip --force --activate`
+   - `wp --path=<target> theme install build/wpop-canvas-0.1.1.zip --force --activate`
+   - `wp --path=<target> plugin install build/wpop-0.1.1.zip --force --activate`
 5. Run setup:
    - `wp --path=<target> wpop setup`
    - Use `--force-home` only when the user explicitly wants WPOP to replace an existing static front page assignment.
@@ -57,4 +57,3 @@ node scripts/deploy-wpop.mjs --dry-run --ssh=user@example.com:/site --path=/var/
 ```bash
 ln -s /Users/nick/Documents/GitHub/wpop/skills/wpop-deploy /Users/nick/.codex/skills/wpop-deploy
 ```
-
