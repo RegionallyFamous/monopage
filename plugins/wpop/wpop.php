@@ -187,6 +187,16 @@ function wpop_enqueue_admin_assets( $hook_suffix ) {
 		array(),
 		WPOP_VERSION
 	);
+
+	if ( 'site-editor.php' === $hook_suffix && wpop_is_focus_active_for_current_user() ) {
+		wp_enqueue_script(
+			'wpop-site-editor',
+			WPOP_URL . 'assets/site-editor.js',
+			array( 'wp-data', 'wp-dom-ready' ),
+			WPOP_VERSION,
+			true
+		);
+	}
 }
 
 /**

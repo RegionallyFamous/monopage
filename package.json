@@ -5,7 +5,7 @@
   "description": "WordPress One Pager plugin, canvas theme, and Codex deployment skill.",
   "scripts": {
     "lint:php": "find plugins/wpop themes/wpop-canvas -name '*.php' -print0 | xargs -0 -n1 php -l",
-    "check:js": "node --check scripts/package.mjs && node --check scripts/deploy-wpop.mjs && node --check scripts/local-setup.mjs && node --check scripts/playground-url.mjs && node --check scripts/validate-json.mjs",
+    "check:js": "node --check plugins/wpop/assets/site-editor.js && node --check scripts/package.mjs && node --check scripts/deploy-wpop.mjs && node --check scripts/local-setup.mjs && node --check scripts/playground-url.mjs && node --check scripts/validate-json.mjs",
     "check:json": "node scripts/validate-json.mjs",
     "package": "node scripts/package.mjs",
     "package:dry-run": "node scripts/package.mjs --dry-run",

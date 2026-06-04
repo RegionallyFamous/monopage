@@ -18,6 +18,7 @@ V1 features:
 
 * Setup helper that creates or reuses a Home page and configures it as the static front page.
 * Focus Mode that hides distracting admin menus and redirects generic admin entrypoints to the Site Editor.
+* Site Editor focus defaults that open the canvas directly and keep the top toolbar enabled.
 * Admin escape hatch for full WordPress dashboard access.
 * WP-CLI commands for status, setup, and Focus Mode toggles.
 * Designed to pair with the WPOP Canvas block theme.
@@ -35,4 +36,3 @@ wp wpop focus disable
 
 = 0.1.0 =
 * Initial standalone WPOP plugin.
-
