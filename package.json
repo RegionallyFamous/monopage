@@ -1,6 +1,6 @@
 {
   "name": "monopage",
-  "version": "0.2.31",
+  "version": "0.2.32",
   "private": true,
   "description": "Monopage plugin, canvas theme, and Codex deployment skill.",
   "scripts": {
