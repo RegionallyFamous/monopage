@@ -64,7 +64,7 @@ npm test
 Run the Docker-free CI gate locally before a normal push:
 
 ```bash
-npm run ci
+npm run preflight
 ```
 
 Useful focused checks:
@@ -72,6 +72,7 @@ Useful focused checks:
 ```bash
 npm run doctor
 npm run status
+npm run preflight:dry-run
 npm run check:js
 npm run check:canvas
 npm run check:changed
@@ -94,6 +95,8 @@ npm run package:verify
 `check:canvas` confirms the Canvas stylesheet is wired for both the Site Editor and the public front end, that CSS asset references are packaged and reasonably sized, and that bundled pattern metadata is valid.
 
 `status` prints the Monopage version, branch, latest commit, working-tree summary, focused check recommendations, current package artifact status, local URLs, and the Playground URL.
+
+`preflight` runs `status` and then the Docker-free `ci` gate. Use it before a normal commit or push; use `release:check` when runtime validation and Plugin Check matter.
 
 `check:changed` inspects the current working tree and recommends focused checks for the files that changed. Use `npm run check:changed:run` to run the recommended list.
 
@@ -123,7 +126,7 @@ npm run package:verify
 
 `package:verify` checks the current version's built plugin and theme ZIPs for required files, correct version metadata, expected top-level folders, and forbidden bundled paths such as env files, backups, archives, build output, dependency folders, and local metadata.
 
-`ci` runs the repository checks, builds the plugin and theme ZIPs, then verifies the package contents. GitHub Actions runs the same script on pushes and pull requests, and stores the generated ZIPs as workflow artifacts. It does not run `wp-env` or Plugin Check; use the release gate for runtime validation.
+`ci` runs the repository checks, builds the plugin and theme ZIPs, then verifies the package contents. `preflight` wraps it with the project dashboard. GitHub Actions runs `ci` on pushes and pull requests, and stores the generated ZIPs as workflow artifacts. It does not run `wp-env` or Plugin Check; use the release gate for runtime validation.
 
 Run the full release gate before publishing or pushing a release-minded change:
 

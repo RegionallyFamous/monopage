@@ -72,10 +72,10 @@ This prints the current Monopage version, branch, latest commit, changed-file su
 Before a normal push from the Monopage repo, prefer:
 
 ```bash
-npm run ci
+npm run preflight
 ```
 
-This runs repository checks, builds plugin/theme ZIPs, and verifies package contents without requiring Docker, wp-env, or a live WordPress runtime. Use this as the fast local and GitHub Actions gate; use the release gate below when runtime validation is needed.
+This runs the project status dashboard, repository checks, plugin/theme ZIP builds, and package content verification without requiring Docker, wp-env, or a live WordPress runtime. Use this as the fast local gate; GitHub Actions runs `npm run ci`, and the release gate below adds runtime validation.
 
 ## Release Gate
 
@@ -178,8 +178,8 @@ This verifies chained `npm run ...`, `npm test`, and `node scripts/*.mjs` comman
 3. Back up before changing the site:
    - `wp --path=<target> db export monopage-backup-YYYYMMDD-HHMMSS.sql`
 4. Install and activate:
-   - `wp --path=<target> theme install build/monopage-canvas-0.2.36.zip --force --activate`
-   - `wp --path=<target> plugin install build/monopage-0.2.36.zip --force --activate`
+   - `wp --path=<target> theme install build/monopage-canvas-0.2.37.zip --force --activate`
+   - `wp --path=<target> plugin install build/monopage-0.2.37.zip --force --activate`
 5. Run setup:
    - `wp --path=<target> monopage setup`
    - Use `--force-home` only when the user explicitly wants Monopage to replace an existing static front page assignment.

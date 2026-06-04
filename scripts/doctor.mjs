@@ -31,6 +31,7 @@ const requiredFiles = [
   "scripts/local-ready.mjs",
   "scripts/local-review.mjs",
   "scripts/plugin-check.mjs",
+  "scripts/preflight.mjs",
   "scripts/project-status.mjs",
 ];
 const commands = [
