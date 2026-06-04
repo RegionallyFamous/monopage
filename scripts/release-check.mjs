@@ -20,8 +20,8 @@ const steps = [
     command: ["npm", "run", "doctor"],
   },
   {
-    label: "local Monopage validation",
-    command: ["npm", "run", "local:validate"],
+    label: "local Monopage template refresh and validation",
+    command: ["npm", "run", "local:refresh-template"],
     skip: Boolean(options["skip-local"]),
   },
   {

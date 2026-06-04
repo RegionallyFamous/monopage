@@ -136,6 +136,12 @@ npm run local:validate
 npm run local:status
 ```
 
+Refresh the saved local Site Editor template from the current bundled Canvas template:
+
+```bash
+npm run local:refresh-template
+```
+
 Local WordPress:
 
 ```text
@@ -177,7 +183,7 @@ Full release gate:
 npm run release:check
 ```
 
-`release:check` runs repository checks, doctor, local runtime validation, Plugin Check, package builds, deploy dry-run, and the Playground URL generator. Use `npm run release:check:dry-run` to inspect the sequence. Use `node scripts/release-check.mjs --skip-local --skip-plugin-check` only when Docker/wp-env is unavailable, then run those skipped gates on a real WordPress runtime before release.
+`release:check` runs repository checks, doctor, a local template refresh plus runtime validation, Plugin Check, package builds, deploy dry-run, and the Playground URL generator. Use `npm run release:check:dry-run` to inspect the sequence. Use `node scripts/release-check.mjs --skip-local --skip-plugin-check` only when Docker/wp-env is unavailable, then run those skipped gates on a real WordPress runtime before release.
 
 ## Runtime Validation
 

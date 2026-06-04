@@ -59,7 +59,15 @@ Before a release-minded commit or deploy from the Monopage repo, prefer:
 npm run release:check
 ```
 
-This runs repository checks, doctor, local Monopage validation, Plugin Check, package builds, deploy dry-run, and Playground URL generation. Use `npm run release:check:dry-run` to inspect the sequence. If Docker/wp-env is unavailable, use `node scripts/release-check.mjs --skip-local --skip-plugin-check` and run the skipped checks later on a WordPress runtime.
+This runs repository checks, doctor, a local template refresh plus Monopage validation, Plugin Check, package builds, deploy dry-run, and Playground URL generation. Use `npm run release:check:dry-run` to inspect the sequence. If Docker/wp-env is unavailable, use `node scripts/release-check.mjs --skip-local --skip-plugin-check` and run the skipped checks later on a WordPress runtime.
+
+When only checking local template changes, use:
+
+```bash
+npm run local:refresh-template
+```
+
+This intentionally runs `wp monopage setup --force-home --force-template` inside wp-env so validation uses the current bundled Canvas template, not an older saved Site Editor copy.
 
 ## Workflow
 
@@ -71,8 +79,8 @@ This runs repository checks, doctor, local Monopage validation, Plugin Check, pa
 3. Back up before changing the site:
    - `wp --path=<target> db export monopage-backup-YYYYMMDD-HHMMSS.sql`
 4. Install and activate:
-   - `wp --path=<target> theme install build/monopage-canvas-0.2.15.zip --force --activate`
-   - `wp --path=<target> plugin install build/monopage-0.2.15.zip --force --activate`
+   - `wp --path=<target> theme install build/monopage-canvas-0.2.16.zip --force --activate`
+   - `wp --path=<target> plugin install build/monopage-0.2.16.zip --force --activate`
 5. Run setup:
    - `wp --path=<target> monopage setup`
    - Use `--force-home` only when the user explicitly wants Monopage to replace an existing static front page assignment.

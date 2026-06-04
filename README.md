@@ -38,6 +38,12 @@ Local WordPress runs at:
 http://localhost:8888
 ```
 
+After changing the bundled Canvas template, refresh the saved local Site Editor template before judging the runtime:
+
+```bash
+npm run local:refresh-template
+```
+
 ## Development Checks
 
 Run the full validation suite before packaging or deploying:
@@ -65,7 +71,7 @@ Run the full release gate before publishing or pushing a release-minded change:
 npm run release:check
 ```
 
-Use `npm run release:check:dry-run` to preview the sequence. In environments without Docker or wp-env, use `node scripts/release-check.mjs --skip-local --skip-plugin-check` and run those checks later on a WordPress runtime.
+Use `npm run release:check:dry-run` to preview the sequence. The release gate refreshes the local saved `front-page` template before runtime validation, so it tests the current bundled Canvas template. In environments without Docker or wp-env, use `node scripts/release-check.mjs --skip-local --skip-plugin-check` and run those checks later on a WordPress runtime.
 
 ## Plugin Check
 

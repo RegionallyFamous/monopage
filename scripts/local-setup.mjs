@@ -4,13 +4,20 @@ import { fileURLToPath } from "node:url";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const root = path.resolve(__dirname, "..");
-const dryRun = process.argv.includes("--dry-run");
+const options = parseArgs(process.argv.slice(2));
+const dryRun = Boolean(options["dry-run"]);
+const forceTemplate = Boolean(options["force-template"]);
+const setupCommand = ["wp-env", "run", "cli", "wp", "monopage", "setup", "--force-home"];
+
+if (forceTemplate) {
+  setupCommand.push("--force-template");
+}
 
 const commands = [
   ["wp-env", "start"],
   ["wp-env", "run", "cli", "wp", "theme", "activate", "monopage-canvas"],
   ["wp-env", "run", "cli", "wp", "plugin", "activate", "monopage"],
-  ["wp-env", "run", "cli", "wp", "monopage", "setup", "--force-home"],
+  setupCommand,
   ["wp-env", "run", "cli", "wp", "monopage", "validate", "--require-focus"],
   ["wp-env", "run", "cli", "wp", "monopage", "status"],
 ];
@@ -30,4 +37,25 @@ for (const command of commands) {
     console.error(`Command failed: ${command.join(" ")}`);
     process.exit(1);
   }
+}
+
+function parseArgs(args) {
+  const parsed = {};
+
+  for (const arg of args) {
+    if (!arg.startsWith("--")) {
+      continue;
+    }
+
+    const body = arg.slice(2);
+    const equals = body.indexOf("=");
+
+    if (equals === -1) {
+      parsed[body] = true;
+    } else {
+      parsed[body.slice(0, equals)] = body.slice(equals + 1);
+    }
+  }
+
+  return parsed;
 }
