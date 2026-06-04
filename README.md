@@ -61,6 +61,7 @@ Useful focused checks:
 
 ```bash
 npm run doctor
+npm run check:js
 npm run check:canvas
 npm run check:deploy
 npm run check:links
@@ -74,6 +75,8 @@ npm run package:verify
 ```
 
 `check:canvas` confirms the Canvas stylesheet is wired for both the Site Editor and the public front end, that CSS asset references are packaged and reasonably sized, and that bundled pattern metadata is valid.
+
+`check:js` discovers JavaScript files in `plugins/`, `themes/`, and `scripts/`, then runs `node --check` on each one so new helpers are covered automatically.
 
 `check:deploy` confirms the dry-run deployment plan packages and verifies before WP-CLI changes, backs up before installs, installs the theme before the plugin, validates before status, and keeps force/HTTP flags opt-in by default.
 

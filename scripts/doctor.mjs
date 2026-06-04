@@ -18,6 +18,7 @@ const requiredFiles = [
   "playground/blueprint.json",
   "scripts/admin-smoke.mjs",
   "scripts/check-deploy-plan.mjs",
+  "scripts/check-js-syntax.mjs",
   "scripts/check-package-contents.mjs",
   "scripts/check-playground.mjs",
   "scripts/check-skill.mjs",

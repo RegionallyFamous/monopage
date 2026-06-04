@@ -182,6 +182,7 @@ Additional checks:
 
 ```bash
 npm run doctor
+npm run check:js
 npm run local:ready -- --dry-run
 npm run local:validate
 npm run local:admin-smoke
@@ -201,6 +202,8 @@ npm run release:check
 ```
 
 `local:smoke` checks the rendered homepage, required starter copy, same-page body links, section anchors, and served Canvas image assets. Run it after `local:setup` or `local:refresh-template`.
+
+`check:js` discovers JavaScript files in `plugins/`, `themes/`, and `scripts/`, then runs `node --check` on each file. Add new helper scripts normally; the syntax gate picks them up without editing `package.json`.
 
 `local:admin-smoke` logs in to the local wp-env admin and checks Focus Mode admin redirect behavior, generic Site Editor canvas redirection, Media Library reachability, Monopage controls, routing Home page editor redirection, and the full-dashboard escape. It restores Focus Mode and user escape state after the check.
 
