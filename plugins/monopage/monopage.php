@@ -3,7 +3,7 @@
  * Plugin Name:       Monopage
  * Plugin URI:        https://github.com/RegionallyFamous/monopage
  * Description:       Monopage focuses WordPress around the Site Editor and a single homepage template.
- * Version:           0.2.13
+ * Version:           0.2.14
  * Requires at least: 6.5
  * Requires PHP:      7.4
  * Author:            WeirdPress
@@ -16,7 +16,7 @@
 
 defined( 'ABSPATH' ) || exit;
 
-define( 'MONOPAGE_VERSION', '0.2.13' );
+define( 'MONOPAGE_VERSION', '0.2.14' );
 define( 'MONOPAGE_FILE', __FILE__ );
 define( 'MONOPAGE_DIR', plugin_dir_path( __FILE__ ) );
 define( 'MONOPAGE_URL', plugin_dir_url( __FILE__ ) );
@@ -999,6 +999,22 @@ function monopage_get_validation_checks( $args = array() ) {
 				$pattern_count
 			)
 		);
+
+		if ( $pattern_count > 0 ) {
+			$pattern_link_result = monopage_validate_canvas_pattern_links( $template_content );
+			monopage_add_validation_check(
+				$checks,
+				'canvas_pattern_links',
+				$pattern_link_result['valid'] ? 'pass' : 'fail',
+				'error',
+				$pattern_link_result['valid'] ? sprintf(
+					/* translators: 1: Number of Monopage Canvas patterns. 2: Number of anchors available across the template and patterns. */
+					__( '%1$d Monopage Canvas patterns keep links on-page across %2$d known anchors.', 'monopage' ),
+					$pattern_count,
+					$pattern_link_result['anchor_count']
+				) : implode( ' ', $pattern_link_result['messages'] )
+			);
+		}
 	}
 
 	$focus_status = $status['focus_enabled'] ? 'pass' : ( $args['require_focus'] ? 'fail' : 'warn' );
@@ -1134,26 +1150,83 @@ function monopage_get_validation_template_content( $theme ) {
  * @return array
  */
 function monopage_validate_template_links( $content ) {
-	$anchors = monopage_extract_template_anchors( $content );
-	$links   = monopage_extract_template_links( $content );
+	return monopage_validate_content_links(
+		array(
+			'front-page template' => $content,
+		)
+	);
+}
+
+/**
+ * Validate that Canvas pattern links stay on-page and target known anchors.
+ *
+ * @param string $template_content Saved or fallback front-page template content.
+ * @return array
+ */
+function monopage_validate_canvas_pattern_links( $template_content = '' ) {
+	$sources = array();
+
+	if ( '' !== trim( $template_content ) ) {
+		$sources['front-page template'] = $template_content;
+	}
+
+	foreach ( monopage_get_registered_canvas_patterns() as $pattern ) {
+		if ( ! empty( $pattern['content'] ) && is_scalar( $pattern['content'] ) ) {
+			$sources[ $pattern['name'] ] = (string) $pattern['content'];
+		}
+	}
+
+	return monopage_validate_content_links( $sources );
+}
+
+/**
+ * Validate that links across content sources stay on-page and target known anchors.
+ *
+ * @param array $sources Content keyed by source label.
+ * @return array
+ */
+function monopage_validate_content_links( $sources ) {
+	$anchors = array();
+	$links   = array();
 	$errors  = array();
 
+	foreach ( $sources as $content ) {
+		foreach ( monopage_extract_template_anchors( $content ) as $anchor => $present ) {
+			if ( $present ) {
+				$anchors[ $anchor ] = true;
+			}
+		}
+	}
+
+	foreach ( $sources as $source => $content ) {
+		foreach ( monopage_extract_template_links( $content ) as $link ) {
+			$links[] = array(
+				'source' => $source,
+				'href'   => $link,
+			);
+		}
+	}
+
 	foreach ( $links as $link ) {
-		if ( 0 !== strpos( $link, '#' ) ) {
+		$href = $link['href'];
+
+		if ( 0 !== strpos( $href, '#' ) ) {
 			$errors[] = sprintf(
-				/* translators: %s: URL found in the template. */
-				__( 'Off-page link found: %s.', 'monopage' ),
-				$link
+				/* translators: 1: Source label. 2: URL found in the content source. */
+				__( '%1$s has an off-page link: %2$s.', 'monopage' ),
+				$link['source'],
+				$href
 			);
 			continue;
 		}
 
-		$target = trim( rawurldecode( substr( $link, 1 ) ) );
+		$target = trim( rawurldecode( substr( $href, 1 ) ) );
 		if ( '' === $target || ! isset( $anchors[ $target ] ) ) {
 			$errors[] = sprintf(
-				/* translators: %s: Hash link found in the template. */
-				__( 'Missing anchor target: %s.', 'monopage' ),
-				$link
+				/* translators: 1: Source label. 2: Hash link found in the content source. */
+				__( '%1$s has a missing anchor target: %2$s.', 'monopage' ),
+				$link['source'],
+				$href
 			);
 		}
 	}
@@ -1162,6 +1235,7 @@ function monopage_validate_template_links( $content ) {
 		'valid'        => empty( $errors ),
 		'anchor_count' => count( $anchors ),
 		'link_count'   => count( $links ),
+		'source_count' => count( $sources ),
 		'messages'     => $errors,
 	);
 }
@@ -1235,20 +1309,29 @@ function monopage_extract_template_links( $content ) {
  * @return int
  */
 function monopage_get_registered_canvas_pattern_count() {
+	return count( monopage_get_registered_canvas_patterns() );
+}
+
+/**
+ * Get registered Monopage Canvas patterns.
+ *
+ * @return array[]
+ */
+function monopage_get_registered_canvas_patterns() {
 	if ( ! class_exists( 'WP_Block_Patterns_Registry' ) ) {
-		return 0;
+		return array();
 	}
 
 	$patterns = WP_Block_Patterns_Registry::get_instance()->get_all_registered();
-	$count    = 0;
+	$canvas_patterns = array();
 
 	foreach ( $patterns as $pattern ) {
 		if ( isset( $pattern['name'] ) && 0 === strpos( $pattern['name'], 'monopage-canvas/' ) ) {
-			++$count;
+			$canvas_patterns[] = $pattern;
 		}
 	}
 
-	return $count;
+	return $canvas_patterns;
 }
 
 /**

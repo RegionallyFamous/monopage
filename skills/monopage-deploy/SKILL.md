@@ -61,8 +61,8 @@ When changing `themes/monopage-canvas/templates/front-page.html` or `themes/mono
 3. Back up before changing the site:
    - `wp --path=<target> db export monopage-backup-YYYYMMDD-HHMMSS.sql`
 4. Install and activate:
-   - `wp --path=<target> theme install build/monopage-canvas-0.2.13.zip --force --activate`
-   - `wp --path=<target> plugin install build/monopage-0.2.13.zip --force --activate`
+   - `wp --path=<target> theme install build/monopage-canvas-0.2.14.zip --force --activate`
+   - `wp --path=<target> plugin install build/monopage-0.2.14.zip --force --activate`
 5. Run setup:
    - `wp --path=<target> monopage setup`
    - Use `--force-home` only when the user explicitly wants Monopage to replace an existing static front page assignment.
@@ -70,6 +70,7 @@ When changing `themes/monopage-canvas/templates/front-page.html` or `themes/mono
 6. Validate:
    - `wp --path=<target> monopage validate --require-focus`
    - Add `--check-http` only when the target can serve its `home_url()` to WP-CLI during validation.
+   - Treat `canvas_pattern_links` failures as a theme-package problem: bundled patterns must keep links on-page and target known anchors.
    - `wp --path=<target> monopage status --format=json`
    - Confirm starter-template and bundled-pattern links target existing on-page anchors if the template or patterns were customized: `npm run check:links`
    - Confirm Canvas styles and CSS assets are wired for both the Site Editor and front end if the theme was customized: `npm run check:canvas`
@@ -102,8 +103,9 @@ If Docker or `wp-env` is unavailable, use the same runner against a real WP-CLI 
 
 ```bash
 node scripts/plugin-check.mjs --path=/path/to/wordpress
-node scripts/plugin-check.mjs --path=/path/to/wordpress --runtime
 ```
+
+The Plugin Check helper loads Plugin Check's CLI file automatically. Use `--no-require` only for an environment that already registers `wp plugin check`.
 
 Validate a configured target:
 

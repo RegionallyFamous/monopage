@@ -189,6 +189,7 @@ Validation checks:
 - saved `front-page` template
 - template links and anchor targets
 - registered Monopage Canvas patterns
+- bundled Canvas pattern links and anchor targets
 - Focus Mode state
 - generated home and Site Editor URLs
 - optional homepage HTTP response
@@ -211,14 +212,15 @@ Real WP-CLI target:
 
 ```bash
 node scripts/plugin-check.mjs --path=/path/to/wordpress
-node scripts/plugin-check.mjs --path=/path/to/wordpress --runtime
 ```
 
-Runtime Plugin Check loads Plugin Check's CLI file:
+The Plugin Check helper loads Plugin Check's CLI file automatically:
 
 ```text
 --require=./wp-content/plugins/plugin-check/cli.php
 ```
+
+Use `--no-require` only for an environment that already registers `wp plugin check`.
 
 ## Packaging And Versioning
 

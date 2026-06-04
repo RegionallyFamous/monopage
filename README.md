@@ -73,8 +73,9 @@ Against another WP-CLI target:
 
 ```bash
 node scripts/plugin-check.mjs --path=/path/to/wordpress
-node scripts/plugin-check.mjs --path=/path/to/wordpress --runtime
 ```
+
+The Plugin Check helper installs/activates Plugin Check and loads its WP-CLI file automatically. Use `--no-require` only for an environment that already registers `wp plugin check`.
 
 ## Runtime Validation
 
@@ -85,7 +86,7 @@ wp monopage validate --require-focus
 wp monopage validate --require-focus --check-http
 ```
 
-`validate` checks the static front-page assignment, routing Home page, active block theme, saved `front-page` template, template anchor links, registered Canvas patterns, Focus Mode, and generated home/editor URLs.
+`validate` checks the static front-page assignment, routing Home page, active block theme, saved `front-page` template, template anchor links, registered Canvas patterns, bundled pattern anchor links, Focus Mode, and generated home/editor URLs.
 
 Use `--check-http` only when `home_url()` is reachable from the WP-CLI runtime. For local `wp-env`, use `npm run local:validate` without the HTTP check.
 

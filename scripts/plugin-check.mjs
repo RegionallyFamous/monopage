@@ -8,6 +8,7 @@ const options = parseArgs(process.argv.slice(2));
 const dryRun = Boolean(options["dry-run"]);
 const useWpEnv = Boolean(options["wp-env"]) || !options.path;
 const runtime = Boolean(options.runtime);
+const requireCli = runtime || !Boolean(options["no-require"]);
 const skipInstall = Boolean(options["skip-install"]);
 const wpPath = options.path || "";
 const wpSsh = options.ssh || "";
@@ -22,7 +23,7 @@ if (!skipInstall) {
 
 commands.push([
   ...wpCommand("plugin", "check", target),
-  ...(runtime ? [requireArg] : []),
+  ...(requireCli ? [requireArg] : []),
 ]);
 
 for (const command of commands) {
