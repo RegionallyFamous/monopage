@@ -1,5 +1,6 @@
 import { spawnSync } from "node:child_process";
 import fs from "node:fs";
+import os from "node:os";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 
@@ -43,6 +44,10 @@ printArtifact(pluginZip);
 printArtifact(themeZip);
 
 console.log("");
+console.log("Codex Skill");
+printSkillStatus();
+
+console.log("");
 console.log("Local URLs");
 const homeReachable = await isReachable(localUrls.home);
 console.log(`- Home: ${localUrls.home} (${homeReachable ? "reachable" : "not reachable"})`);
@@ -79,6 +84,38 @@ function printArtifact(relativePath) {
 
   const stats = fs.statSync(file);
   console.log(`- ${relativePath}: ${formatBytes(stats.size)}`);
+}
+
+function printSkillStatus() {
+  const codexHome = process.env.CODEX_HOME || path.join(os.homedir(), ".codex");
+  const target = path.join(codexHome, "skills", "monopage-deploy");
+  const expected = path.join(root, "skills", "monopage-deploy");
+
+  try {
+    const stats = fs.lstatSync(target);
+    if (!stats.isSymbolicLink()) {
+      console.log(`- ${target}: exists but is not a symlink`);
+      console.log("- Run: npm run skill:install -- --force");
+      return;
+    }
+
+    const current = path.resolve(path.dirname(target), fs.readlinkSync(target));
+    if (current === expected) {
+      console.log(`- ${target}: installed`);
+      return;
+    }
+
+    console.log(`- ${target}: points to ${current}`);
+    console.log("- Run: npm run skill:install -- --force");
+  } catch (error) {
+    if (error.code === "ENOENT") {
+      console.log(`- ${target}: missing`);
+      console.log("- Run: npm run skill:install");
+      return;
+    }
+
+    throw error;
+  }
 }
 
 async function isReachable(url) {
