@@ -1,6 +1,6 @@
 {
   "name": "monopage",
-  "version": "0.2.51",
+  "version": "0.2.52",
   "private": true,
   "description": "AI-native one-page WordPress with the Site Editor, blocks, real hosting, and no admin sprawl.",
   "scripts": {
