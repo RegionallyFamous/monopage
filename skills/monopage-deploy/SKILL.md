@@ -119,6 +119,14 @@ npm run check:deploy
 
 This verifies the dry-run deploy plan keeps package verification before WP-CLI changes, backs up the database before installs, installs the theme before the plugin, avoids `--force-home`, `--force-template`, and `--check-http` by default, and still honors those flags when explicitly requested.
 
+When changing repository docs, package scripts, or helper script filenames, use:
+
+```bash
+npm run check:docs
+```
+
+This verifies documented `npm run ...`, `npm test`, and `node scripts/*.mjs` commands in the README, developer wiki, and this skill still point to real scripts.
+
 ## Workflow
 
 1. Confirm the target is a WordPress install with WP-CLI:
@@ -130,8 +138,8 @@ This verifies the dry-run deploy plan keeps package verification before WP-CLI c
 3. Back up before changing the site:
    - `wp --path=<target> db export monopage-backup-YYYYMMDD-HHMMSS.sql`
 4. Install and activate:
-   - `wp --path=<target> theme install build/monopage-canvas-0.2.29.zip --force --activate`
-   - `wp --path=<target> plugin install build/monopage-0.2.29.zip --force --activate`
+   - `wp --path=<target> theme install build/monopage-canvas-0.2.30.zip --force --activate`
+   - `wp --path=<target> plugin install build/monopage-0.2.30.zip --force --activate`
 5. Run setup:
    - `wp --path=<target> monopage setup`
    - Use `--force-home` only when the user explicitly wants Monopage to replace an existing static front page assignment.

@@ -164,6 +164,7 @@ The test suite runs:
 - JSON validation
 - Canvas style and asset validation
 - deploy dry-run safety validation
+- documented command validation
 - repository hygiene validation
 - one-page link validation for templates and patterns
 - Playground Blueprint and seamless URL validation
@@ -184,6 +185,7 @@ Additional checks:
 ```bash
 npm run doctor
 npm run check:js
+npm run check:docs
 npm run check:hygiene
 npm run local:ready -- --dry-run
 npm run local:validate
@@ -212,6 +214,8 @@ npm run release:check
 `check:playground` checks that the public Blueprint installs the expected GitHub theme/plugin directories, refreshes the Canvas front-page template, lands in the Site Editor canvas, and that `playground:url` keeps the outer Playground toolbar hidden with seamless mode.
 
 `check:deploy` checks that the dry-run deploy plan packages and verifies ZIPs before WP-CLI changes, backs up before installing, installs the theme before the plugin, validates before status, and keeps `--force-home`, `--force-template`, and `--check-http` opt-in by default.
+
+`check:docs` checks documented `npm run ...`, `npm test`, and `node scripts/*.mjs` commands in the README, developer wiki, and Codex skill so docs stay aligned with `package.json` and helper scripts.
 
 `check:hygiene` checks `.gitignore`, `.gitattributes`, tracked files, and `export-ignore` behavior so package ZIPs, SQL backups, env files, debug logs, local wp-env data, build output, and dependency folders stay out of tracked source and generated source archives.
 

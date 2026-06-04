@@ -64,6 +64,7 @@ npm run doctor
 npm run check:js
 npm run check:canvas
 npm run check:deploy
+npm run check:docs
 npm run check:hygiene
 npm run check:links
 npm run check:playground
@@ -80,6 +81,8 @@ npm run package:verify
 `check:js` discovers JavaScript files in `plugins/`, `themes/`, and `scripts/`, then runs `node --check` on each one so new helpers are covered automatically.
 
 `check:deploy` confirms the dry-run deployment plan packages and verifies before WP-CLI changes, backs up before installs, installs the theme before the plugin, validates before status, and keeps force/HTTP flags opt-in by default.
+
+`check:docs` confirms documented `npm run ...`, `npm test`, and `node scripts/*.mjs` commands in the README, developer wiki, and Codex skill still point to real package scripts and helper files.
 
 `check:hygiene` confirms ignored and export-ignored release debris stays out of tracked source and GitHub source archives, including package ZIPs, SQL backups, env files, debug logs, local wp-env data, and dependency folders.
 

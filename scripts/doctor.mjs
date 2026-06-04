@@ -17,6 +17,7 @@ const requiredFiles = [
   "skills/monopage-deploy/SKILL.md",
   "playground/blueprint.json",
   "scripts/admin-smoke.mjs",
+  "scripts/check-doc-commands.mjs",
   "scripts/check-deploy-plan.mjs",
   "scripts/check-js-syntax.mjs",
   "scripts/check-package-contents.mjs",
@@ -46,6 +47,7 @@ runCheckVersions();
 runScriptCheck("canvas theme", "scripts/check-canvas-theme.mjs");
 runScriptCheck("template links", "scripts/check-template-links.mjs");
 runScriptCheck("deploy plan", "scripts/check-deploy-plan.mjs");
+runScriptCheck("documented commands", "scripts/check-doc-commands.mjs");
 runScriptCheck("Playground", "scripts/check-playground.mjs");
 runScriptCheck("skill contract", "scripts/check-skill.mjs");
 runPackageVerify();
