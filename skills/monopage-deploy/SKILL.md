@@ -61,13 +61,15 @@ When changing `themes/monopage-canvas/templates/front-page.html` or `themes/mono
 3. Back up before changing the site:
    - `wp --path=<target> db export monopage-backup-YYYYMMDD-HHMMSS.sql`
 4. Install and activate:
-   - `wp --path=<target> theme install build/monopage-canvas-0.2.12.zip --force --activate`
-   - `wp --path=<target> plugin install build/monopage-0.2.12.zip --force --activate`
+   - `wp --path=<target> theme install build/monopage-canvas-0.2.13.zip --force --activate`
+   - `wp --path=<target> plugin install build/monopage-0.2.13.zip --force --activate`
 5. Run setup:
    - `wp --path=<target> monopage setup`
    - Use `--force-home` only when the user explicitly wants Monopage to replace an existing static front page assignment.
    - Use `--force-template` only when the user explicitly wants Monopage to replace saved Site Editor `front-page` template changes with the current Monopage Canvas default.
 6. Validate:
+   - `wp --path=<target> monopage validate --require-focus`
+   - Add `--check-http` only when the target can serve its `home_url()` to WP-CLI during validation.
    - `wp --path=<target> monopage status --format=json`
    - Confirm starter-template and bundled-pattern links target existing on-page anchors if the template or patterns were customized: `npm run check:links`
    - Confirm Canvas styles and CSS assets are wired for both the Site Editor and front end if the theme was customized: `npm run check:canvas`
@@ -86,6 +88,8 @@ node scripts/deploy-monopage.mjs --dry-run --path=/path/to/wordpress
 node scripts/deploy-monopage.mjs --path=/path/to/wordpress
 ```
 
+The deploy script runs `wp monopage validate --require-focus` after setup and before status. Use `--check-http` on the deploy script only when homepage HTTP requests from WP-CLI are expected to work in the target environment. Do not use `--check-http` for normal `wp-env` validation because the CLI container may not be able to reach the host-facing `localhost` URL.
+
 Run WordPress Plugin Check through the local `wp-env` stack:
 
 ```bash
@@ -99,6 +103,13 @@ If Docker or `wp-env` is unavailable, use the same runner against a real WP-CLI 
 ```bash
 node scripts/plugin-check.mjs --path=/path/to/wordpress
 node scripts/plugin-check.mjs --path=/path/to/wordpress --runtime
+```
+
+Validate a configured target:
+
+```bash
+wp --path=/path/to/wordpress monopage validate --require-focus
+wp --path=/path/to/wordpress monopage validate --require-focus --format=json
 ```
 
 For remote hosts, prefer WP-CLI SSH only when the ZIP paths are visible to the target or have been uploaded first:

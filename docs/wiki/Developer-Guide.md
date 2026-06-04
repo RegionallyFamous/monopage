@@ -132,6 +132,7 @@ Avoid:
 npm install
 npm run local:start
 npm run local:setup
+npm run local:validate
 npm run local:status
 ```
 
@@ -165,9 +166,36 @@ Additional checks:
 
 ```bash
 npm run doctor
+npm run local:validate
 npm run plugin:check
 npm run plugin:check:runtime
 ```
+
+## Runtime Validation
+
+Monopage includes a WP-CLI health check for deployed or local installs:
+
+```bash
+wp monopage validate --require-focus
+wp monopage validate --require-focus --format=json
+wp monopage validate --require-focus --check-http
+```
+
+Validation checks:
+
+- static front-page mode
+- routing Home page existence and publish state
+- active block theme and Monopage Canvas state
+- saved `front-page` template
+- template links and anchor targets
+- registered Monopage Canvas patterns
+- Focus Mode state
+- generated home and Site Editor URLs
+- optional homepage HTTP response
+
+Use `--allow-custom-theme` only when the target intentionally uses another block theme.
+
+Use `--check-http` only when `home_url()` is reachable from the WP-CLI runtime. In `wp-env`, the CLI container may not be able to reach the browser-facing `localhost:8888` URL, so prefer `npm run local:validate`.
 
 ## Plugin Check
 
@@ -231,7 +259,8 @@ Deployment sequence:
 3. Install and activate the Canvas theme ZIP.
 4. Install and activate the Monopage plugin ZIP.
 5. Run `wp monopage setup`.
-6. Report `wp monopage status --format=json`.
+6. Run `wp monopage validate --require-focus`.
+7. Report `wp monopage status --format=json`.
 
 ## Codex Skill Expectations
 
@@ -244,6 +273,7 @@ The `monopage-deploy` skill should guide agents to:
 - use generated raster images when the theme or docs need real visual energy
 - save project-bound images into the repo
 - run `npm test` before packaging
+- run `wp monopage validate --require-focus` after setup when a WordPress runtime is available
 - run Plugin Check before release when a WordPress runtime is available
 - back up before deployment
 - avoid `--force-home` and `--force-template` unless explicitly approved

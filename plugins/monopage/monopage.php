@@ -3,7 +3,7 @@
  * Plugin Name:       Monopage
  * Plugin URI:        https://github.com/RegionallyFamous/monopage
  * Description:       Monopage focuses WordPress around the Site Editor and a single homepage template.
- * Version:           0.2.12
+ * Version:           0.2.13
  * Requires at least: 6.5
  * Requires PHP:      7.4
  * Author:            WeirdPress
@@ -16,7 +16,7 @@
 
 defined( 'ABSPATH' ) || exit;
 
-define( 'MONOPAGE_VERSION', '0.2.12' );
+define( 'MONOPAGE_VERSION', '0.2.13' );
 define( 'MONOPAGE_FILE', __FILE__ );
 define( 'MONOPAGE_DIR', plugin_dir_path( __FILE__ ) );
 define( 'MONOPAGE_URL', plugin_dir_url( __FILE__ ) );
@@ -873,6 +873,385 @@ function monopage_get_status() {
 }
 
 /**
+ * Return Monopage validation checks for CLI and deployment workflows.
+ *
+ * @param array $args Validation arguments.
+ * @return array[]
+ */
+function monopage_get_validation_checks( $args = array() ) {
+	$args = wp_parse_args(
+		$args,
+		array(
+			'allow_custom_theme' => false,
+			'require_focus'      => false,
+			'check_http'         => false,
+		)
+	);
+
+	$status        = monopage_get_status();
+	$checks        = array();
+	$front_id      = absint( $status['page_on_front'] );
+	$front_page    = $front_id ? get_post( $front_id ) : null;
+	$canvas_active = MONOPAGE_CANVAS_THEME === $status['active_theme'];
+
+	monopage_add_validation_check(
+		$checks,
+		'plugin_version',
+		'pass',
+		'info',
+		sprintf(
+			/* translators: %s: Monopage version. */
+			__( 'Monopage %s is active.', 'monopage' ),
+			MONOPAGE_VERSION
+		)
+	);
+
+	monopage_add_validation_check(
+		$checks,
+		'static_front_page',
+		'page' === $status['show_on_front'] ? 'pass' : 'fail',
+		'error',
+		'page' === $status['show_on_front'] ? __( 'WordPress is configured to use a static front page.', 'monopage' ) : __( 'WordPress is not configured to use a static front page.', 'monopage' )
+	);
+
+	monopage_add_validation_check(
+		$checks,
+		'routing_home_page',
+		$front_page instanceof WP_Post && 'page' === $front_page->post_type ? 'pass' : 'fail',
+		'error',
+		$front_page instanceof WP_Post ? sprintf(
+			/* translators: %d: Home page ID. */
+			__( 'Routing Home page exists. ID: %d.', 'monopage' ),
+			$front_page->ID
+		) : __( 'No routing Home page is assigned.', 'monopage' )
+	);
+
+	if ( $front_page instanceof WP_Post ) {
+		monopage_add_validation_check(
+			$checks,
+			'routing_home_published',
+			'publish' === $front_page->post_status ? 'pass' : 'fail',
+			'error',
+			'publish' === $front_page->post_status ? __( 'Routing Home page is published.', 'monopage' ) : __( 'Routing Home page is not published.', 'monopage' )
+		);
+	}
+
+	monopage_add_validation_check(
+		$checks,
+		'block_theme',
+		$status['block_theme'] ? 'pass' : 'fail',
+		'error',
+		$status['block_theme'] ? __( 'The active theme supports the Site Editor.', 'monopage' ) : __( 'The active theme does not support the Site Editor.', 'monopage' )
+	);
+
+	$theme_status = $canvas_active ? 'pass' : ( $args['allow_custom_theme'] ? 'warn' : 'fail' );
+	monopage_add_validation_check(
+		$checks,
+		'canvas_theme',
+		$theme_status,
+		$args['allow_custom_theme'] ? 'warning' : 'error',
+		$canvas_active ? __( 'Monopage Canvas is the active theme.', 'monopage' ) : sprintf(
+			/* translators: %s: Active theme stylesheet. */
+			__( 'Active theme is %s, not Monopage Canvas.', 'monopage' ),
+			$status['active_theme']
+		)
+	);
+
+	$template_status = $status['front_template_saved'] ? 'pass' : ( $canvas_active ? 'fail' : 'warn' );
+	monopage_add_validation_check(
+		$checks,
+		'front_page_template',
+		$template_status,
+		$canvas_active ? 'error' : 'warning',
+		$status['front_template_saved'] ? sprintf(
+			/* translators: %d: Saved front-page template post ID. */
+			__( 'Saved front-page template exists. ID: %d.', 'monopage' ),
+			$status['front_template_id']
+		) : __( 'Saved front-page template was not found.', 'monopage' )
+	);
+
+	$template_content = monopage_get_validation_template_content( $status['active_theme'] );
+	if ( '' !== trim( $template_content ) ) {
+		$link_result = monopage_validate_template_links( $template_content );
+		monopage_add_validation_check(
+			$checks,
+			'template_links',
+			$link_result['valid'] ? 'pass' : 'fail',
+			'error',
+			$link_result['valid'] ? sprintf(
+				/* translators: %d: Number of anchors found in the front-page template. */
+				__( 'Front-page template links stay on-page and target %d anchors.', 'monopage' ),
+				$link_result['anchor_count']
+			) : implode( ' ', $link_result['messages'] )
+		);
+	}
+
+	if ( $canvas_active && class_exists( 'WP_Block_Patterns_Registry' ) ) {
+		$pattern_count = monopage_get_registered_canvas_pattern_count();
+		monopage_add_validation_check(
+			$checks,
+			'canvas_patterns',
+			$pattern_count > 0 ? 'pass' : 'fail',
+			'error',
+			sprintf(
+				/* translators: %d: Number of registered Monopage Canvas patterns. */
+				__( '%d Monopage Canvas patterns are registered.', 'monopage' ),
+				$pattern_count
+			)
+		);
+	}
+
+	$focus_status = $status['focus_enabled'] ? 'pass' : ( $args['require_focus'] ? 'fail' : 'warn' );
+	monopage_add_validation_check(
+		$checks,
+		'focus_mode',
+		$focus_status,
+		$args['require_focus'] ? 'error' : 'warning',
+		$status['focus_enabled'] ? __( 'Focus Mode is enabled.', 'monopage' ) : __( 'Focus Mode is disabled.', 'monopage' )
+	);
+
+	monopage_add_validation_check(
+		$checks,
+		'site_editor_url',
+		false !== strpos( $status['site_editor_url'], 'site-editor.php' ) && false !== strpos( $status['site_editor_url'], 'front-page' ) ? 'pass' : 'fail',
+		'error',
+		$status['site_editor_url']
+	);
+
+	monopage_add_validation_check(
+		$checks,
+		'home_url',
+		! empty( $status['home_url'] ) ? 'pass' : 'fail',
+		'error',
+		$status['home_url'] ? $status['home_url'] : __( 'Home URL is unavailable.', 'monopage' )
+	);
+
+	if ( $args['check_http'] ) {
+		monopage_add_http_validation_check( $checks, $status['home_url'] );
+	}
+
+	return $checks;
+}
+
+/**
+ * Append a normalized validation check.
+ *
+ * @param array  $checks   Check collection.
+ * @param string $check    Machine-readable check name.
+ * @param string $status   pass, warn, or fail.
+ * @param string $severity info, warning, or error.
+ * @param string $message  Human-readable message.
+ */
+function monopage_add_validation_check( &$checks, $check, $status, $severity, $message ) {
+	if ( 'pass' === $status ) {
+		$severity = 'info';
+	} elseif ( 'warn' === $status ) {
+		$severity = 'warning';
+	}
+
+	$checks[] = array(
+		'check'    => $check,
+		'status'   => $status,
+		'severity' => $severity,
+		'message'  => $message,
+	);
+}
+
+/**
+ * Add an optional HTTP homepage validation check.
+ *
+ * @param array  $checks   Check collection.
+ * @param string $home_url Home URL.
+ */
+function monopage_add_http_validation_check( &$checks, $home_url ) {
+	$response = wp_remote_get(
+		$home_url,
+		array(
+			'redirection' => 3,
+			'timeout'     => 10,
+		)
+	);
+
+	if ( is_wp_error( $response ) ) {
+		monopage_add_validation_check( $checks, 'home_http', 'fail', 'error', $response->get_error_message() );
+		return;
+	}
+
+	$status_code = absint( wp_remote_retrieve_response_code( $response ) );
+	monopage_add_validation_check(
+		$checks,
+		'home_http',
+		$status_code >= 200 && $status_code < 400 ? 'pass' : 'fail',
+		'error',
+		sprintf(
+			/* translators: %d: HTTP response status code. */
+			__( 'Homepage HTTP response code: %d.', 'monopage' ),
+			$status_code
+		)
+	);
+}
+
+/**
+ * Check whether validation checks contain failures.
+ *
+ * @param array[] $checks Validation checks.
+ * @return bool
+ */
+function monopage_validation_has_failures( $checks ) {
+	foreach ( $checks as $check ) {
+		if ( isset( $check['status'] ) && 'fail' === $check['status'] ) {
+			return true;
+		}
+	}
+
+	return false;
+}
+
+/**
+ * Get template content for link validation.
+ *
+ * @param string $theme Theme stylesheet slug.
+ * @return string
+ */
+function monopage_get_validation_template_content( $theme ) {
+	$template = ( post_type_exists( 'wp_template' ) && taxonomy_exists( 'wp_theme' ) ) ? monopage_get_saved_front_page_template( $theme ) : null;
+
+	if ( $template instanceof WP_Post ) {
+		return (string) $template->post_content;
+	}
+
+	if ( MONOPAGE_CANVAS_THEME === $theme ) {
+		return monopage_get_default_front_page_template_content();
+	}
+
+	return '';
+}
+
+/**
+ * Validate that template links stay on-page and target existing anchors.
+ *
+ * @param string $content Template content.
+ * @return array
+ */
+function monopage_validate_template_links( $content ) {
+	$anchors = monopage_extract_template_anchors( $content );
+	$links   = monopage_extract_template_links( $content );
+	$errors  = array();
+
+	foreach ( $links as $link ) {
+		if ( 0 !== strpos( $link, '#' ) ) {
+			$errors[] = sprintf(
+				/* translators: %s: URL found in the template. */
+				__( 'Off-page link found: %s.', 'monopage' ),
+				$link
+			);
+			continue;
+		}
+
+		$target = trim( rawurldecode( substr( $link, 1 ) ) );
+		if ( '' === $target || ! isset( $anchors[ $target ] ) ) {
+			$errors[] = sprintf(
+				/* translators: %s: Hash link found in the template. */
+				__( 'Missing anchor target: %s.', 'monopage' ),
+				$link
+			);
+		}
+	}
+
+	return array(
+		'valid'        => empty( $errors ),
+		'anchor_count' => count( $anchors ),
+		'link_count'   => count( $links ),
+		'messages'     => $errors,
+	);
+}
+
+/**
+ * Extract HTML ids and block anchors from template content.
+ *
+ * @param string $content Template content.
+ * @return array
+ */
+function monopage_extract_template_anchors( $content ) {
+	$anchors = array();
+	$matches = array();
+
+	if ( preg_match_all( '/\bid=(["\'])(.*?)\1/', $content, $matches ) ) {
+		foreach ( $matches[2] as $anchor ) {
+			$anchor = trim( $anchor );
+			if ( '' !== $anchor ) {
+				$anchors[ $anchor ] = true;
+			}
+		}
+	}
+
+	if ( preg_match_all( '/"anchor"\s*:\s*"([^"]+)"/', $content, $matches ) ) {
+		foreach ( $matches[1] as $anchor ) {
+			$decoded = json_decode( '"' . $anchor . '"' );
+			$anchor  = trim( is_string( $decoded ) ? $decoded : $anchor );
+			if ( '' !== $anchor ) {
+				$anchors[ $anchor ] = true;
+			}
+		}
+	}
+
+	return $anchors;
+}
+
+/**
+ * Extract regular href links and Navigation block URLs from template content.
+ *
+ * @param string $content Template content.
+ * @return string[]
+ */
+function monopage_extract_template_links( $content ) {
+	$links   = array();
+	$matches = array();
+
+	if ( preg_match_all( '/href=(["\'])(.*?)\1/', $content, $matches ) ) {
+		foreach ( $matches[2] as $link ) {
+			$link = trim( $link );
+			if ( '' !== $link ) {
+				$links[] = $link;
+			}
+		}
+	}
+
+	if ( preg_match_all( '/<!--\s+wp:navigation-link\s+({.*?})\s+\/-->/s', $content, $matches ) ) {
+		foreach ( $matches[1] as $attributes_json ) {
+			$attributes = json_decode( $attributes_json, true );
+			if ( is_array( $attributes ) && ! empty( $attributes['url'] ) && is_scalar( $attributes['url'] ) ) {
+				$links[] = trim( (string) $attributes['url'] );
+			}
+		}
+	}
+
+	return array_values( array_unique( $links ) );
+}
+
+/**
+ * Count registered Monopage Canvas patterns.
+ *
+ * @return int
+ */
+function monopage_get_registered_canvas_pattern_count() {
+	if ( ! class_exists( 'WP_Block_Patterns_Registry' ) ) {
+		return 0;
+	}
+
+	$patterns = WP_Block_Patterns_Registry::get_instance()->get_all_registered();
+	$count    = 0;
+
+	foreach ( $patterns as $pattern ) {
+		if ( isset( $pattern['name'] ) && 0 === strpos( $pattern['name'], 'monopage-canvas/' ) ) {
+			++$count;
+		}
+	}
+
+	return $count;
+}
+
+/**
  * Check whether a page is Monopage's routing Home page.
  *
  * @param int $post_id Post ID.
@@ -1098,6 +1477,51 @@ if ( defined( 'WP_CLI' ) && WP_CLI ) {
 			$status = monopage_get_status();
 
 			\WP_CLI\Utils\format_items( $format, array( $status ), array_keys( $status ) );
+		}
+
+		/**
+		 * Validate the current Monopage setup.
+		 *
+		 * ## OPTIONS
+		 *
+		 * [--allow-custom-theme]
+		 * : Treat a non-Canvas block theme as a warning instead of a failure.
+		 *
+		 * [--require-focus]
+		 * : Treat disabled Focus Mode as a failure instead of a warning.
+		 *
+		 * [--check-http]
+		 * : Request the homepage and fail on non-2xx/3xx responses.
+		 *
+		 * [--format=<format>]
+		 * : Output format. table, json, csv, yaml, or count.
+		 *
+		 * @param array $args Positional args.
+		 * @param array $assoc_args Associative args.
+		 */
+		public function validate( $args, $assoc_args ) {
+			$format = isset( $assoc_args['format'] ) ? $assoc_args['format'] : 'table';
+			$checks = monopage_get_validation_checks(
+				array(
+					'allow_custom_theme' => \WP_CLI\Utils\get_flag_value( $assoc_args, 'allow-custom-theme', false ),
+					'require_focus'      => \WP_CLI\Utils\get_flag_value( $assoc_args, 'require-focus', false ),
+					'check_http'         => \WP_CLI\Utils\get_flag_value( $assoc_args, 'check-http', false ),
+				)
+			);
+
+			\WP_CLI\Utils\format_items( $format, $checks, array( 'check', 'status', 'severity', 'message' ) );
+
+			if ( monopage_validation_has_failures( $checks ) ) {
+				if ( 'json' !== $format ) {
+					\WP_CLI::warning( 'Monopage validation failed.' );
+				}
+
+				\WP_CLI::halt( 1 );
+			}
+
+			if ( 'table' === $format ) {
+				\WP_CLI::success( 'Monopage validation passed.' );
+			}
 		}
 
 		/**

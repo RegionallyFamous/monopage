@@ -15,6 +15,7 @@ const wpSsh = options.ssh || "";
 const forceHome = Boolean(options["force-home"]);
 const forceTemplate = Boolean(options["force-template"]);
 const skipPackage = Boolean(options["skip-package"]);
+const checkHttp = Boolean(options["check-http"]);
 const pluginZip = path.resolve(root, options["plugin-zip"] || `build/monopage-${version}.zip`);
 const themeZip = path.resolve(root, options["theme-zip"] || `build/monopage-canvas-${version}.zip`);
 const backupName = `monopage-backup-${timestamp()}.sql`;
@@ -53,6 +54,7 @@ const commands = [
     ...(forceHome ? ["--force-home"] : []),
     ...(forceTemplate ? ["--force-template"] : []),
   ],
+  [...wpBase, "monopage", "validate", "--require-focus", ...(checkHttp ? ["--check-http"] : [])],
   [...wpBase, "monopage", "status", "--format=json"],
 ];
 

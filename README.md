@@ -28,6 +28,7 @@ The Blueprint installs Monopage Canvas, activates the Monopage plugin, logs in a
 npm install
 npm run local:start
 npm run local:setup
+npm run local:validate
 npm run local:status
 ```
 
@@ -75,6 +76,19 @@ node scripts/plugin-check.mjs --path=/path/to/wordpress
 node scripts/plugin-check.mjs --path=/path/to/wordpress --runtime
 ```
 
+## Runtime Validation
+
+Validate a configured Monopage install through WP-CLI:
+
+```bash
+wp monopage validate --require-focus
+wp monopage validate --require-focus --check-http
+```
+
+`validate` checks the static front-page assignment, routing Home page, active block theme, saved `front-page` template, template anchor links, registered Canvas patterns, Focus Mode, and generated home/editor URLs.
+
+Use `--check-http` only when `home_url()` is reachable from the WP-CLI runtime. For local `wp-env`, use `npm run local:validate` without the HTTP check.
+
 ## Packaging
 
 Update release metadata with one command:
@@ -110,6 +124,8 @@ node scripts/deploy-monopage.mjs --path=/path/to/wordpress
 Use `--force-home` only when Monopage should replace an existing static front page assignment.
 
 Use `--force-template` only when Monopage should replace saved Site Editor edits to the `front-page` template with the current Canvas default.
+
+Add `--check-http` to the deploy script when the target environment can serve the homepage back to WP-CLI during validation.
 
 ## Install The Codex Skill
 

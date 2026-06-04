@@ -4,7 +4,7 @@ Tags: site editor, one page, block theme, wp-cli
 Requires at least: 6.5
 Tested up to: 7.0
 Requires PHP: 7.4
-Stable tag: 0.2.12
+Stable tag: 0.2.13
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -28,6 +28,9 @@ V1 features:
 == WP-CLI ==
 
 wp monopage status
+wp monopage validate
+wp monopage validate --require-focus
+wp monopage validate --check-http
 wp monopage setup
 wp monopage setup --force-home
 wp monopage setup --force-template
@@ -36,6 +39,9 @@ wp monopage focus enable
 wp monopage focus disable
 
 == Changelog ==
+
+= 0.2.13 =
+* Add WP-CLI validation and deploy setup health checks.
 
 = 0.2.12 =
 * Add bundled Canvas section patterns and pattern link validation.

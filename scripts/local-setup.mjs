@@ -11,6 +11,7 @@ const commands = [
   ["wp-env", "run", "cli", "wp", "theme", "activate", "monopage-canvas"],
   ["wp-env", "run", "cli", "wp", "plugin", "activate", "monopage"],
   ["wp-env", "run", "cli", "wp", "monopage", "setup", "--force-home"],
+  ["wp-env", "run", "cli", "wp", "monopage", "validate", "--require-focus"],
   ["wp-env", "run", "cli", "wp", "monopage", "status"],
 ];
 
@@ -30,4 +31,3 @@ for (const command of commands) {
     process.exit(1);
   }
 }
-
