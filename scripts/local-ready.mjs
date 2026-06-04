@@ -7,6 +7,7 @@ const root = path.resolve(__dirname, "..");
 const options = parseArgs(process.argv.slice(2));
 const dryRun = Boolean(options["dry-run"]);
 const preserveTemplate = Boolean(options["preserve-template"]);
+const capture = Boolean(options.capture);
 const npm = "win32" === process.platform ? "npm.cmd" : "npm";
 const steps = [
   {
@@ -27,6 +28,13 @@ const steps = [
   },
 ];
 
+if (capture) {
+  steps.push({
+    label: "homepage screenshots",
+    command: [npm, "run", "local:capture"],
+  });
+}
+
 for (const step of steps) {
   runStep(step);
 }
@@ -40,6 +48,9 @@ console.log("Local Monopage is ready:");
 console.log("- Home: http://localhost:8888/");
 console.log("- Admin: http://localhost:8888/wp-admin/");
 console.log("- Site Editor: http://localhost:8888/wp-admin/site-editor.php?p=/wp_template/monopage-canvas//front-page&canvas=edit");
+if (!capture) {
+  console.log("- Screenshots: npm run local:capture");
+}
 
 function runStep(step) {
   const printable = step.command.join(" ");

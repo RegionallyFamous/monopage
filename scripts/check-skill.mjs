@@ -37,6 +37,7 @@ const skillRequirements = [
   ["local ready command", "npm run local:ready"],
   ["template refresh command", "npm run local:refresh-template"],
   ["homepage smoke command", "npm run local:smoke"],
+  ["homepage capture command", "npm run local:capture"],
   ["admin smoke command", "npm run local:admin-smoke"],
   ["Playground check command", "npm run check:playground"],
   ["deploy plan check command", "npm run check:deploy"],

@@ -95,6 +95,14 @@ npm run local:smoke
 
 This checks required starter copy, same-page body links, section anchors, and served Canvas image assets on the local homepage. Run it after `local:setup` or `local:refresh-template`.
 
+When visual layout, hero, mobile, image, or first-viewport composition changes are part of the work, also capture screenshots:
+
+```bash
+npm run local:capture
+```
+
+This uses a local Chrome or Chromium install and writes desktop and mobile screenshots to `build/screenshots/`. Use `npm run local:ready -- --capture` when setup, smoke checks, admin checks, status, and screenshots should run as one local workflow.
+
 When checking Focus Mode admin behavior on the local wp-env runtime, use:
 
 ```bash
@@ -146,8 +154,8 @@ This verifies chained `npm run ...`, `npm test`, and `node scripts/*.mjs` comman
 3. Back up before changing the site:
    - `wp --path=<target> db export monopage-backup-YYYYMMDD-HHMMSS.sql`
 4. Install and activate:
-   - `wp --path=<target> theme install build/monopage-canvas-0.2.32.zip --force --activate`
-   - `wp --path=<target> plugin install build/monopage-0.2.32.zip --force --activate`
+   - `wp --path=<target> theme install build/monopage-canvas-0.2.33.zip --force --activate`
+   - `wp --path=<target> plugin install build/monopage-0.2.33.zip --force --activate`
 5. Run setup:
    - `wp --path=<target> monopage setup`
    - Use `--force-home` only when the user explicitly wants Monopage to replace an existing static front page assignment.

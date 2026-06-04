@@ -141,6 +141,15 @@ npm run local:refresh-template
 
 `local:ready` starts wp-env, refreshes the saved front-page template from the bundled Canvas template, validates Monopage, smokes the rendered homepage, smokes authenticated Focus Mode admin behavior, prints status, and returns the home/admin/Site Editor URLs. Use `npm run local:ready -- --preserve-template` when you intentionally want to preserve saved Site Editor edits during setup.
 
+For visual or layout changes, capture the rendered homepage after the template refresh:
+
+```bash
+npm run local:ready -- --capture
+npm run local:capture
+```
+
+`local:capture` saves desktop and mobile screenshots to `build/screenshots/` using a local Chrome or Chromium install. Set `MONOPAGE_CHROME=/path/to/browser` when the browser is installed outside the usual locations.
+
 Local WordPress:
 
 ```text
@@ -190,6 +199,7 @@ npm run check:docs
 npm run check:hygiene
 npm run check:scripts
 npm run local:ready -- --dry-run
+npm run local:capture:dry-run
 npm run local:validate
 npm run local:admin-smoke
 npm run local:smoke
@@ -208,6 +218,8 @@ npm run release:check
 ```
 
 `local:smoke` checks the rendered homepage, required starter copy, same-page body links, section anchors, and served Canvas image assets. Run it after `local:setup` or `local:refresh-template`.
+
+`local:capture` saves desktop and mobile homepage screenshots after local setup so hero, header, first-viewport, and mobile overflow changes can be reviewed without hand-building browser commands.
 
 `check:js` discovers JavaScript files in `plugins/`, `themes/`, and `scripts/`, then runs `node --check` on each file. Add new helper scripts normally; the syntax gate picks them up without editing `package.json`.
 
@@ -339,6 +351,7 @@ The `monopage-deploy` skill should guide agents to:
 - save project-bound images into the repo
 - run `npm test` before packaging
 - run `npm run release:check` before release-minded changes when Docker/wp-env are available
+- run `npm run local:capture` after visual Canvas changes when a local browser is available
 - run `npm run local:admin-smoke` after Focus Mode, admin redirect, or Site Editor entrypoint changes when wp-env is available
 - run `wp monopage validate --require-focus` after setup when a WordPress runtime is available
 - run Plugin Check before release when a WordPress runtime is available

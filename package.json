@@ -1,6 +1,6 @@
 {
   "name": "monopage",
-  "version": "0.2.32",
+  "version": "0.2.33",
   "private": true,
   "description": "Monopage plugin, canvas theme, and Codex deployment skill.",
   "scripts": {
@@ -37,6 +37,8 @@
     "local:setup": "node scripts/local-setup.mjs",
     "local:refresh-template": "node scripts/local-setup.mjs --force-template",
     "local:smoke": "node scripts/homepage-smoke.mjs",
+    "local:capture": "node scripts/capture-homepage.mjs",
+    "local:capture:dry-run": "node scripts/capture-homepage.mjs --dry-run",
     "local:admin-smoke": "node scripts/admin-smoke.mjs",
     "local:validate": "wp-env run cli wp monopage validate --require-focus",
     "local:status": "wp-env run cli wp monopage status",

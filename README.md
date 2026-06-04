@@ -43,6 +43,15 @@ npm run local:refresh-template
 
 `local:ready` runs that refresh, validates Monopage, checks the rendered homepage, checks authenticated Focus Mode admin behavior, prints status, and then gives you the home/admin/Site Editor URLs. Use `npm run local:ready -- --preserve-template` when you want to keep existing saved Site Editor edits during the setup step.
 
+When judging layout or visual changes, capture the local homepage at desktop and mobile sizes:
+
+```bash
+npm run local:ready -- --capture
+npm run local:capture
+```
+
+Screenshots are written to `build/screenshots/`.
+
 ## Development Checks
 
 Run the full validation suite before packaging or deploying:
@@ -72,6 +81,7 @@ npm run check:playground
 npm run check:skill
 npm run check:versions
 npm run local:ready -- --dry-run
+npm run local:capture:dry-run
 npm run local:admin-smoke
 npm run local:smoke
 npm run package:verify
@@ -96,6 +106,8 @@ npm run package:verify
 `check:skill` confirms the bundled Codex skill still carries the required one-page, block-first, deployment safety, validation, image-generation, and Focus Mode guidance.
 
 `local:smoke` checks the rendered local homepage, required starter copy, same-page body links, section anchors, and the served Canvas image assets. Run it after `local:setup` or `local:refresh-template`.
+
+`local:capture` uses a local Chrome or Chromium install to save desktop and mobile homepage screenshots into `build/screenshots/`. Set `MONOPAGE_CHROME=/path/to/browser` if Chrome is installed somewhere unusual.
 
 `local:admin-smoke` logs in to the local wp-env admin and checks Focus Mode redirects, the Site Editor canvas target, Media Library reachability, Monopage controls, the routing Home page editor redirect, and the full-dashboard escape.
 
