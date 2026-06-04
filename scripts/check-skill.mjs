@@ -42,6 +42,7 @@ const skillRequirements = [
   ["runtime validation", "wp --path=<target> monopage validate --require-focus"],
   ["status command", "wp --path=<target> monopage status --format=json"],
   ["Plugin Check command", "npm run plugin:check"],
+  ["package verification command", "npm run package:verify"],
   ["force-home safety", "Do not pass `--force-home`"],
   ["force-template safety", "Do not pass `--force-template`"],
   ["skill install command", "npm run skill:install"],

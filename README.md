@@ -63,6 +63,7 @@ npm run check:playground
 npm run check:skill
 npm run check:versions
 npm run local:smoke
+npm run package:verify
 ```
 
 `check:canvas` confirms the Canvas stylesheet is wired for both the Site Editor and the public front end, that CSS asset references are packaged and reasonably sized, and that bundled pattern metadata is valid.
@@ -74,6 +75,8 @@ npm run local:smoke
 `check:skill` confirms the bundled Codex skill still carries the required one-page, block-first, deployment safety, validation, image-generation, and Focus Mode guidance.
 
 `local:smoke` checks the rendered local homepage, required starter copy, same-page body links, section anchors, and the served Canvas image assets. Run it after `local:setup` or `local:refresh-template`.
+
+`package:verify` checks the current version's built plugin and theme ZIPs for required files, correct version metadata, expected top-level folders, and forbidden bundled paths.
 
 Run the full release gate before publishing or pushing a release-minded change:
 
@@ -126,6 +129,7 @@ Build the plugin and theme ZIPs:
 
 ```bash
 npm run package
+npm run package:verify
 ```
 
 Artifacts are written into `build/`.

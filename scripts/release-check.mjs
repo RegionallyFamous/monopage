@@ -40,6 +40,11 @@ const steps = [
     skip: Boolean(options["skip-package"]),
   },
   {
+    label: "package contents",
+    command: ["npm", "run", "package:verify"],
+    skip: Boolean(options["skip-package"]),
+  },
+  {
     label: "deploy dry run",
     command: ["npm", "run", "deploy:dry-run"],
   },

@@ -16,6 +16,7 @@ const requiredFiles = [
   "themes/monopage-canvas/theme.json",
   "skills/monopage-deploy/SKILL.md",
   "playground/blueprint.json",
+  "scripts/check-package-contents.mjs",
   "scripts/check-playground.mjs",
   "scripts/check-skill.mjs",
   "scripts/homepage-smoke.mjs",
@@ -25,6 +26,7 @@ const commands = [
   { name: "node", required: true, note: "JavaScript tooling" },
   { name: "php", required: true, note: "PHP linting" },
   { name: "zip", required: true, note: "package builds" },
+  { name: "unzip", required: true, note: "package content verification" },
   { name: "docker", required: false, note: "wp-env and Plugin Check" },
   { name: "wp", required: false, note: "real-host deploys" },
   { name: "wp-env", required: false, note: "local WordPress smoke tests" },
@@ -40,6 +42,7 @@ runScriptCheck("canvas theme", "scripts/check-canvas-theme.mjs");
 runScriptCheck("template links", "scripts/check-template-links.mjs");
 runScriptCheck("Playground", "scripts/check-playground.mjs");
 runScriptCheck("skill contract", "scripts/check-skill.mjs");
+runPackageVerify();
 checkFiles();
 checkCommands();
 checkDockerDaemon();
@@ -86,6 +89,34 @@ function runScriptCheck(label, script) {
   }
 
   failures.push(`${label} check failed`);
+  if (result.stderr.trim()) {
+    console.error(result.stderr.trim());
+  }
+  if (result.stdout.trim()) {
+    console.error(result.stdout.trim());
+  }
+}
+
+function runPackageVerify() {
+  const pluginZip = path.join(root, "build", `monopage-${manifest.version}.zip`);
+  const themeZip = path.join(root, "build", `monopage-canvas-${manifest.version}.zip`);
+
+  if (!fs.existsSync(pluginZip) || !fs.existsSync(themeZip)) {
+    console.log("INFO package contents: current-version ZIPs are not built yet; release:check verifies them after packaging.");
+    return;
+  }
+
+  const result = spawnSync("npm", ["run", "package:verify"], {
+    cwd: root,
+    encoding: "utf8",
+  });
+
+  if (result.status === 0) {
+    console.log(`OK package contents: ${result.stdout.trim().split(/\r?\n/).pop()}`);
+    return;
+  }
+
+  failures.push("package contents check failed");
   if (result.stderr.trim()) {
     console.error(result.stderr.trim());
   }

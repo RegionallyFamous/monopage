@@ -59,7 +59,7 @@ Before a release-minded commit or deploy from the Monopage repo, prefer:
 npm run release:check
 ```
 
-This runs repository checks, doctor, a local template refresh plus Monopage validation, a rendered-homepage smoke check, Playground Blueprint validation, Plugin Check, package builds, deploy dry-run, and Playground URL generation. Use `npm run release:check:dry-run` to inspect the sequence. If Docker/wp-env is unavailable, use `node scripts/release-check.mjs --skip-local --skip-plugin-check` and run the skipped checks later on a WordPress runtime.
+This runs repository checks, doctor, a local template refresh plus Monopage validation, a rendered-homepage smoke check, Playground Blueprint validation, Plugin Check, package builds, package content verification, deploy dry-run, and Playground URL generation. Use `npm run release:check:dry-run` to inspect the sequence. If Docker/wp-env is unavailable, use `node scripts/release-check.mjs --skip-local --skip-plugin-check` and run the skipped checks later on a WordPress runtime.
 
 When only checking local template changes, use:
 
@@ -92,11 +92,12 @@ This verifies the Blueprint installs the expected theme/plugin repo paths, refre
    - `wp --path=<target> core version`
 2. Package Monopage from the source repo if needed:
    - `npm run package`
+   - `npm run package:verify`
 3. Back up before changing the site:
    - `wp --path=<target> db export monopage-backup-YYYYMMDD-HHMMSS.sql`
 4. Install and activate:
-   - `wp --path=<target> theme install build/monopage-canvas-0.2.19.zip --force --activate`
-   - `wp --path=<target> plugin install build/monopage-0.2.19.zip --force --activate`
+   - `wp --path=<target> theme install build/monopage-canvas-0.2.20.zip --force --activate`
+   - `wp --path=<target> plugin install build/monopage-0.2.20.zip --force --activate`
 5. Run setup:
    - `wp --path=<target> monopage setup`
    - Use `--force-home` only when the user explicitly wants Monopage to replace an existing static front page assignment.
@@ -111,6 +112,7 @@ This verifies the Blueprint installs the expected theme/plugin repo paths, refre
    - Smoke the rendered local homepage after Canvas template or asset changes: `npm run local:smoke`
    - Confirm the public Playground demo path after Blueprint or URL changes: `npm run check:playground`
    - Run Plugin Check on a local or staging WordPress install before release: `npm run plugin:check`
+   - Verify package contents before installing built ZIPs: `npm run package:verify`
    - Confirm the homepage URL loads.
    - Confirm `/wp-admin/site-editor.php` loads for an authenticated user.
    - Confirm `/wp-admin/` redirects to the Site Editor while Focus Mode is active.
