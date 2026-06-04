@@ -1,6 +1,6 @@
 {
   "name": "monopage",
-  "version": "0.2.30",
+  "version": "0.2.31",
   "private": true,
   "description": "Monopage plugin, canvas theme, and Codex deployment skill.",
   "scripts": {
@@ -12,6 +12,7 @@
     "check:docs": "node scripts/check-doc-commands.mjs",
     "check:hygiene": "node scripts/check-repo-hygiene.mjs",
     "check:links": "node scripts/check-template-links.mjs",
+    "check:scripts": "node scripts/check-package-scripts.mjs",
     "check:playground": "node scripts/check-playground.mjs",
     "check:skill": "node scripts/check-skill.mjs",
     "check:versions": "node scripts/check-versions.mjs",
@@ -39,7 +40,7 @@
     "local:admin-smoke": "node scripts/admin-smoke.mjs",
     "local:validate": "wp-env run cli wp monopage validate --require-focus",
     "local:status": "wp-env run cli wp monopage status",
-    "test": "npm run lint:php && npm run check:js && npm run check:json && npm run check:canvas && npm run check:deploy && npm run check:docs && npm run check:hygiene && npm run check:links && npm run check:playground && npm run check:skill && npm run check:versions && npm run package:dry-run"
+    "test": "npm run lint:php && npm run check:js && npm run check:json && npm run check:canvas && npm run check:deploy && npm run check:docs && npm run check:hygiene && npm run check:links && npm run check:scripts && npm run check:playground && npm run check:skill && npm run check:versions && npm run package:dry-run"
   },
   "devDependencies": {
     "@wordpress/env": "^11.5.0"

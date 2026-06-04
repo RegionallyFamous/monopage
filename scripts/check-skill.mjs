@@ -41,6 +41,7 @@ const skillRequirements = [
   ["Playground check command", "npm run check:playground"],
   ["deploy plan check command", "npm run check:deploy"],
   ["docs command check", "npm run check:docs"],
+  ["package scripts check", "npm run check:scripts"],
   ["WP-CLI install check", "wp --path=<target> core is-installed"],
   ["backup before deploy", "wp --path=<target> db export"],
   ["setup command", "wp --path=<target> monopage setup"],

@@ -67,6 +67,7 @@ npm run check:deploy
 npm run check:docs
 npm run check:hygiene
 npm run check:links
+npm run check:scripts
 npm run check:playground
 npm run check:skill
 npm run check:versions
@@ -87,6 +88,8 @@ npm run package:verify
 `check:hygiene` confirms ignored and export-ignored release debris stays out of tracked source and GitHub source archives, including package ZIPs, SQL backups, env files, debug logs, local wp-env data, and dependency folders.
 
 `check:links` confirms the default front-page template and bundled patterns only use on-page links and that every `#anchor` target exists.
+
+`check:scripts` confirms package scripts reference real package scripts and helper files.
 
 `check:playground` confirms the Blueprint installs Monopage Canvas and the Monopage plugin from the expected repo paths, runs setup with template refresh, and that the generated Playground URL stays in seamless mode.
 

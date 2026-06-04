@@ -167,6 +167,7 @@ The test suite runs:
 - documented command validation
 - repository hygiene validation
 - one-page link validation for templates and patterns
+- package script reference validation
 - Playground Blueprint and seamless URL validation
 - Codex skill contract validation
 - version metadata validation
@@ -187,6 +188,7 @@ npm run doctor
 npm run check:js
 npm run check:docs
 npm run check:hygiene
+npm run check:scripts
 npm run local:ready -- --dry-run
 npm run local:validate
 npm run local:admin-smoke
@@ -218,6 +220,8 @@ npm run release:check
 `check:docs` checks documented `npm run ...`, `npm test`, and `node scripts/*.mjs` commands in the README, developer wiki, and Codex skill so docs stay aligned with `package.json` and helper scripts.
 
 `check:hygiene` checks `.gitignore`, `.gitattributes`, tracked files, and `export-ignore` behavior so package ZIPs, SQL backups, env files, debug logs, local wp-env data, build output, and dependency folders stay out of tracked source and generated source archives.
+
+`check:scripts` checks package script references so chained `npm run ...`, `npm test`, and `node scripts/*.mjs` commands stay aligned with `package.json` and helper files.
 
 `check:skill` checks that `skills/monopage-deploy/SKILL.md` and `agents/openai.yaml` preserve the required Monopage agent contract: one-page navigation, Site Editor `front-page` editing, block-first design, generated-image handling, deploy backups, force flag safety, and validation commands.
 
