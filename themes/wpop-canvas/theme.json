@@ -30,9 +30,29 @@
 					"name": "Green"
 				},
 				{
+					"slug": "teal",
+					"color": "#0d9488",
+					"name": "Teal"
+				},
+				{
 					"slug": "coral",
 					"color": "#ff6b5f",
 					"name": "Coral"
+				},
+				{
+					"slug": "lime",
+					"color": "#c8df4a",
+					"name": "Lime"
+				},
+				{
+					"slug": "mist",
+					"color": "#eaf6f4",
+					"name": "Mist"
+				},
+				{
+					"slug": "line",
+					"color": "#dfe3e8",
+					"name": "Line"
 				}
 			]
 		},
@@ -156,4 +176,3 @@
 		}
 	}
 }
-

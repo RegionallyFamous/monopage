@@ -3,7 +3,7 @@
  * Plugin Name:       WPOP
  * Plugin URI:        https://github.com/RegionallyFamous/wpop
  * Description:       WordPress One Pager focuses WordPress around the Site Editor and a single homepage template.
- * Version:           0.1.1
+ * Version:           0.2.0
  * Requires at least: 6.5
  * Requires PHP:      7.4
  * Author:            WeirdPress
@@ -16,7 +16,7 @@
 
 defined( 'ABSPATH' ) || exit;
 
-define( 'WPOP_VERSION', '0.1.1' );
+define( 'WPOP_VERSION', '0.2.0' );
 define( 'WPOP_FILE', __FILE__ );
 define( 'WPOP_DIR', plugin_dir_path( __FILE__ ) );
 define( 'WPOP_URL', plugin_dir_url( __FILE__ ) );
@@ -36,6 +36,7 @@ add_action( 'admin_bar_menu', 'wpop_prune_admin_bar', 999 );
 add_action( 'admin_post_wpop_toggle_focus', 'wpop_handle_toggle_focus' );
 add_action( 'admin_post_wpop_toggle_full_dashboard', 'wpop_handle_toggle_full_dashboard' );
 add_action( 'admin_post_wpop_run_setup', 'wpop_handle_run_setup' );
+add_action( 'after_switch_theme', 'wpop_maybe_setup_canvas_defaults' );
 add_filter( 'admin_body_class', 'wpop_admin_body_class' );
 add_filter( 'login_redirect', 'wpop_login_redirect', 10, 3 );
 
@@ -45,6 +46,8 @@ add_filter( 'login_redirect', 'wpop_login_redirect', 10, 3 );
 function wpop_activate() {
 	add_option( WPOP_FOCUS_OPTION, '1' );
 	update_option( WPOP_VERSION_OPTION, WPOP_VERSION );
+
+	wpop_setup_one_pager();
 }
 
 /**
@@ -459,8 +462,9 @@ function wpop_setup_one_pager( $args = array() ) {
 	$args = wp_parse_args(
 		$args,
 		array(
-			'force_home' => false,
-			'home_title' => __( 'Home', 'wpop' ),
+			'force_home'    => false,
+			'home_title'    => __( 'Home', 'wpop' ),
+			'seed_template' => true,
 		)
 	);
 
@@ -484,11 +488,137 @@ function wpop_setup_one_pager( $args = array() ) {
 	update_option( 'page_on_front', $home_page->ID );
 	update_option( 'page_for_posts', 0 );
 
+	$template_id = 0;
+	if ( $args['seed_template'] ) {
+		$template_id = wpop_seed_default_front_page_template();
+		if ( is_wp_error( $template_id ) ) {
+			return $template_id;
+		}
+	}
+
 	return array(
-		'changed' => true,
-		'home_id' => $home_page->ID,
-		'message' => __( 'WPOP homepage setup complete.', 'wpop' ),
+		'changed'     => true,
+		'home_id'     => $home_page->ID,
+		'template_id' => absint( $template_id ),
+		'message'     => __( 'WPOP homepage setup complete.', 'wpop' ),
 	);
+}
+
+/**
+ * Seed WPOP defaults when the companion Canvas theme is activated after the plugin.
+ */
+function wpop_maybe_setup_canvas_defaults() {
+	if ( WPOP_CANVAS_THEME !== get_stylesheet() ) {
+		return;
+	}
+
+	wpop_setup_one_pager();
+}
+
+/**
+ * Save the WPOP marketing homepage as the editable front-page template.
+ *
+ * Existing saved front-page templates are preserved so setup does not overwrite
+ * Site Editor work on existing installations.
+ *
+ * @return int|WP_Error Template post ID, 0 when unavailable, or WP_Error on failure.
+ */
+function wpop_seed_default_front_page_template() {
+	if ( WPOP_CANVAS_THEME !== get_stylesheet() || ! wpop_site_uses_block_theme() ) {
+		return 0;
+	}
+
+	if ( ! post_type_exists( 'wp_template' ) || ! taxonomy_exists( 'wp_theme' ) ) {
+		return 0;
+	}
+
+	$theme = get_stylesheet();
+	$existing_template = wpop_get_saved_front_page_template( $theme );
+	if ( $existing_template instanceof WP_Post ) {
+		return $existing_template->ID;
+	}
+
+	$content = wpop_get_default_front_page_template_content();
+	if ( '' === trim( $content ) ) {
+		return new WP_Error( 'wpop_missing_template', __( 'WPOP Canvas front-page template is missing.', 'wpop' ) );
+	}
+
+	$template_id = wp_insert_post(
+		array(
+			'post_type'    => 'wp_template',
+			'post_status'  => 'publish',
+			'post_title'   => __( 'Front Page', 'wpop' ),
+			'post_name'    => 'front-page',
+			'post_excerpt' => __( 'Default WPOP one-page marketing homepage.', 'wpop' ),
+			'post_content' => $content,
+		),
+		true
+	);
+
+	if ( is_wp_error( $template_id ) ) {
+		return $template_id;
+	}
+
+	$terms = wp_set_object_terms( $template_id, $theme, 'wp_theme' );
+	if ( is_wp_error( $terms ) ) {
+		return $terms;
+	}
+
+	update_post_meta( $template_id, 'origin', 'theme' );
+
+	return $template_id;
+}
+
+/**
+ * Get an existing saved front-page template for a theme.
+ *
+ * @param string $theme Theme stylesheet slug.
+ * @return WP_Post|null
+ */
+function wpop_get_saved_front_page_template( $theme ) {
+	$query = new WP_Query(
+		array(
+			'post_type'              => 'wp_template',
+			'post_status'            => 'any',
+			'post_name__in'          => array( 'front-page' ),
+			'posts_per_page'         => 1,
+			'no_found_rows'          => true,
+			'update_post_meta_cache' => false,
+			'update_post_term_cache' => false,
+			'tax_query'              => array(
+				array(
+					'taxonomy' => 'wp_theme',
+					'field'    => 'name',
+					'terms'    => $theme,
+				),
+			),
+		)
+	);
+
+	return isset( $query->posts[0] ) && $query->posts[0] instanceof WP_Post ? $query->posts[0] : null;
+}
+
+/**
+ * Read the default template content from WPOP Canvas.
+ *
+ * @return string
+ */
+function wpop_get_default_front_page_template_content() {
+	$theme = wp_get_theme( WPOP_CANVAS_THEME );
+
+	if ( ! $theme->exists() ) {
+		return '';
+	}
+
+	$template_path = trailingslashit( $theme->get_stylesheet_directory() ) . 'templates/front-page.html';
+
+	if ( ! file_exists( $template_path ) || ! is_readable( $template_path ) ) {
+		return '';
+	}
+
+	$content = file_get_contents( $template_path );
+
+	return false === $content ? '' : $content;
 }
 
 /**
@@ -786,7 +916,12 @@ if ( defined( 'WP_CLI' ) && WP_CLI ) {
 				\WP_CLI::error( $result->get_error_message() );
 			}
 
-			\WP_CLI::success( $result['message'] . ' Home page ID: ' . $result['home_id'] );
+			$message = $result['message'] . ' Home page ID: ' . $result['home_id'];
+			if ( ! empty( $result['template_id'] ) ) {
+				$message .= ' Front template ID: ' . $result['template_id'];
+			}
+
+			\WP_CLI::success( $message );
 		}
 
 		/**

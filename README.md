@@ -5,7 +5,7 @@ WPOP, WordPress One Pager, is a focused WordPress setup for sites that should be
 ## Project Layout
 
 - `plugins/wpop/`: Focus Mode, one-page setup, admin controls, and WP-CLI commands.
-- `themes/wpop-canvas/`: Minimal block theme with the canonical editable `front-page.html`.
+- `themes/wpop-canvas/`: Minimal block theme with the canonical editable marketing `front-page.html`.
 - `skills/wpop-deploy/`: Companion Codex skill source for deploying WPOP through WP-CLI.
 - `scripts/`: Packaging, local setup, validation, and deploy helpers.
 
