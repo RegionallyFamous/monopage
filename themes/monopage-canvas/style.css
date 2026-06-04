@@ -3,7 +3,7 @@ Theme Name: Monopage Canvas
 Theme URI: https://github.com/RegionallyFamous/monopage
 Author: WeirdPress
 Description: A block theme for focused Monopage one-page sites.
-Version: 0.2.38
+Version: 0.2.39
 Requires at least: 6.5
 Requires PHP: 7.4
 License: GPL-2.0-or-later
@@ -61,8 +61,8 @@ body {
 
 .monopage-hero-copy {
 	box-sizing: border-box;
-	margin-left: 0;
-	margin-right: 0;
+	margin-left: 0 !important;
+	margin-right: auto !important;
 	max-width: min(100%, 620px);
 	padding-left: 0;
 	padding-right: 0;
@@ -81,16 +81,16 @@ body {
 }
 
 .monopage-hero .wp-block-buttons {
-	align-items: stretch;
-	flex-direction: column;
-	max-width: min(100%, 310px);
+	align-items: center;
+	flex-direction: row;
+	max-width: none;
 }
 
 .monopage-hero .wp-block-button,
 .monopage-hero .wp-block-button__link {
 	box-sizing: border-box;
 	text-align: center;
-	width: 100%;
+	width: auto;
 }
 
 .monopage-kicker {
@@ -561,8 +561,6 @@ body {
 
 @media (min-width: 901px) {
 	.monopage-hero-copy {
-		margin-left: 0;
-		margin-right: auto;
 		max-width: 620px;
 	}
 
@@ -575,16 +573,6 @@ body {
 		line-height: 1.55 !important;
 	}
 
-	.monopage-hero .wp-block-buttons {
-		align-items: center;
-		flex-direction: row;
-		max-width: none;
-	}
-
-	.monopage-hero .wp-block-button,
-	.monopage-hero .wp-block-button__link {
-		width: auto;
-	}
 }
 
 @media (max-width: 900px) {
@@ -702,5 +690,18 @@ body {
 
 	.monopage-visual-tile .wp-block-spacer {
 		height: 260px !important;
+	}
+}
+
+@media (max-width: 600px) {
+	.monopage-hero .wp-block-buttons {
+		align-items: stretch;
+		flex-direction: column;
+		max-width: min(100%, 320px);
+	}
+
+	.monopage-hero .wp-block-button,
+	.monopage-hero .wp-block-button__link {
+		width: 100%;
 	}
 }
