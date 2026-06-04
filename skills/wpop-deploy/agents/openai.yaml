@@ -1,0 +1,8 @@
+interface:
+  display_name: "WPOP Deploy"
+  short_description: "Deploy WordPress One Pager sites"
+  brand_color: "#2868FF"
+  default_prompt: "Use $wpop-deploy to deploy this WPOP site to my WordPress host with a backup and validation."
+
+policy:
+  allow_implicit_invocation: true

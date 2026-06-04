@@ -1,0 +1,51 @@
+{
+	"$schema": "https://playground.wordpress.net/blueprint-schema.json",
+	"landingPage": "/wp-admin/site-editor.php",
+	"preferredVersions": {
+		"php": "8.4",
+		"wp": "latest"
+	},
+	"features": {
+		"networking": true
+	},
+	"steps": [
+		{
+			"step": "login",
+			"username": "admin",
+			"password": "password"
+		},
+		{
+			"step": "installTheme",
+			"themeData": {
+				"resource": "git:directory",
+				"url": "https://github.com/RegionallyFamous/wpop",
+				"ref": "main",
+				"refType": "branch",
+				"path": "themes/wpop-canvas"
+			},
+			"options": {
+				"activate": true,
+				"targetFolderName": "wpop-canvas"
+			}
+		},
+		{
+			"step": "installPlugin",
+			"pluginData": {
+				"resource": "git:directory",
+				"url": "https://github.com/RegionallyFamous/wpop",
+				"ref": "main",
+				"refType": "branch",
+				"path": "plugins/wpop"
+			},
+			"options": {
+				"activate": true,
+				"targetFolderName": "wpop"
+			}
+		},
+		{
+			"step": "runPHP",
+			"code": "<?php require_once '/wordpress/wp-load.php'; update_option('blogname', 'WPOP Playground'); if (function_exists('wpop_setup_one_pager')) { wpop_setup_one_pager(array('force_home' => true)); }"
+		}
+	]
+}
+

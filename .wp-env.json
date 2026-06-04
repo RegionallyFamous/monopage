@@ -1,0 +1,14 @@
+{
+	"plugins": [
+		"./plugins/wpop"
+	],
+	"themes": [
+		"./themes/wpop-canvas"
+	],
+	"config": {
+		"WP_DEBUG": true,
+		"SCRIPT_DEBUG": true,
+		"WP_ENVIRONMENT_TYPE": "local"
+	}
+}
+
