@@ -21,6 +21,7 @@ const requiredFiles = [
   "scripts/check-js-syntax.mjs",
   "scripts/check-package-contents.mjs",
   "scripts/check-playground.mjs",
+  "scripts/check-repo-hygiene.mjs",
   "scripts/check-skill.mjs",
   "scripts/homepage-smoke.mjs",
   "scripts/local-ready.mjs",

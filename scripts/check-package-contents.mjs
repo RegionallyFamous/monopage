@@ -71,10 +71,14 @@ const packages = [
 ];
 const forbiddenPatterns = [
   /(^|\/)\.DS_Store$/,
+  /(^|\/)\.env(?:\.|$)/,
   /^__MACOSX\//,
   /(^|\/)node_modules\//,
   /(^|\/)build\//,
   /(^|\/)\.git\//,
+  /(^|\/)npm-debug\.log/,
+  /\.sql$/i,
+  /\.zip$/i,
   /(^|\/)vendor\//,
 ];
 const failures = [];

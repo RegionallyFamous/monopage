@@ -1,0 +1,31 @@
+* text=auto
+
+*.css text eol=lf
+*.html text eol=lf
+*.js text eol=lf
+*.json text eol=lf
+*.md text eol=lf
+*.mjs text eol=lf
+*.php text eol=lf
+*.txt text eol=lf
+*.yaml text eol=lf
+*.yml text eol=lf
+
+*.gif binary
+*.jpg binary
+*.jpeg binary
+*.png binary
+*.webp binary
+*.zip binary
+
+/.github/** export-ignore
+/.wp-env/** export-ignore
+/.wp-env.json export-ignore
+/build/** export-ignore
+/node_modules/** export-ignore
+.DS_Store export-ignore
+.env export-ignore
+.env.* export-ignore
+*.sql export-ignore
+*.zip export-ignore
+npm-debug.log* export-ignore

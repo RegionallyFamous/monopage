@@ -164,6 +164,7 @@ The test suite runs:
 - JSON validation
 - Canvas style and asset validation
 - deploy dry-run safety validation
+- repository hygiene validation
 - one-page link validation for templates and patterns
 - Playground Blueprint and seamless URL validation
 - Codex skill contract validation
@@ -183,6 +184,7 @@ Additional checks:
 ```bash
 npm run doctor
 npm run check:js
+npm run check:hygiene
 npm run local:ready -- --dry-run
 npm run local:validate
 npm run local:admin-smoke
@@ -211,9 +213,11 @@ npm run release:check
 
 `check:deploy` checks that the dry-run deploy plan packages and verifies ZIPs before WP-CLI changes, backs up before installing, installs the theme before the plugin, validates before status, and keeps `--force-home`, `--force-template`, and `--check-http` opt-in by default.
 
+`check:hygiene` checks `.gitignore`, `.gitattributes`, tracked files, and `export-ignore` behavior so package ZIPs, SQL backups, env files, debug logs, local wp-env data, build output, and dependency folders stay out of tracked source and generated source archives.
+
 `check:skill` checks that `skills/monopage-deploy/SKILL.md` and `agents/openai.yaml` preserve the required Monopage agent contract: one-page navigation, Site Editor `front-page` editing, block-first design, generated-image handling, deploy backups, force flag safety, and validation commands.
 
-`package:verify` checks the current version's built plugin and theme ZIPs for required files, correct version metadata, expected top-level folders, and forbidden bundled paths.
+`package:verify` checks the current version's built plugin and theme ZIPs for required files, correct version metadata, expected top-level folders, and forbidden bundled paths such as env files, backups, archives, build output, dependency folders, and local metadata.
 
 `release:check` runs repository checks, doctor, local readiness, Plugin Check, package builds, package content verification, deploy plan safety validation, deploy dry-run, and the Playground URL generator. The local readiness step runs the same `local:ready` workflow used during day-to-day development. Use `npm run release:check:dry-run` to inspect the sequence. Use `node scripts/release-check.mjs --skip-local --skip-plugin-check` only when Docker/wp-env is unavailable, then run those skipped gates on a real WordPress runtime before release.
 

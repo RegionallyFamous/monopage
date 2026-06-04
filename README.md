@@ -64,6 +64,7 @@ npm run doctor
 npm run check:js
 npm run check:canvas
 npm run check:deploy
+npm run check:hygiene
 npm run check:links
 npm run check:playground
 npm run check:skill
@@ -80,6 +81,8 @@ npm run package:verify
 
 `check:deploy` confirms the dry-run deployment plan packages and verifies before WP-CLI changes, backs up before installs, installs the theme before the plugin, validates before status, and keeps force/HTTP flags opt-in by default.
 
+`check:hygiene` confirms ignored and export-ignored release debris stays out of tracked source and GitHub source archives, including package ZIPs, SQL backups, env files, debug logs, local wp-env data, and dependency folders.
+
 `check:links` confirms the default front-page template and bundled patterns only use on-page links and that every `#anchor` target exists.
 
 `check:playground` confirms the Blueprint installs Monopage Canvas and the Monopage plugin from the expected repo paths, runs setup with template refresh, and that the generated Playground URL stays in seamless mode.
@@ -90,7 +93,7 @@ npm run package:verify
 
 `local:admin-smoke` logs in to the local wp-env admin and checks Focus Mode redirects, the Site Editor canvas target, Media Library reachability, Monopage controls, the routing Home page editor redirect, and the full-dashboard escape.
 
-`package:verify` checks the current version's built plugin and theme ZIPs for required files, correct version metadata, expected top-level folders, and forbidden bundled paths.
+`package:verify` checks the current version's built plugin and theme ZIPs for required files, correct version metadata, expected top-level folders, and forbidden bundled paths such as env files, backups, archives, build output, dependency folders, and local metadata.
 
 `ci` runs the repository checks, builds the plugin and theme ZIPs, then verifies the package contents. GitHub Actions runs the same script on pushes and pull requests, and stores the generated ZIPs as workflow artifacts. It does not run `wp-env` or Plugin Check; use the release gate for runtime validation.
 
