@@ -1,6 +1,6 @@
 {
 	"$schema": "https://playground.wordpress.net/blueprint-schema.json",
-	"landingPage": "/wp-admin/site-editor.php?postType=wp_template&postId=wpop-canvas%2F%2Ffront-page&canvas=edit",
+	"landingPage": "/wp-admin/site-editor.php?canvas=edit",
 	"preferredVersions": {
 		"php": "8.4",
 		"wp": "latest"
