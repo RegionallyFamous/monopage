@@ -51,6 +51,16 @@ When changing `themes/monopage-canvas/templates/front-page.html` or `themes/mono
 4. Run `npm test` before packaging or deploying.
 5. If a user explicitly asks for an off-page link, note that it is outside the default Monopage one-page rule and do not add it to the primary starter menu unless they confirm.
 
+## CI Gate
+
+Before a normal push from the Monopage repo, prefer:
+
+```bash
+npm run ci
+```
+
+This runs repository checks, builds plugin/theme ZIPs, and verifies package contents without requiring Docker, wp-env, or a live WordPress runtime. Use this as the fast local and GitHub Actions gate; use the release gate below when runtime validation is needed.
+
 ## Release Gate
 
 Before a release-minded commit or deploy from the Monopage repo, prefer:
@@ -120,8 +130,8 @@ This verifies the dry-run deploy plan keeps package verification before WP-CLI c
 3. Back up before changing the site:
    - `wp --path=<target> db export monopage-backup-YYYYMMDD-HHMMSS.sql`
 4. Install and activate:
-   - `wp --path=<target> theme install build/monopage-canvas-0.2.26.zip --force --activate`
-   - `wp --path=<target> plugin install build/monopage-0.2.26.zip --force --activate`
+   - `wp --path=<target> theme install build/monopage-canvas-0.2.27.zip --force --activate`
+   - `wp --path=<target> plugin install build/monopage-0.2.27.zip --force --activate`
 5. Run setup:
    - `wp --path=<target> monopage setup`
    - Use `--force-home` only when the user explicitly wants Monopage to replace an existing static front page assignment.

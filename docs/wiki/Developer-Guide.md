@@ -170,6 +170,14 @@ The test suite runs:
 - version metadata validation
 - package dry-run
 
+Fast CI gate:
+
+```bash
+npm run ci
+```
+
+`ci` runs `npm test`, builds the plugin and theme ZIPs, and verifies their package contents. GitHub Actions runs this Docker-free gate on pushes and pull requests, then uploads the generated ZIPs as workflow artifacts.
+
 Additional checks:
 
 ```bash
