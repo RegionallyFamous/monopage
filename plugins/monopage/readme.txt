@@ -4,7 +4,7 @@ Tags: site editor, one page, block theme, wp-cli
 Requires at least: 6.5
 Tested up to: 6.9
 Requires PHP: 7.4
-Stable tag: 0.2.4
+Stable tag: 0.2.5
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -34,6 +34,9 @@ wp monopage focus enable
 wp monopage focus disable
 
 == Changelog ==
+
+= 0.2.5 =
+* Add a Codex skill install helper for the Monopage deployment skill.
 
 = 0.2.4 =
 * Rename WPOP to Monopage, expand the default Canvas page, and prevent the Site Editor navigation toggle in Focus Mode.

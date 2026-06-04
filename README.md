@@ -51,5 +51,11 @@ Add `--force-home` only when Monopage should replace an existing static front pa
 ## Install The Companion Skill
 
 ```bash
-ln -s /Users/nick/Documents/GitHub/monopage/skills/monopage-deploy /Users/nick/.codex/skills/monopage-deploy
+npm run skill:install
+```
+
+Preview the install without changing your Codex skill folder:
+
+```bash
+npm run skill:install:dry-run
 ```

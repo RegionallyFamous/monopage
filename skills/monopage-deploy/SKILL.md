@@ -37,8 +37,8 @@ When changing `themes/monopage-canvas/templates/front-page.html`:
 3. Back up before changing the site:
    - `wp --path=<target> db export monopage-backup-YYYYMMDD-HHMMSS.sql`
 4. Install and activate:
-   - `wp --path=<target> theme install build/monopage-canvas-0.2.4.zip --force --activate`
-   - `wp --path=<target> plugin install build/monopage-0.2.4.zip --force --activate`
+   - `wp --path=<target> theme install build/monopage-canvas-0.2.5.zip --force --activate`
+   - `wp --path=<target> plugin install build/monopage-0.2.5.zip --force --activate`
 5. Run setup:
    - `wp --path=<target> monopage setup`
    - Use `--force-home` only when the user explicitly wants Monopage to replace an existing static front page assignment.
@@ -76,5 +76,13 @@ node scripts/deploy-monopage.mjs --dry-run --ssh=user@example.com:/site --path=/
 ## Local Skill Install
 
 ```bash
-ln -s /Users/nick/Documents/GitHub/monopage/skills/monopage-deploy /Users/nick/.codex/skills/monopage-deploy
+npm run skill:install
+```
+
+The installer creates the `monopage-deploy` skill symlink under `$CODEX_HOME/skills` or `~/.codex/skills`. It removes the old `wpop-deploy` entry only when that legacy entry is a symlink.
+
+To preview the install:
+
+```bash
+npm run skill:install:dry-run
 ```
