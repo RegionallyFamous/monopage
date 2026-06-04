@@ -4,22 +4,28 @@ Tags: site editor, one page, block theme, wp-cli
 Requires at least: 6.5
 Tested up to: 7.0
 Requires PHP: 7.4
-Stable tag: 0.2.49
+Stable tag: 0.2.51
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
-Monopage focuses WordPress around the Site Editor and one editable homepage template.
+AI-ready one-page WordPress with the Site Editor, blocks, real hosting, and no admin sprawl.
 
 == Description ==
 
-Monopage keeps WordPress intact while narrowing the authoring workflow for one-page sites.
+Monopage turns WordPress into a focused one-page site studio for people building with AI.
 
-V1 features:
+It keeps the best WordPress pieces: the Site Editor, blocks, media, block themes, WP-CLI, users, and real hosting. Then it removes the one-page-site clutter: page mazes, blog/archive assumptions, off-page menus, dashboard panels, and settings sprawl.
+
+Use AI to write, revise, design, and deploy. Monopage keeps the site model simple enough for an assistant to work cleanly: one editable homepage canvas, same-page anchor navigation, and a focused authoring surface.
+
+Highlights:
 
 * Setup helper that creates or reuses a Home page and configures it as the static front page.
 * Launch-ready one-page marketing homepage saved as the editable front-page template when Monopage Canvas is active.
 * Focus Mode that opens generic admin entrypoints directly to the one-page Site Editor canvas.
 * Site Editor focus defaults that open the canvas directly, keep the top toolbar enabled, and keep Spotlight/Distraction Free modes off.
+* Same-page navigation rules for menus, footer links, and starter CTAs.
+* Codex skill support for packaging, deploying, and validating Monopage sites through WP-CLI.
 * WP-CLI commands for status, setup, and Focus Mode toggles.
 * Designed to pair with the Monopage Canvas block theme.
 
@@ -37,6 +43,12 @@ wp monopage focus enable
 wp monopage focus disable
 
 == Changelog ==
+
+= 0.2.51 =
+* Disable Site Editor onboarding chrome in Monopage Focus Mode.
+
+= 0.2.50 =
+* Sharpen the repo and plugin summaries around AI-ready one-page WordPress.
 
 = 0.2.49 =
 * Split the plugin into focused includes and refresh the README for creators.

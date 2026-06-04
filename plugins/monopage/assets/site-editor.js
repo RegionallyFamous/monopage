@@ -7,8 +7,9 @@
 
 	var disabledNavigationToggles = new WeakSet();
 	var updateScheduled = false;
+	var initialSidebarCloseAttempts = 0;
 	var editorPreferenceScopes = ["core", "core/edit-site", "core/edit-post"];
-	var disabledEditorModes = ["distractionFree", "focusMode", "spotlightMode"];
+	var disabledEditorModes = ["distractionFree", "focusMode", "spotlightMode", "welcomeGuide"];
 	var navigationToggleSelectors = [
 		".edit-site-editor__view-mode-toggle",
 		".edit-site-layout__view-mode-toggle",
@@ -124,9 +125,40 @@
 		});
 	}
 
+	function dismissWelcomeGuide() {
+		var finishButton = document.querySelector(".components-guide__finish-button");
+		var closeButton = document.querySelector(".components-guide button[aria-label='Close']");
+
+		if (finishButton) {
+			finishButton.click();
+			return;
+		}
+
+		if (closeButton) {
+			closeButton.click();
+		}
+	}
+
+	function closeInitialSettingsSidebar() {
+		var closeButton;
+
+		if (initialSidebarCloseAttempts >= 8) {
+			return;
+		}
+
+		initialSidebarCloseAttempts += 1;
+		closeButton = document.querySelector(".interface-interface-skeleton__sidebar button[aria-label='Close Settings']");
+
+		if (closeButton) {
+			closeButton.click();
+		}
+	}
+
 	function refreshEditorChrome() {
 		forceEditorPreferences();
 		disableSiteEditorNavigationToggle();
+		dismissWelcomeGuide();
+		closeInitialSettingsSidebar();
 	}
 
 	function scheduleEditorChromeRefresh() {

@@ -1,8 +1,8 @@
 {
   "name": "monopage",
-  "version": "0.2.49",
+  "version": "0.2.51",
   "private": true,
-  "description": "Monopage plugin, canvas theme, and Codex deployment skill.",
+  "description": "AI-native one-page WordPress with the Site Editor, blocks, real hosting, and no admin sprawl.",
   "scripts": {
     "lint:php": "find plugins/monopage themes/monopage-canvas -name '*.php' -print0 | xargs -0 -n1 php -l",
     "check:js": "node scripts/check-js-syntax.mjs",

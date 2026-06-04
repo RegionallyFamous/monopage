@@ -18,7 +18,7 @@ Use this skill to deploy, validate, and lightly customize Monopage sites safely 
 - Do not add bundled Canvas patterns by default. The starter `front-page` template is the demo and source of inspiration.
 - Edit the saved `front-page` template in the Site Editor. Do not treat the routing `Home` page's blank content as the source of truth for the visible homepage.
 - If the backend Page editor appears blank, inspect or open the Site Editor `front-page` template. The routing `Home` page should redirect there on Monopage Canvas sites.
-- Focus Mode should keep the Site Editor canvas direct and calm: top toolbar enabled, Distraction Free mode disabled, Spotlight/focus mode disabled, and the left navigation/sidebar toggle unavailable.
+- Focus Mode should keep the Site Editor canvas direct and calm: top toolbar enabled, welcome guide disabled, Distraction Free mode disabled, Spotlight/focus mode disabled, and the left navigation/sidebar toggle unavailable.
 - Focus Mode should hide the public-site admin bar for focused editors so logged-in previews do not expose unrelated WordPress navigation.
 - Monopage should not add a dashboard menu, settings page, or control panel. Setup, validation, deployment, and Focus Mode changes belong in WP-CLI and Codex workflows.
 - The authoring experience should not teach users about unrelated WordPress admin areas. Keep the visible workflow centered on editing the one page; mention broader WordPress internals only in developer-facing docs or safety notes.

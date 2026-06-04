@@ -2,23 +2,32 @@
 
 ![Riso-style illustration of a continuous Monopage campaign page with modular blocks and anchor navigation](docs/assets/monopage-riso-hero.jpg)
 
-Monopage is WordPress for one great page.
+Monopage is a revolutionary WordPress plugin for the AI era: one page, the best parts of WordPress, and none of the admin sprawl.
 
-It gives you a focused canvas for a launch, offer, waitlist, event, product, portfolio, or tiny brand site. No maze of pages. No dashboard scavenger hunt. Just one page with sections that move people from hello to yes.
+It turns WordPress into a one-page site studio built for launches, offers, waitlists, events, portfolios, products, and strange little ideas that deserve a real URL. Prompt with AI. Refine in the Site Editor. Ship on real WordPress hosting.
 
-## Why It Exists
+## The Big Idea
 
-Most people using AI to make a website are not trying to manage a publishing empire. They want to make something cool, edit it fast, and put it online without learning every corner of WordPress first.
+WordPress has the best ingredients for AI-made sites: blocks, the Site Editor, media, themes, plugins, users, WP-CLI, and portable hosting.
 
-Monopage keeps the good part: the Site Editor, blocks, media, themes, and real WordPress hosting. Then it clears the room so the first thing you see is the page you are making.
+It also has decades of publishing machinery most one-page sites do not need.
+
+Monopage keeps the power and cuts the maze. No page tree to manage. No blog/archive assumptions. No dashboard control panel. No menu that sends visitors away from the story. Just one editable page with sections, anchors, proof, pricing, answers, and a next move.
 
 ## What You Get
 
-- A polished one-page starter site with bold sections, proof, pricing, FAQs, and a final call to action.
-- Same-page navigation, so every menu item moves up or down the page instead of sending visitors somewhere else.
-- A calm editing experience that opens straight to the homepage canvas.
-- A visual style made to inspire: Riso texture, sharp campaign energy, and a little Mad Men in the year 3000.
-- A Codex-ready workflow for turning ideas into real WordPress pages.
+- The Site Editor, blocks, media library, block theme support, WP-CLI, and real WordPress hosting.
+- A focused one-page editing flow that opens straight to the homepage canvas.
+- Same-page navigation, so every menu item moves people up or down the page instead of sending them somewhere else.
+- A polished starter page with hero, offer, proof, services, showcase, pricing, FAQs, and a final call to action.
+- A Codex skill that knows the Monopage rules, packages the plugin and theme, deploys through WP-CLI, and validates the result.
+- A visual direction with teeth: Riso texture, sharp campaign energy, and a little Mad Men in the year 3000.
+
+## Built For AI
+
+Monopage is made for people who use AI to create, revise, and launch cool things.
+
+Ask Codex to reshape the page, add a section, rewrite the offer, tune the design, or deploy the site. The companion skill keeps the work inside the Monopage model: one page, anchor navigation, real WordPress, clean Focus Mode, and no random admin clutter.
 
 ## Try It
 
@@ -28,9 +37,9 @@ Open the live WordPress Playground demo:
 
 ## The Promise
 
-Monopage is not a fake website builder sitting beside WordPress. It is WordPress, focused.
+Monopage is not a fake website builder sitting beside WordPress. It is WordPress, focused and AI-ready.
 
-You can still use real hosting, real blocks, real media, and real Site Editor customization. Monopage just keeps the experience centered on the one page that matters.
+You keep the parts that make WordPress worth using. Monopage handles the shape, the focus, and the rules so your AI assistant can help you make the page instead of explaining the platform.
 
 ## For Builders
 

@@ -20,7 +20,7 @@ const skillRequirements = [
   ["core Navigation block", "Use the core Navigation block"],
   ["front-page source of truth", "Edit the saved `front-page` template in the Site Editor"],
   ["blank Page editor guidance", "If the backend Page editor appears blank"],
-  ["Site Editor chrome defaults", "top toolbar enabled, Distraction Free mode disabled, Spotlight/focus mode disabled"],
+  ["Site Editor chrome defaults", "top toolbar enabled, welcome guide disabled, Distraction Free mode disabled, Spotlight/focus mode disabled"],
   ["front-end admin bar hidden", "hide the public-site admin bar"],
   ["no dashboard controls", "Monopage should not add a dashboard menu, settings page, or control panel"],
   ["no unrelated admin education", "should not teach users about unrelated WordPress admin areas"],
