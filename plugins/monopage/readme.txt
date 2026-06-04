@@ -1,10 +1,10 @@
 === Monopage ===
-Contributors: weirdpress
+Contributors: regionallyfamous
 Tags: site editor, one page, block theme, wp-cli
 Requires at least: 6.5
 Tested up to: 7.0
 Requires PHP: 7.4
-Stable tag: 0.2.45
+Stable tag: 0.2.46
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -38,6 +38,9 @@ wp monopage focus enable
 wp monopage focus disable
 
 == Changelog ==
+
+= 0.2.46 =
+* Trim legacy plugin compatibility and hide the Site Editor view toggle container.
 
 = 0.2.45 =
 * Simplify Focus Mode and add responsive review checks.
@@ -164,7 +167,7 @@ wp monopage focus disable
 * Add a Codex skill install helper for the Monopage deployment skill.
 
 = 0.2.4 =
-* Rename WPOP to Monopage, expand the default Canvas page, and prevent the Site Editor navigation toggle in Focus Mode.
+* Settle the Monopage name, expand the default Canvas page, and prevent the Site Editor navigation toggle in Focus Mode.
 
 = 0.2.3 =
 * Redirect routing Home page edits to the Site Editor template and explain the Home/template split.

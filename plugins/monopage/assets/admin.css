@@ -25,6 +25,7 @@ body.monopage-sidebar-hidden .edit-site-navigation-panel {
 
 body.monopage-sidebar-hidden .edit-site-layout__view-mode-toggle,
 body.monopage-sidebar-hidden .edit-site-layout__view-mode-toggle-button,
+body.monopage-sidebar-hidden .edit-site-editor__view-mode-toggle,
 body.monopage-sidebar-hidden .edit-site-header__view-mode-toggle,
 body.monopage-sidebar-hidden .monopage-site-editor-nav-toggle-disabled {
 	display: none !important;

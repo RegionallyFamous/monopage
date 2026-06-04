@@ -10,6 +10,7 @@
 	var editorPreferenceScopes = ["core", "core/edit-site", "core/edit-post"];
 	var disabledEditorModes = ["distractionFree", "focusMode", "spotlightMode"];
 	var navigationToggleSelectors = [
+		".edit-site-editor__view-mode-toggle",
 		".edit-site-layout__view-mode-toggle",
 		".edit-site-layout__view-mode-toggle-button",
 		".edit-site-header__view-mode-toggle",

@@ -3,7 +3,7 @@
  * Plugin Name:       Monopage
  * Plugin URI:        https://github.com/RegionallyFamous/monopage
  * Description:       Monopage focuses WordPress around the Site Editor and a single homepage template.
- * Version:           0.2.45
+ * Version:           0.2.46
  * Requires at least: 6.5
  * Requires PHP:      7.4
  * Author:            Regionally Famous
@@ -16,15 +16,13 @@
 
 defined( 'ABSPATH' ) || exit;
 
-define( 'MONOPAGE_VERSION', '0.2.45' );
+define( 'MONOPAGE_VERSION', '0.2.46' );
 define( 'MONOPAGE_FILE', __FILE__ );
 define( 'MONOPAGE_DIR', plugin_dir_path( __FILE__ ) );
 define( 'MONOPAGE_URL', plugin_dir_url( __FILE__ ) );
 define( 'MONOPAGE_FOCUS_OPTION', 'monopage_focus_enabled' );
 define( 'MONOPAGE_VERSION_OPTION', 'monopage_version' );
 define( 'MONOPAGE_CANVAS_THEME', 'monopage-canvas' );
-define( 'MONOPAGE_LEGACY_FOCUS_OPTION', 'wpop_focus_enabled' );
-define( 'MONOPAGE_LEGACY_VERSION_OPTION', 'wpop_version' );
 
 register_activation_hook( __FILE__, 'monopage_activate' );
 
@@ -42,29 +40,10 @@ add_filter( 'show_admin_bar', 'monopage_maybe_hide_frontend_admin_bar' );
  * Register default plugin options.
  */
 function monopage_activate() {
-	monopage_migrate_legacy_settings();
-
 	add_option( MONOPAGE_FOCUS_OPTION, '1' );
 	update_option( MONOPAGE_VERSION_OPTION, MONOPAGE_VERSION );
 
 	monopage_setup_one_pager();
-}
-
-/**
- * Copy early WPOP settings into the new Monopage option names.
- */
-function monopage_migrate_legacy_settings() {
-	$legacy_focus = get_option( MONOPAGE_LEGACY_FOCUS_OPTION, null );
-
-	if ( null !== $legacy_focus && null === get_option( MONOPAGE_FOCUS_OPTION, null ) ) {
-		update_option( MONOPAGE_FOCUS_OPTION, $legacy_focus );
-	}
-
-	$legacy_version = get_option( MONOPAGE_LEGACY_VERSION_OPTION, null );
-
-	if ( null !== $legacy_version && null === get_option( MONOPAGE_VERSION_OPTION, null ) ) {
-		update_option( MONOPAGE_VERSION_OPTION, $legacy_version );
-	}
 }
 
 /**
@@ -556,7 +535,7 @@ function monopage_maybe_seed_home_page_placeholder( $page_id ) {
  * @return string
  */
 function monopage_get_home_page_placeholder_content() {
-	return '<!-- wp:paragraph --><p>' . esc_html__( 'Monopage uses the Site Editor front-page template for visible homepage content. Edit the homepage from Monopage > Edit Homepage.', 'monopage' ) . '</p><!-- /wp:paragraph -->';
+	return '<!-- wp:paragraph --><p>' . esc_html__( 'Monopage uses the Site Editor front-page template for visible homepage content.', 'monopage' ) . '</p><!-- /wp:paragraph -->';
 }
 
 /**
@@ -1132,13 +1111,7 @@ function monopage_get_site_editor_query_args() {
  * @return bool
  */
 function monopage_get_focus_enabled() {
-	$value = get_option( MONOPAGE_FOCUS_OPTION, null );
-
-	if ( null === $value ) {
-		$value = get_option( MONOPAGE_LEGACY_FOCUS_OPTION, '1' );
-	}
-
-	return (bool) $value;
+	return (bool) get_option( MONOPAGE_FOCUS_OPTION, '1' );
 }
 
 /**
