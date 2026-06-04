@@ -1,6 +1,6 @@
 {
 	"$schema": "https://playground.wordpress.net/blueprint-schema.json",
-	"landingPage": "/wp-admin/site-editor.php",
+	"landingPage": "/wp-admin/site-editor.php?canvas=edit",
 	"preferredVersions": {
 		"php": "8.4",
 		"wp": "latest"
@@ -48,4 +48,3 @@
 		}
 	]
 }
-

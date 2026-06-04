@@ -36,6 +36,7 @@ add_action( 'admin_bar_menu', 'wpop_prune_admin_bar', 999 );
 add_action( 'admin_post_wpop_toggle_focus', 'wpop_handle_toggle_focus' );
 add_action( 'admin_post_wpop_toggle_full_dashboard', 'wpop_handle_toggle_full_dashboard' );
 add_action( 'admin_post_wpop_run_setup', 'wpop_handle_run_setup' );
+add_filter( 'admin_body_class', 'wpop_admin_body_class' );
 add_filter( 'login_redirect', 'wpop_login_redirect', 10, 3 );
 
 /**
@@ -131,6 +132,11 @@ function wpop_maybe_redirect_admin() {
 
 	global $pagenow;
 
+	if ( 'site-editor.php' === $pagenow ) {
+		wpop_maybe_redirect_site_editor_to_canvas();
+		return;
+	}
+
 	if ( 'admin.php' === $pagenow && isset( $_GET['page'] ) && 0 === strpos( sanitize_key( wp_unslash( $_GET['page'] ) ), 'wpop' ) ) {
 		return;
 	}
@@ -171,7 +177,7 @@ function wpop_login_redirect( $redirect_to, $requested_redirect_to, $user ) {
  * @param string $hook_suffix Current admin page hook.
  */
 function wpop_enqueue_admin_assets( $hook_suffix ) {
-	if ( false === strpos( $hook_suffix, 'wpop' ) ) {
+	if ( false === strpos( $hook_suffix, 'wpop' ) && ! wpop_is_focus_active_for_current_user() ) {
 		return;
 	}
 
@@ -181,6 +187,20 @@ function wpop_enqueue_admin_assets( $hook_suffix ) {
 		array(),
 		WPOP_VERSION
 	);
+}
+
+/**
+ * Add WPOP admin state classes.
+ *
+ * @param string $classes Space-separated admin body classes.
+ * @return string
+ */
+function wpop_admin_body_class( $classes ) {
+	if ( wpop_is_focus_active_for_current_user() ) {
+		$classes .= ' wpop-focus-active wpop-sidebar-hidden';
+	}
+
+	return $classes;
 }
 
 /**
@@ -531,7 +551,33 @@ function wpop_site_uses_block_theme() {
  * @return string
  */
 function wpop_get_site_editor_url() {
-	return admin_url( 'site-editor.php' );
+	return admin_url( 'site-editor.php?canvas=edit' );
+}
+
+/**
+ * Keep Focus Mode in the Site Editor canvas instead of the navigation sidebar.
+ */
+function wpop_maybe_redirect_site_editor_to_canvas() {
+	$canvas = isset( $_GET['canvas'] ) ? sanitize_key( wp_unslash( $_GET['canvas'] ) ) : '';
+
+	if ( 'edit' === $canvas ) {
+		return;
+	}
+
+	$query_args = array();
+
+	foreach ( $_GET as $key => $value ) {
+		if ( ! is_scalar( $value ) || ! preg_match( '/^[A-Za-z0-9_-]+$/', (string) $key ) ) {
+			continue;
+		}
+
+		$query_args[ (string) $key ] = sanitize_text_field( wp_unslash( (string) $value ) );
+	}
+
+	$query_args['canvas'] = 'edit';
+
+	wp_safe_redirect( add_query_arg( $query_args, admin_url( 'site-editor.php' ) ) );
+	exit;
 }
 
 /**
