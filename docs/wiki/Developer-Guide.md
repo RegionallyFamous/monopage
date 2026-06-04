@@ -230,7 +230,7 @@ npm run release:check
 
 `preflight` is the normal fast local gate before a commit or push. It runs `status`, then `ci`, without requiring Docker/wp-env. Use `release:check` before publishing or release-minded changes.
 
-`check:changed` inspects changed files and recommends the focused checks that match them, such as `check:links` for template edits, `local:review` for visual Canvas edits, or Plugin Check for plugin PHP edits. Use `npm run check:changed:run` to execute the recommendations.
+`check:changed` inspects changed files and recommends the focused checks that match them, such as `check:links` for template edits, `local:review` for visual Canvas edits, or Plugin Check for plugin PHP edits. Actual diffs skip visual and runtime checks for version-only plugin/theme metadata changes; `--files` previews stay conservative. Use `npm run check:changed:run` to execute the recommendations.
 
 `local:review` is the preferred shortcut after visual Canvas changes. It runs local readiness with screenshots and then prints the Playground URL so local review and public-demo review stay paired.
 

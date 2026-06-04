@@ -98,7 +98,7 @@ npm run package:verify
 
 `preflight` runs `status` and then the Docker-free `ci` gate. Use it before a normal commit or push; use `release:check` when runtime validation and Plugin Check matter.
 
-`check:changed` inspects the current working tree and recommends focused checks for the files that changed. Use `npm run check:changed:run` to run the recommended list.
+`check:changed` inspects the current working tree and recommends focused checks for the files that changed. Actual diffs skip visual and runtime checks for version-only plugin/theme metadata changes; `--files` previews stay conservative. Use `npm run check:changed:run` to run the recommended list.
 
 `check:js` discovers JavaScript files in `plugins/`, `themes/`, and `scripts/`, then runs `node --check` on each one so new helpers are covered automatically.
 

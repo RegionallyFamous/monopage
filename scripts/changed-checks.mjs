@@ -10,6 +10,7 @@ const base = options.base || "HEAD";
 const npm = "win32" === process.platform ? "npm.cmd" : "npm";
 const files = options.files ? splitFiles(options.files) : getChangedFiles(base);
 const recommendations = [];
+const metadataOnlyCache = new Map();
 
 if (!files.length) {
   console.log("No changed files found.");
@@ -73,7 +74,7 @@ function addRules() {
     add("npm run lint:php", "PHP changed");
   }
 
-  if (has(isCanvasFile)) {
+  if (has(isCanvasFileNeedingThemeChecks)) {
     add("npm run check:canvas", "Canvas theme styling, assets, or patterns changed");
   }
 
@@ -193,11 +194,15 @@ function isPhpFile(file) {
 }
 
 function isPluginPhpFile(file) {
-  return file === "plugins/monopage/monopage.php";
+  return file === "plugins/monopage/monopage.php" && !isMetadataOnlyVersionChange(file);
 }
 
 function isCanvasFile(file) {
   return file.startsWith("themes/monopage-canvas/");
+}
+
+function isCanvasFileNeedingThemeChecks(file) {
+  return isCanvasFile(file) && !isMetadataOnlyVersionChange(file);
 }
 
 function isTemplateOrPatternFile(file) {
@@ -205,6 +210,10 @@ function isTemplateOrPatternFile(file) {
 }
 
 function isVisualCanvasFile(file) {
+  if (isMetadataOnlyVersionChange(file)) {
+    return false;
+  }
+
   return (
     file === "themes/monopage-canvas/style.css" ||
     file === "themes/monopage-canvas/theme.json" ||
@@ -214,7 +223,7 @@ function isVisualCanvasFile(file) {
 }
 
 function isAdminOrPluginRuntimeFile(file) {
-  return file === "plugins/monopage/monopage.php" || file.startsWith("plugins/monopage/assets/");
+  return (file === "plugins/monopage/monopage.php" && !isMetadataOnlyVersionChange(file)) || file.startsWith("plugins/monopage/assets/");
 }
 
 function isDeployFile(file) {
@@ -248,6 +257,63 @@ function isVersionedFile(file) {
     file === "themes/monopage-canvas/style.css" ||
     file === "skills/monopage-deploy/SKILL.md"
   );
+}
+
+function isMetadataOnlyVersionChange(file) {
+  if (options.files) {
+    return false;
+  }
+
+  if (!metadataOnlyCache.has(file)) {
+    metadataOnlyCache.set(file, inspectMetadataOnlyVersionChange(file));
+  }
+
+  return metadataOnlyCache.get(file);
+}
+
+function inspectMetadataOnlyVersionChange(file) {
+  const allowedPatterns = metadataOnlyVersionPatterns(file);
+  if (!allowedPatterns.length) {
+    return false;
+  }
+
+  const changedLines = diffChangedLines(file);
+  if (!changedLines.length) {
+    return false;
+  }
+
+  return changedLines.every((line) => allowedPatterns.some((pattern) => pattern.test(line)));
+}
+
+function metadataOnlyVersionPatterns(file) {
+  if (file === "themes/monopage-canvas/style.css") {
+    return [/^Version:\s*[0-9]+\.[0-9]+\.[0-9]+$/];
+  }
+
+  if (file === "plugins/monopage/monopage.php") {
+    return [
+      /^ \* Version:\s*[0-9]+\.[0-9]+\.[0-9]+$/,
+      /^define\(\s*'MONOPAGE_VERSION',\s*'[0-9]+\.[0-9]+\.[0-9]+'\s*\);$/,
+    ];
+  }
+
+  return [];
+}
+
+function diffChangedLines(file) {
+  const result = spawnSync("git", ["diff", "--unified=0", base, "--", file], {
+    cwd: root,
+    encoding: "utf8",
+  });
+
+  if (result.status !== 0) {
+    return [];
+  }
+
+  return result.stdout
+    .split(/\r?\n/)
+    .filter((line) => /^[+-]/.test(line) && !line.startsWith("+++") && !line.startsWith("---"))
+    .map((line) => line.slice(1));
 }
 
 function splitFiles(value) {
