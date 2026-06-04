@@ -26,11 +26,7 @@ The Blueprint installs Monopage Canvas, activates the Monopage plugin, logs in a
 
 ```bash
 npm install
-npm run local:start
-npm run local:setup
-npm run local:validate
-npm run local:smoke
-npm run local:status
+npm run local:ready
 ```
 
 Local WordPress runs at:
@@ -44,6 +40,8 @@ After changing the bundled Canvas template, refresh the saved local Site Editor 
 ```bash
 npm run local:refresh-template
 ```
+
+`local:ready` runs that refresh, validates Monopage, checks the rendered homepage, checks authenticated Focus Mode admin behavior, prints status, and then gives you the home/admin/Site Editor URLs. Use `npm run local:ready -- --preserve-template` when you want to keep existing saved Site Editor edits during the setup step.
 
 ## Development Checks
 
@@ -63,6 +61,7 @@ npm run check:links
 npm run check:playground
 npm run check:skill
 npm run check:versions
+npm run local:ready -- --dry-run
 npm run local:admin-smoke
 npm run local:smoke
 npm run package:verify

@@ -33,6 +33,7 @@ const skillRequirements = [
   ["Canvas check command", "npm run check:canvas"],
   ["test command", "npm test"],
   ["release gate command", "npm run release:check"],
+  ["local ready command", "npm run local:ready"],
   ["template refresh command", "npm run local:refresh-template"],
   ["homepage smoke command", "npm run local:smoke"],
   ["admin smoke command", "npm run local:admin-smoke"],

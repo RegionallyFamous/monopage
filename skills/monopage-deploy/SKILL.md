@@ -61,7 +61,15 @@ npm run release:check
 
 This runs repository checks, doctor, a local template refresh plus Monopage validation, a rendered-homepage smoke check, authenticated admin smoke check, Playground Blueprint validation, Plugin Check, package builds, package content verification, deploy plan safety validation, deploy dry-run, and Playground URL generation. Use `npm run release:check:dry-run` to inspect the sequence. If Docker/wp-env is unavailable, use `node scripts/release-check.mjs --skip-local --skip-plugin-check` and run the skipped checks later on a WordPress runtime.
 
-When only checking local template changes, use:
+When preparing a local demo or checking the full local runtime, use:
+
+```bash
+npm run local:ready
+```
+
+This starts wp-env, refreshes the saved front-page template from the bundled Canvas template, validates Monopage, smokes the rendered homepage, smokes authenticated Focus Mode admin behavior, prints status, and returns the home/admin/Site Editor URLs. Use `npm run local:ready -- --preserve-template` when intentionally preserving saved Site Editor edits during setup.
+
+For a narrower template refresh, use:
 
 ```bash
 npm run local:refresh-template
@@ -112,8 +120,8 @@ This verifies the dry-run deploy plan keeps package verification before WP-CLI c
 3. Back up before changing the site:
    - `wp --path=<target> db export monopage-backup-YYYYMMDD-HHMMSS.sql`
 4. Install and activate:
-   - `wp --path=<target> theme install build/monopage-canvas-0.2.24.zip --force --activate`
-   - `wp --path=<target> plugin install build/monopage-0.2.24.zip --force --activate`
+   - `wp --path=<target> theme install build/monopage-canvas-0.2.25.zip --force --activate`
+   - `wp --path=<target> plugin install build/monopage-0.2.25.zip --force --activate`
 5. Run setup:
    - `wp --path=<target> monopage setup`
    - Use `--force-home` only when the user explicitly wants Monopage to replace an existing static front page assignment.

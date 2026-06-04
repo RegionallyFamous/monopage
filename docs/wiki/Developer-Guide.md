@@ -130,11 +130,7 @@ Avoid:
 
 ```bash
 npm install
-npm run local:start
-npm run local:setup
-npm run local:validate
-npm run local:smoke
-npm run local:status
+npm run local:ready
 ```
 
 Refresh the saved local Site Editor template from the current bundled Canvas template:
@@ -142,6 +138,8 @@ Refresh the saved local Site Editor template from the current bundled Canvas tem
 ```bash
 npm run local:refresh-template
 ```
+
+`local:ready` starts wp-env, refreshes the saved front-page template from the bundled Canvas template, validates Monopage, smokes the rendered homepage, smokes authenticated Focus Mode admin behavior, prints status, and returns the home/admin/Site Editor URLs. Use `npm run local:ready -- --preserve-template` when you intentionally want to preserve saved Site Editor edits during setup.
 
 Local WordPress:
 
@@ -176,6 +174,7 @@ Additional checks:
 
 ```bash
 npm run doctor
+npm run local:ready -- --dry-run
 npm run local:validate
 npm run local:admin-smoke
 npm run local:smoke
