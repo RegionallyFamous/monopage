@@ -712,33 +712,49 @@ function wpop_site_uses_block_theme() {
  * @return string
  */
 function wpop_get_site_editor_url() {
-	return admin_url( 'site-editor.php?canvas=edit' );
+	return add_query_arg( wpop_get_site_editor_query_args(), admin_url( 'site-editor.php' ) );
 }
 
 /**
  * Keep Focus Mode in the Site Editor canvas instead of the navigation sidebar.
  */
 function wpop_maybe_redirect_site_editor_to_canvas() {
-	$canvas = isset( $_GET['canvas'] ) ? sanitize_key( wp_unslash( $_GET['canvas'] ) ) : '';
+	$query_args = wpop_get_site_editor_query_args();
+	$canvas     = isset( $_GET['canvas'] ) ? sanitize_key( wp_unslash( $_GET['canvas'] ) ) : '';
+	$post_type  = isset( $_GET['postType'] ) ? sanitize_key( wp_unslash( $_GET['postType'] ) ) : '';
+	$post_id    = isset( $_GET['postId'] ) ? sanitize_text_field( wp_unslash( $_GET['postId'] ) ) : '';
 
-	if ( 'edit' === $canvas ) {
+	if ( 'edit' === $canvas && $query_args['postType'] === $post_type && $query_args['postId'] === $post_id ) {
 		return;
 	}
-
-	$query_args = array();
 
 	foreach ( $_GET as $key => $value ) {
 		if ( ! is_scalar( $value ) || ! preg_match( '/^[A-Za-z0-9_-]+$/', (string) $key ) ) {
 			continue;
 		}
 
+		if ( in_array( (string) $key, array( 'canvas', 'postType', 'postId', 'p' ), true ) ) {
+			continue;
+		}
+
 		$query_args[ (string) $key ] = sanitize_text_field( wp_unslash( (string) $value ) );
 	}
 
-	$query_args['canvas'] = 'edit';
-
 	wp_safe_redirect( add_query_arg( $query_args, admin_url( 'site-editor.php' ) ) );
 	exit;
+}
+
+/**
+ * Get the Site Editor query args for the editable homepage template.
+ *
+ * @return array
+ */
+function wpop_get_site_editor_query_args() {
+	return array(
+		'postType' => 'wp_template',
+		'postId'   => get_stylesheet() . '//front-page',
+		'canvas'   => 'edit',
+	);
 }
 
 /**
