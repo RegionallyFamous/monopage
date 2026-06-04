@@ -9,6 +9,8 @@ const dryRun = process.argv.includes("--dry-run");
 const manifest = JSON.parse(fs.readFileSync(path.join(root, "package.json"), "utf8"));
 const version = manifest.version;
 
+runCheckVersions();
+
 const artifacts = [
   {
     label: "plugin",
@@ -27,6 +29,17 @@ const artifacts = [
 function fail(message) {
   console.error(message);
   process.exit(1);
+}
+
+function runCheckVersions() {
+  const result = spawnSync("node", [path.join(root, "scripts/check-versions.mjs")], {
+    cwd: root,
+    stdio: "inherit",
+  });
+
+  if (result.status !== 0) {
+    fail("Version metadata must be in sync before packaging.");
+  }
 }
 
 for (const artifact of artifacts) {

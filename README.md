@@ -32,6 +32,12 @@ https://playground.wordpress.net/?blueprint-url=https%3A%2F%2Fraw.githubusercont
 
 ## Packaging
 
+Update release metadata with one command:
+
+```bash
+npm run version:set -- 0.2.10 --changelog="Short release note"
+```
+
 ```bash
 npm run package
 ```

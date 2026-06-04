@@ -3,7 +3,7 @@ Theme Name: Monopage Canvas
 Theme URI: https://github.com/RegionallyFamous/monopage
 Author: WeirdPress
 Description: A block theme for focused Monopage one-page sites.
-Version: 0.2.7
+Version: 0.2.10
 Requires at least: 6.5
 Requires PHP: 7.4
 License: GPL-2.0-or-later
@@ -62,8 +62,8 @@ body {
 }
 
 .monopage-hero {
-	background-image: linear-gradient(90deg, rgba(17, 19, 24, 0.88) 0%, rgba(17, 19, 24, 0.7) 42%, rgba(17, 19, 24, 0.12) 100%), url("assets/monopage-hero.jpg");
-	background-position: center;
+	background-image: linear-gradient(90deg, rgba(5, 9, 16, 0.96) 0%, rgba(5, 9, 16, 0.78) 42%, rgba(5, 9, 16, 0.18) 100%), url("assets/monopage-hero-v2.jpg");
+	background-position: right center;
 	background-size: cover;
 	color: #ffffff;
 	min-height: 72vh;
@@ -552,7 +552,8 @@ body {
 	}
 
 	.monopage-hero {
-		background-image: linear-gradient(180deg, rgba(17, 19, 24, 0.9), rgba(17, 19, 24, 0.62)), url("assets/monopage-hero.jpg");
+		background-image: linear-gradient(180deg, rgba(5, 9, 16, 0.92), rgba(5, 9, 16, 0.68)), url("assets/monopage-hero-v2.jpg");
+		background-position: center;
 		min-height: 68vh;
 		padding-bottom: 3rem;
 		padding-top: 3.2rem;
