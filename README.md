@@ -73,6 +73,7 @@ Useful focused checks:
 npm run doctor
 npm run check:js
 npm run check:canvas
+npm run check:changed
 npm run check:deploy
 npm run check:docs
 npm run check:hygiene
@@ -90,6 +91,8 @@ npm run package:verify
 ```
 
 `check:canvas` confirms the Canvas stylesheet is wired for both the Site Editor and the public front end, that CSS asset references are packaged and reasonably sized, and that bundled pattern metadata is valid.
+
+`check:changed` inspects the current working tree and recommends focused checks for the files that changed. Use `npm run check:changed:run` to run the recommended list.
 
 `check:js` discovers JavaScript files in `plugins/`, `themes/`, and `scripts/`, then runs `node --check` on each one so new helpers are covered automatically.
 

@@ -197,6 +197,7 @@ Additional checks:
 
 ```bash
 npm run doctor
+npm run check:changed
 npm run check:js
 npm run check:docs
 npm run check:hygiene
@@ -222,6 +223,8 @@ npm run release:check
 ```
 
 `local:smoke` checks the rendered homepage, required starter copy, same-page body links, section anchors, and served Canvas image assets. Run it after `local:setup` or `local:refresh-template`.
+
+`check:changed` inspects changed files and recommends the focused checks that match them, such as `check:links` for template edits, `local:review` for visual Canvas edits, or Plugin Check for plugin PHP edits. Use `npm run check:changed:run` to execute the recommendations.
 
 `local:review` is the preferred shortcut after visual Canvas changes. It runs local readiness with screenshots and then prints the Playground URL so local review and public-demo review stay paired.
 
@@ -355,6 +358,7 @@ The `monopage-deploy` skill should guide agents to:
 - use bundled Canvas patterns for common section work
 - use generated raster images when the theme or docs need real visual energy
 - save project-bound images into the repo
+- run `npm run check:changed` when deciding which focused checks fit the current diff
 - run `npm test` before packaging
 - run `npm run release:check` before release-minded changes when Docker/wp-env are available
 - run `npm run local:review` after visual Canvas changes when wp-env and a local browser are available

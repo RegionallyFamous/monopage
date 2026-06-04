@@ -6,6 +6,7 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const root = path.resolve(__dirname, "..");
 const files = [
   ".wp-env.json",
+  "package-lock.json",
   "package.json",
   "playground/blueprint.json",
   "themes/monopage-canvas/theme.json",

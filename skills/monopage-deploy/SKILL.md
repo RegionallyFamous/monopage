@@ -51,6 +51,14 @@ When changing `themes/monopage-canvas/templates/front-page.html` or `themes/mono
 4. Run `npm test` before packaging or deploying.
 5. If a user explicitly asks for an off-page link, note that it is outside the default Monopage one-page rule and do not add it to the primary starter menu unless they confirm.
 
+When deciding which focused checks fit the current diff, use:
+
+```bash
+npm run check:changed
+```
+
+This inspects changed files and recommends matching checks. Use `npm run check:changed:run` to execute the recommended list.
+
 ## CI Gate
 
 Before a normal push from the Monopage repo, prefer:
@@ -162,8 +170,8 @@ This verifies chained `npm run ...`, `npm test`, and `node scripts/*.mjs` comman
 3. Back up before changing the site:
    - `wp --path=<target> db export monopage-backup-YYYYMMDD-HHMMSS.sql`
 4. Install and activate:
-   - `wp --path=<target> theme install build/monopage-canvas-0.2.34.zip --force --activate`
-   - `wp --path=<target> plugin install build/monopage-0.2.34.zip --force --activate`
+   - `wp --path=<target> theme install build/monopage-canvas-0.2.35.zip --force --activate`
+   - `wp --path=<target> plugin install build/monopage-0.2.35.zip --force --activate`
 5. Run setup:
    - `wp --path=<target> monopage setup`
    - Use `--force-home` only when the user explicitly wants Monopage to replace an existing static front page assignment.

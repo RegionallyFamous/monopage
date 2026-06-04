@@ -32,6 +32,7 @@ const skillRequirements = [
   ["link check command", "npm run check:links"],
   ["Canvas check command", "npm run check:canvas"],
   ["test command", "npm test"],
+  ["changed checks command", "npm run check:changed"],
   ["CI command", "npm run ci"],
   ["release gate command", "npm run release:check"],
   ["local review command", "npm run local:review"],

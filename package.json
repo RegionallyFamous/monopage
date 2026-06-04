@@ -1,6 +1,6 @@
 {
   "name": "monopage",
-  "version": "0.2.34",
+  "version": "0.2.35",
   "private": true,
   "description": "Monopage plugin, canvas theme, and Codex deployment skill.",
   "scripts": {
@@ -8,6 +8,8 @@
     "check:js": "node scripts/check-js-syntax.mjs",
     "check:json": "node scripts/validate-json.mjs",
     "check:canvas": "node scripts/check-canvas-theme.mjs",
+    "check:changed": "node scripts/changed-checks.mjs",
+    "check:changed:run": "node scripts/changed-checks.mjs --run",
     "check:deploy": "node scripts/check-deploy-plan.mjs",
     "check:docs": "node scripts/check-doc-commands.mjs",
     "check:hygiene": "node scripts/check-repo-hygiene.mjs",
