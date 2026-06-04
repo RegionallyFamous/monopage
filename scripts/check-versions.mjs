@@ -46,8 +46,8 @@ for (const check of checks) {
 }
 
 assertContains("plugins/monopage/readme.txt", `= ${version} =`, "plugin readme changelog");
-assertContains("skills/monopage-deploy/SKILL.md", `build/monopage-${version}.zip`, "skill plugin ZIP example");
-assertContains("skills/monopage-deploy/SKILL.md", `build/monopage-canvas-${version}.zip`, "skill theme ZIP example");
+assertContains("skills/monopage-deploy/SKILL.md", "build/monopage-<version>.zip", "skill plugin ZIP example");
+assertContains("skills/monopage-deploy/SKILL.md", "build/monopage-canvas-<version>.zip", "skill theme ZIP example");
 
 if (failures.length) {
   console.error("Monopage version metadata is out of sync:");

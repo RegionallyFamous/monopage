@@ -3,7 +3,7 @@ Theme Name: Monopage Canvas
 Theme URI: https://github.com/RegionallyFamous/monopage
 Author: WeirdPress
 Description: A block theme for focused Monopage one-page sites.
-Version: 0.2.43
+Version: 0.2.44
 Requires at least: 6.5
 Requires PHP: 7.4
 License: GPL-2.0-or-later
@@ -606,6 +606,39 @@ body {
 		position: static;
 	}
 
+	.monopage-site-header > .wp-block-group {
+		display: grid !important;
+		grid-template-columns: minmax(0, 1fr);
+		row-gap: 0.75rem;
+	}
+
+	.monopage-site-header > .wp-block-group > .wp-block-group {
+		justify-content: start !important;
+		min-width: 0;
+		width: 100%;
+	}
+
+	.monopage-site-header .wp-block-navigation {
+		max-width: 100%;
+		overflow-x: auto;
+		padding-bottom: 0.1rem;
+		width: 100%;
+	}
+
+	.monopage-site-header .wp-block-navigation__container {
+		flex-wrap: nowrap !important;
+		gap: 0.5rem !important;
+		width: max-content;
+	}
+
+	.monopage-site-header .wp-block-navigation-item__content {
+		background: rgba(17, 19, 24, 0.06);
+		border: 1px solid rgba(17, 19, 24, 0.1);
+		border-radius: 999px;
+		padding: 0.4rem 0.65rem;
+		white-space: nowrap;
+	}
+
 	.monopage-site-header .wp-block-buttons {
 		display: none;
 	}
@@ -614,25 +647,31 @@ body {
 		background-image: linear-gradient(180deg, rgba(5, 9, 16, 0.9), rgba(5, 9, 16, 0.62)), url("assets/monopage-riso-hero.jpg");
 		background-position: 58% center;
 		box-sizing: border-box;
-		min-height: 68vh;
-		padding-bottom: 3rem;
-		padding-top: 3.2rem;
+		min-height: auto;
+		padding-bottom: 2.4rem;
+		padding-top: 2.6rem;
 	}
 
 	.monopage-hero-copy {
 		margin-left: 0 !important;
 		margin-right: auto !important;
-		max-width: min(100%, 320px);
+		max-width: min(100%, 340px);
 	}
 
 	.monopage-hero h1 {
-		font-size: 2.35rem !important;
-		max-width: 11ch;
+		font-size: 2.2rem !important;
+		max-width: 11ch !important;
 		overflow-wrap: break-word;
 	}
 
 	.monopage-hero-copy > p:not(.monopage-kicker) {
 		max-width: 31ch !important;
+	}
+
+	.monopage-hero-facts {
+		display: grid !important;
+		grid-template-columns: repeat(3, minmax(0, 1fr));
+		max-width: min(100%, 340px) !important;
 	}
 
 	.monopage-main .wp-block-columns {
@@ -641,6 +680,10 @@ body {
 
 	.monopage-main .wp-block-column {
 		flex-basis: 100% !important;
+	}
+
+	.monopage-hero-facts .wp-block-column {
+		flex-basis: auto !important;
 	}
 
 	.monopage-logo-strip .wp-block-group.alignwide.is-layout-flex {
@@ -667,8 +710,8 @@ body {
 	}
 
 	.monopage-section {
-		padding-bottom: 3.4rem;
-		padding-top: 3.4rem;
+		padding-bottom: 2.8rem;
+		padding-top: 2.8rem;
 	}
 
 	.monopage-price-card.is-featured {
@@ -694,6 +737,19 @@ body {
 }
 
 @media (max-width: 600px) {
+	.monopage-site-header {
+		padding-bottom: 0.75rem;
+		padding-top: 0.75rem;
+	}
+
+	.monopage-site-header .wp-block-navigation {
+		font-size: 0.86rem;
+	}
+
+	.monopage-kicker {
+		font-size: 0.74rem;
+	}
+
 	.monopage-hero .wp-block-buttons {
 		align-items: stretch;
 		flex-direction: column;
@@ -703,5 +759,52 @@ body {
 	.monopage-hero .wp-block-button,
 	.monopage-hero .wp-block-button__link {
 		width: 100%;
+	}
+
+	.monopage-mini-value {
+		font-size: 0.68rem;
+		padding: 0.48rem 0.4rem;
+	}
+
+	.monopage-logo-strip {
+		padding-bottom: 0.85rem;
+		padding-top: 0.85rem;
+	}
+
+	.monopage-logo-strip .wp-block-group.alignwide.is-layout-flex {
+		grid-template-columns: minmax(0, 1fr) !important;
+		overflow: visible;
+		row-gap: 0.45rem;
+	}
+
+	.monopage-logo-label {
+		grid-column: auto;
+	}
+
+	.monopage-logo-pill {
+		justify-self: stretch;
+		max-width: 100%;
+		min-width: 0;
+		padding: 0.38rem 0.6rem;
+		width: 100% !important;
+	}
+
+	.monopage-section h2,
+	.monopage-final-cta h2 {
+		font-size: 2rem !important;
+	}
+
+	.monopage-card,
+	.monopage-price-card,
+	.monopage-step {
+		padding: 1.15rem;
+	}
+
+	.monopage-showcase-visual {
+		min-height: 260px;
+	}
+
+	.monopage-showcase-visual .wp-block-spacer {
+		height: 260px !important;
 	}
 }

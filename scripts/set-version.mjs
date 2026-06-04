@@ -33,10 +33,6 @@ ensureChangelogEntry();
 replaceInFile("themes/monopage-canvas/style.css", [
   [/Version:\s*[0-9]+\.[0-9]+\.[0-9]+/, `Version: ${version}`],
 ]);
-replaceInFile("skills/monopage-deploy/SKILL.md", [
-  [/build\/monopage-canvas-[0-9]+\.[0-9]+\.[0-9]+\.zip/g, `build/monopage-canvas-${version}.zip`],
-  [/build\/monopage-[0-9]+\.[0-9]+\.[0-9]+\.zip/g, `build/monopage-${version}.zip`],
-]);
 
 if (changedFiles.size) {
   for (const file of changedFiles) {
