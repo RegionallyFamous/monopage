@@ -3,7 +3,7 @@
  * Plugin Name:       Monopage
  * Plugin URI:        https://github.com/RegionallyFamous/monopage
  * Description:       AI-ready one-page WordPress: the Site Editor, blocks, real hosting, and no admin sprawl.
- * Version:           0.2.52
+ * Version:           1.0.0
  * Requires at least: 6.5
  * Requires PHP:      7.4
  * Author:            Regionally Famous
@@ -16,7 +16,7 @@
 
 defined( 'ABSPATH' ) || exit;
 
-define( 'MONOPAGE_VERSION', '0.2.52' );
+define( 'MONOPAGE_VERSION', '1.0.0' );
 define( 'MONOPAGE_FILE', __FILE__ );
 define( 'MONOPAGE_DIR', plugin_dir_path( __FILE__ ) );
 define( 'MONOPAGE_URL', plugin_dir_url( __FILE__ ) );

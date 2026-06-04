@@ -4,30 +4,35 @@ Tags: site editor, one page, block theme, wp-cli
 Requires at least: 6.5
 Tested up to: 7.0
 Requires PHP: 7.4
-Stable tag: 0.2.52
+Stable tag: 1.0.0
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
-AI-ready one-page WordPress with the Site Editor, blocks, real hosting, and no admin sprawl.
+AI-native one-page WordPress with the Site Editor, blocks, real hosting, Codex deployment support, and no admin sprawl.
 
 == Description ==
 
-Monopage turns WordPress into a focused one-page site studio for people building with AI.
+Monopage turns WordPress into a focused one-page site studio.
 
-It keeps the best WordPress pieces: the Site Editor, blocks, media, block themes, WP-CLI, users, and real hosting. Then it removes the one-page-site clutter: page mazes, blog/archive assumptions, off-page menus, dashboard panels, and settings sprawl.
+It keeps the best WordPress pieces: the Site Editor, blocks, media, block themes, users, WP-CLI, and real hosting. Then it removes the things most one-page sites do not need: page mazes, blog/archive assumptions, off-page menus, dashboard panels, and settings sprawl.
 
-Use AI to write, revise, design, and deploy. Monopage keeps the site model simple enough for an assistant to work cleanly: one editable homepage canvas, same-page anchor navigation, and a focused authoring surface.
+Use AI to write, revise, design, and deploy. Monopage keeps the site model simple enough for an assistant to work cleanly: one editable homepage canvas, same-page anchor navigation, and a calm authoring surface.
 
-Highlights:
+Monopage includes:
 
-* Setup helper that creates or reuses a Home page and configures it as the static front page.
-* Launch-ready one-page marketing homepage saved as the editable front-page template when Monopage Canvas is active.
-* Focus Mode that opens generic admin entrypoints directly to the one-page Site Editor canvas.
-* Site Editor focus defaults that open the canvas directly, keep the top toolbar enabled, and keep Spotlight/Distraction Free modes off.
-* Same-page navigation rules for menus, footer links, and starter CTAs.
-* Codex skill support for packaging, deploying, and validating Monopage sites through WP-CLI.
-* WP-CLI commands for status, setup, and Focus Mode toggles.
-* Designed to pair with the Monopage Canvas block theme.
+* One-page setup that creates or reuses a Home page and makes it the static front page.
+* Monopage Canvas, a block theme with a launch-ready starter homepage.
+* Focus Mode that opens WordPress directly to the one-page Site Editor canvas.
+* Same-page navigation rules for menus, footer links, and starter calls to action.
+* Codex skill support for packaging, deploying, and validating Monopage sites.
+* WP-CLI commands for setup, validation, status, and Focus Mode.
+
+== Installation ==
+
+1. Install and activate the Monopage Canvas theme.
+2. Install and activate the Monopage plugin.
+3. Run Monopage setup with WP-CLI or through the companion Codex skill.
+4. Open the Site Editor and edit the homepage canvas.
 
 == WP-CLI ==
 
@@ -42,170 +47,21 @@ wp monopage setup --activate-theme
 wp monopage focus enable
 wp monopage focus disable
 
+== Frequently Asked Questions ==
+
+= Is Monopage a separate website builder? =
+
+No. Monopage is WordPress, focused around one editable homepage template.
+
+= Can I use normal WordPress hosting? =
+
+Yes. Monopage deploys to real WordPress hosts and keeps WordPress core intact.
+
+= Does Monopage remove WordPress capabilities? =
+
+No. Focus Mode is an authoring experience, not a security boundary. WordPress capabilities still control access.
+
 == Changelog ==
 
-= 0.2.52 =
-* Name Canvas Group blocks for clearer Site Editor navigation.
-
-= 0.2.51 =
-* Disable Site Editor onboarding chrome in Monopage Focus Mode.
-
-= 0.2.50 =
-* Sharpen the repo and plugin summaries around AI-ready one-page WordPress.
-
-= 0.2.49 =
-* Split the plugin into focused includes and refresh the README for creators.
-
-= 0.2.48 =
-* Remove the header brief button from the default Canvas template.
-
-= 0.2.47 =
-* Improve the saved Canvas template description and remove bundled Canvas patterns.
-
-= 0.2.46 =
-* Trim the plugin surface and hide the Site Editor view toggle container.
-
-= 0.2.45 =
-* Simplify Focus Mode and add responsive review checks.
-
-= 0.2.44 =
-* Improve mobile Canvas responsiveness.
-
-= 0.2.43 =
-* Streamline checks for metadata-only version changes.
-
-= 0.2.42 =
-* Show package artifact freshness in status.
-
-= 0.2.41 =
-* Make preflight status guidance context-aware.
-
-= 0.2.40 =
-* Route status recommendations through preflight.
-
-= 0.2.39 =
-* Improve Canvas hero alignment.
-
-= 0.2.38 =
-* Show Codex skill state in status.
-
-= 0.2.37 =
-* Add fast preflight workflow.
-
-= 0.2.36 =
-* Add project status dashboard.
-
-= 0.2.35 =
-* Add changed-file check recommendations.
-
-= 0.2.34 =
-* Add local visual review workflow.
-
-= 0.2.33 =
-* Add local homepage screenshot capture.
-
-= 0.2.32 =
-* Refine Canvas hero composition.
-
-= 0.2.31 =
-* Validate package script references.
-
-= 0.2.30 =
-* Validate documented helper commands.
-
-= 0.2.29 =
-* Add repository and source archive hygiene checks.
-
-= 0.2.28 =
-* Auto-discover JavaScript syntax checks.
-
-= 0.2.27 =
-* Add Docker-free CI workflow and package artifact gate.
-
-= 0.2.26 =
-* Route release local checks through local readiness workflow.
-
-= 0.2.25 =
-* Add one-command local readiness workflow.
-
-= 0.2.24 =
-* Add authenticated Focus Mode admin smoke test.
-
-= 0.2.23 =
-* Add deploy dry-run safety validation.
-
-= 0.2.22 =
-* Refresh default Canvas with future-agency Riso art and sharper starter copy.
-
-= 0.2.21 =
-* Verify package contents during direct deploys.
-
-= 0.2.20 =
-* Add package content verification for built ZIPs.
-
-= 0.2.19 =
-* Add Codex skill contract validation.
-
-= 0.2.18 =
-* Add Playground Blueprint and seamless URL validation.
-
-= 0.2.17 =
-* Add a rendered homepage smoke check to the release gate.
-
-= 0.2.16 =
-* Refresh the local saved Canvas template during release checks.
-* Sharpen the default Canvas theme with refreshed Riso assets and campaign-style starter copy.
-
-= 0.2.15 =
-* Add a one-command release verification gate.
-
-= 0.2.14 =
-* Make Plugin Check CLI loading automatic.
-
-= 0.2.13 =
-* Add WP-CLI validation and deploy setup health checks.
-
-= 0.2.12 =
-* Refine the Canvas section system and link validation.
-
-= 0.2.11 =
-* Refine Canvas design, block-first styling, validation, and Plugin Check workflow.
-
-= 0.2.10 =
-* Load Canvas styles explicitly on the public front end.
-
-= 0.2.9 =
-* Add a fresh ImageGen hero asset for the preinstalled Canvas theme.
-
-= 0.2.8 =
-* Add a version setter and package-time version guard.
-
-= 0.2.7 =
-* Add release metadata checks and a doctor command for local setup visibility.
-
-= 0.2.6 =
-* Add an opt-in template refresh path for applying the current Monopage Canvas default to the saved front-page template.
-
-= 0.2.5 =
-* Add a Codex skill install helper for the Monopage deployment skill.
-
-= 0.2.4 =
-* Settle the Monopage name, expand the default Canvas page, and prevent the Site Editor navigation toggle in Focus Mode.
-
-= 0.2.3 =
-* Redirect routing Home page edits to the Site Editor template and explain the Home/template split.
-
-= 0.2.2 =
-* Keep starter-template navigation strictly on-page and add a template-link check.
-
-= 0.2.1 =
-* Load Canvas styles in the Site Editor and clean template serialization warnings.
-
-= 0.2.0 =
-* Add a polished default one-page marketing homepage and seed it into the Site Editor on setup.
-
-= 0.1.1 =
-* Make Site Editor top-toolbar enforcement more robust and refresh admin asset caching.
-
-= 0.1.0 =
-* Initial standalone Monopage plugin.
+= 1.0.0 =
+* Initial public release of Monopage: one-page setup, Monopage Canvas, Focus Mode, same-page navigation rules, WP-CLI commands, Codex deployment support, Playground demo, and release checks.
