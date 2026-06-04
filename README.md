@@ -48,6 +48,8 @@ node scripts/deploy-monopage.mjs --path=/path/to/wordpress
 
 Add `--force-home` only when Monopage should replace an existing static front page assignment.
 
+Add `--force-template` only when Monopage should replace the saved Site Editor `front-page` template with the current Monopage Canvas default.
+
 ## Install The Companion Skill
 
 ```bash

@@ -4,7 +4,7 @@ Tags: site editor, one page, block theme, wp-cli
 Requires at least: 6.5
 Tested up to: 6.9
 Requires PHP: 7.4
-Stable tag: 0.2.5
+Stable tag: 0.2.6
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -29,11 +29,15 @@ V1 features:
 wp monopage status
 wp monopage setup
 wp monopage setup --force-home
+wp monopage setup --force-template
 wp monopage setup --activate-theme
 wp monopage focus enable
 wp monopage focus disable
 
 == Changelog ==
+
+= 0.2.6 =
+* Add an opt-in template refresh path for applying the current Monopage Canvas default to the saved front-page template.
 
 = 0.2.5 =
 * Add a Codex skill install helper for the Monopage deployment skill.

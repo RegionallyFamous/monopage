@@ -3,7 +3,7 @@
  * Plugin Name:       Monopage
  * Plugin URI:        https://github.com/RegionallyFamous/monopage
  * Description:       Monopage focuses WordPress around the Site Editor and a single homepage template.
- * Version:           0.2.5
+ * Version:           0.2.6
  * Requires at least: 6.5
  * Requires PHP:      7.4
  * Author:            WeirdPress
@@ -16,7 +16,7 @@
 
 defined( 'ABSPATH' ) || exit;
 
-define( 'MONOPAGE_VERSION', '0.2.5' );
+define( 'MONOPAGE_VERSION', '0.2.6' );
 define( 'MONOPAGE_FILE', __FILE__ );
 define( 'MONOPAGE_DIR', plugin_dir_path( __FILE__ ) );
 define( 'MONOPAGE_URL', plugin_dir_url( __FILE__ ) );
@@ -369,6 +369,11 @@ function monopage_render_admin_page() {
 							<input type="checkbox" name="force_home" value="1">
 							<?php esc_html_e( 'Replace the current static front page assignment', 'monopage' ); ?>
 						</label>
+						<label class="monopage-checkbox">
+							<input type="checkbox" name="force_template" value="1">
+							<?php esc_html_e( 'Refresh the editable front-page template from Monopage Canvas', 'monopage' ); ?>
+						</label>
+						<p class="description"><?php esc_html_e( 'Refreshing the template replaces saved Site Editor changes for the front-page template.', 'monopage' ); ?></p>
 						<p><button class="button" type="submit"><?php esc_html_e( 'Run Setup', 'monopage' ); ?></button></p>
 					</form>
 				<?php else : ?>
@@ -411,6 +416,7 @@ function monopage_render_admin_page() {
 				<pre><code>wp monopage status
 wp monopage setup
 wp monopage setup --force-home
+wp monopage setup --force-template
 wp monopage focus enable
 wp monopage focus disable</code></pre>
 			</section>
@@ -502,7 +508,8 @@ function monopage_handle_run_setup() {
 
 	$result = monopage_setup_one_pager(
 		array(
-			'force_home' => isset( $_POST['force_home'] ) && '1' === sanitize_text_field( wp_unslash( $_POST['force_home'] ) ),
+			'force_home'     => isset( $_POST['force_home'] ) && '1' === sanitize_text_field( wp_unslash( $_POST['force_home'] ) ),
+			'force_template' => isset( $_POST['force_template'] ) && '1' === sanitize_text_field( wp_unslash( $_POST['force_template'] ) ),
 		)
 	);
 
@@ -525,9 +532,10 @@ function monopage_setup_one_pager( $args = array() ) {
 	$args = wp_parse_args(
 		$args,
 		array(
-			'force_home'    => false,
-			'home_title'    => __( 'Home', 'monopage' ),
-			'seed_template' => true,
+			'force_home'     => false,
+			'force_template' => false,
+			'home_title'     => __( 'Home', 'monopage' ),
+			'seed_template'  => true,
 		)
 	);
 
@@ -535,10 +543,19 @@ function monopage_setup_one_pager( $args = array() ) {
 	$has_static_frontpage = 'page' === get_option( 'show_on_front' ) && $current_front_id > 0;
 
 	if ( $has_static_frontpage && ! $args['force_home'] ) {
+		$template_id = 0;
+		if ( $args['seed_template'] && $args['force_template'] ) {
+			$template_id = monopage_seed_default_front_page_template( true );
+			if ( is_wp_error( $template_id ) ) {
+				return $template_id;
+			}
+		}
+
 		return array(
-			'changed' => false,
-			'home_id' => $current_front_id,
-			'message' => __( 'Existing static front page preserved.', 'monopage' ),
+			'changed'     => (bool) $template_id,
+			'home_id'     => $current_front_id,
+			'template_id' => absint( $template_id ),
+			'message'     => $template_id ? __( 'Existing static front page preserved; front-page template refreshed.', 'monopage' ) : __( 'Existing static front page preserved.', 'monopage' ),
 		);
 	}
 
@@ -553,7 +570,7 @@ function monopage_setup_one_pager( $args = array() ) {
 
 	$template_id = 0;
 	if ( $args['seed_template'] ) {
-		$template_id = monopage_seed_default_front_page_template();
+		$template_id = monopage_seed_default_front_page_template( $args['force_template'] );
 		if ( is_wp_error( $template_id ) ) {
 			return $template_id;
 		}
@@ -581,12 +598,12 @@ function monopage_maybe_setup_canvas_defaults() {
 /**
  * Save the Monopage marketing homepage as the editable front-page template.
  *
- * Existing saved front-page templates are preserved so setup does not overwrite
- * Site Editor work on existing installations.
+ * Existing saved front-page templates are preserved unless explicitly refreshed.
  *
+ * @param bool $force_template Whether to overwrite an existing saved template.
  * @return int|WP_Error Template post ID, 0 when unavailable, or WP_Error on failure.
  */
-function monopage_seed_default_front_page_template() {
+function monopage_seed_default_front_page_template( $force_template = false ) {
 	if ( MONOPAGE_CANVAS_THEME !== get_stylesheet() || ! monopage_site_uses_block_theme() ) {
 		return 0;
 	}
@@ -597,13 +614,34 @@ function monopage_seed_default_front_page_template() {
 
 	$theme = get_stylesheet();
 	$existing_template = monopage_get_saved_front_page_template( $theme );
-	if ( $existing_template instanceof WP_Post ) {
+	if ( $existing_template instanceof WP_Post && ! $force_template ) {
 		return $existing_template->ID;
 	}
 
 	$content = monopage_get_default_front_page_template_content();
 	if ( '' === trim( $content ) ) {
 		return new WP_Error( 'monopage_missing_template', __( 'Monopage Canvas front-page template is missing.', 'monopage' ) );
+	}
+
+	if ( $existing_template instanceof WP_Post ) {
+		$updated_template_id = wp_update_post(
+			array(
+				'ID'           => $existing_template->ID,
+				'post_status'  => 'publish',
+				'post_title'   => __( 'Front Page', 'monopage' ),
+				'post_excerpt' => __( 'Default Monopage one-page marketing homepage.', 'monopage' ),
+				'post_content' => $content,
+			),
+			true
+		);
+
+		if ( is_wp_error( $updated_template_id ) ) {
+			return $updated_template_id;
+		}
+
+		update_post_meta( $existing_template->ID, 'origin', 'theme' );
+
+		return $existing_template->ID;
 	}
 
 	$template_id = wp_insert_post(
@@ -1040,6 +1078,9 @@ if ( defined( 'WP_CLI' ) && WP_CLI ) {
 		 * [--force-home]
 		 * : Replace the current static front page assignment.
 		 *
+		 * [--force-template]
+		 * : Replace the saved Site Editor front-page template with the current Monopage Canvas default.
+		 *
 		 * [--home-title=<title>]
 		 * : Home page title. Default: Home.
 		 *
@@ -1062,8 +1103,9 @@ if ( defined( 'WP_CLI' ) && WP_CLI ) {
 
 			$result = monopage_setup_one_pager(
 				array(
-					'force_home' => \WP_CLI\Utils\get_flag_value( $assoc_args, 'force-home', false ),
-					'home_title' => isset( $assoc_args['home-title'] ) ? $assoc_args['home-title'] : 'Home',
+					'force_home'     => \WP_CLI\Utils\get_flag_value( $assoc_args, 'force-home', false ),
+					'force_template' => \WP_CLI\Utils\get_flag_value( $assoc_args, 'force-template', false ),
+					'home_title'     => isset( $assoc_args['home-title'] ) ? $assoc_args['home-title'] : 'Home',
 				)
 			);
 

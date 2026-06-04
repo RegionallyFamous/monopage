@@ -13,6 +13,7 @@ const dryRun = Boolean(options["dry-run"]);
 const wpPath = options.path || "/path/to/wordpress";
 const wpSsh = options.ssh || "";
 const forceHome = Boolean(options["force-home"]);
+const forceTemplate = Boolean(options["force-template"]);
 const skipPackage = Boolean(options["skip-package"]);
 const pluginZip = path.resolve(root, options["plugin-zip"] || `build/monopage-${version}.zip`);
 const themeZip = path.resolve(root, options["theme-zip"] || `build/monopage-canvas-${version}.zip`);
@@ -45,7 +46,13 @@ const commands = [
   [...wpBase, "db", "export", backupFile],
   [...wpBase, "theme", "install", themeZip, "--force", "--activate"],
   [...wpBase, "plugin", "install", pluginZip, "--force", "--activate"],
-  [...wpBase, "monopage", "setup", ...(forceHome ? ["--force-home"] : [])],
+  [
+    ...wpBase,
+    "monopage",
+    "setup",
+    ...(forceHome ? ["--force-home"] : []),
+    ...(forceTemplate ? ["--force-template"] : []),
+  ],
   [...wpBase, "monopage", "status", "--format=json"],
 ];
 

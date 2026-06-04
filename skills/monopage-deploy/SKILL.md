@@ -37,11 +37,12 @@ When changing `themes/monopage-canvas/templates/front-page.html`:
 3. Back up before changing the site:
    - `wp --path=<target> db export monopage-backup-YYYYMMDD-HHMMSS.sql`
 4. Install and activate:
-   - `wp --path=<target> theme install build/monopage-canvas-0.2.5.zip --force --activate`
-   - `wp --path=<target> plugin install build/monopage-0.2.5.zip --force --activate`
+   - `wp --path=<target> theme install build/monopage-canvas-0.2.6.zip --force --activate`
+   - `wp --path=<target> plugin install build/monopage-0.2.6.zip --force --activate`
 5. Run setup:
    - `wp --path=<target> monopage setup`
    - Use `--force-home` only when the user explicitly wants Monopage to replace an existing static front page assignment.
+   - Use `--force-template` only when the user explicitly wants Monopage to replace saved Site Editor `front-page` template changes with the current Monopage Canvas default.
 6. Validate:
    - `wp --path=<target> monopage status --format=json`
    - Confirm starter-template links are on-page if the template was customized: `npm run check:links`
@@ -69,6 +70,7 @@ node scripts/deploy-monopage.mjs --dry-run --ssh=user@example.com:/site --path=/
 
 - Always run or confirm a DB backup before install, setup, or Focus Mode changes.
 - Do not pass `--force-home` on existing sites unless the user explicitly approves replacing the front page assignment.
+- Do not pass `--force-template` unless the user explicitly approves replacing saved front-page template edits.
 - Treat Focus Mode as UX cleanup, not access control. WordPress roles and capabilities remain the security boundary.
 - Keep Monopage Canvas active unless the target theme is a confirmed block theme with a front-page template.
 - If deployment fails after the backup but before setup, report the backup filename and the last successful command.
