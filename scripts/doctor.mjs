@@ -16,6 +16,7 @@ const requiredFiles = [
   "themes/monopage-canvas/theme.json",
   "skills/monopage-deploy/SKILL.md",
   "playground/blueprint.json",
+  "scripts/homepage-smoke.mjs",
   "scripts/plugin-check.mjs",
 ];
 const commands = [

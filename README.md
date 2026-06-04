@@ -29,6 +29,7 @@ npm install
 npm run local:start
 npm run local:setup
 npm run local:validate
+npm run local:smoke
 npm run local:status
 ```
 
@@ -59,11 +60,14 @@ npm run doctor
 npm run check:canvas
 npm run check:links
 npm run check:versions
+npm run local:smoke
 ```
 
 `check:canvas` confirms the Canvas stylesheet is wired for both the Site Editor and the public front end, that CSS asset references are packaged and reasonably sized, and that bundled pattern metadata is valid.
 
 `check:links` confirms the default front-page template and bundled patterns only use on-page links and that every `#anchor` target exists.
+
+`local:smoke` checks the rendered local homepage, required starter copy, same-page body links, section anchors, and the served Canvas image assets. Run it after `local:setup` or `local:refresh-template`.
 
 Run the full release gate before publishing or pushing a release-minded change:
 
@@ -71,7 +75,7 @@ Run the full release gate before publishing or pushing a release-minded change:
 npm run release:check
 ```
 
-Use `npm run release:check:dry-run` to preview the sequence. The release gate refreshes the local saved `front-page` template before runtime validation, so it tests the current bundled Canvas template. In environments without Docker or wp-env, use `node scripts/release-check.mjs --skip-local --skip-plugin-check` and run those checks later on a WordPress runtime.
+Use `npm run release:check:dry-run` to preview the sequence. The release gate refreshes the local saved `front-page` template before runtime validation, then smokes the rendered homepage so it tests the current bundled Canvas template and public route. In environments without Docker or wp-env, use `node scripts/release-check.mjs --skip-local --skip-plugin-check` and run those checks later on a WordPress runtime.
 
 ## Plugin Check
 

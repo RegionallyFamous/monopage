@@ -133,6 +133,7 @@ npm install
 npm run local:start
 npm run local:setup
 npm run local:validate
+npm run local:smoke
 npm run local:status
 ```
 
@@ -173,6 +174,7 @@ Additional checks:
 ```bash
 npm run doctor
 npm run local:validate
+npm run local:smoke
 npm run plugin:check
 npm run plugin:check:runtime
 ```
@@ -183,7 +185,9 @@ Full release gate:
 npm run release:check
 ```
 
-`release:check` runs repository checks, doctor, a local template refresh plus runtime validation, Plugin Check, package builds, deploy dry-run, and the Playground URL generator. Use `npm run release:check:dry-run` to inspect the sequence. Use `node scripts/release-check.mjs --skip-local --skip-plugin-check` only when Docker/wp-env is unavailable, then run those skipped gates on a real WordPress runtime before release.
+`local:smoke` checks the rendered homepage, required starter copy, same-page body links, section anchors, and served Canvas image assets. Run it after `local:setup` or `local:refresh-template`.
+
+`release:check` runs repository checks, doctor, a local template refresh plus runtime validation, a rendered-homepage smoke check, Plugin Check, package builds, deploy dry-run, and the Playground URL generator. Use `npm run release:check:dry-run` to inspect the sequence. Use `node scripts/release-check.mjs --skip-local --skip-plugin-check` only when Docker/wp-env is unavailable, then run those skipped gates on a real WordPress runtime before release.
 
 ## Runtime Validation
 
