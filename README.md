@@ -18,6 +18,12 @@ npm run local:setup
 npm run local:status
 ```
 
+Check local release metadata and tool availability:
+
+```bash
+npm run doctor
+```
+
 ## Playground
 
 Open Monopage in WordPress Playground:

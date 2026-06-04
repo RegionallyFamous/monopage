@@ -1,13 +1,15 @@
 {
   "name": "monopage",
-  "version": "0.2.6",
+  "version": "0.2.7",
   "private": true,
   "description": "Monopage plugin, canvas theme, and Codex deployment skill.",
   "scripts": {
     "lint:php": "find plugins/monopage themes/monopage-canvas -name '*.php' -print0 | xargs -0 -n1 php -l",
-    "check:js": "node --check plugins/monopage/assets/site-editor.js && node --check scripts/check-template-links.mjs && node --check scripts/package.mjs && node --check scripts/deploy-monopage.mjs && node --check scripts/install-skill.mjs && node --check scripts/local-setup.mjs && node --check scripts/playground-url.mjs && node --check scripts/validate-json.mjs",
+    "check:js": "node --check plugins/monopage/assets/site-editor.js && node --check scripts/check-template-links.mjs && node --check scripts/check-versions.mjs && node --check scripts/doctor.mjs && node --check scripts/package.mjs && node --check scripts/deploy-monopage.mjs && node --check scripts/install-skill.mjs && node --check scripts/local-setup.mjs && node --check scripts/playground-url.mjs && node --check scripts/validate-json.mjs",
     "check:json": "node scripts/validate-json.mjs",
     "check:links": "node scripts/check-template-links.mjs",
+    "check:versions": "node scripts/check-versions.mjs",
+    "doctor": "node scripts/doctor.mjs",
     "package": "node scripts/package.mjs",
     "package:dry-run": "node scripts/package.mjs --dry-run",
     "playground:url": "node scripts/playground-url.mjs",
@@ -18,7 +20,7 @@
     "local:stop": "wp-env stop",
     "local:setup": "node scripts/local-setup.mjs",
     "local:status": "wp-env run cli wp monopage status",
-    "test": "npm run lint:php && npm run check:js && npm run check:json && npm run check:links && npm run package:dry-run"
+    "test": "npm run lint:php && npm run check:js && npm run check:json && npm run check:links && npm run check:versions && npm run package:dry-run"
   },
   "devDependencies": {
     "@wordpress/env": "^11.5.0"
