@@ -226,7 +226,7 @@ npm run release:check
 
 `local:smoke` checks the rendered homepage, required starter copy, same-page body links, section anchors, and served Canvas image assets. Run it after `local:setup` or `local:refresh-template`.
 
-`status` prints a quick project dashboard: current version, branch, latest commit, changed files, focused check recommendations, package artifact status, Codex skill install state, local URLs, and the Playground URL. It is read-only and does not start wp-env.
+`status` prints a quick project dashboard: current version, branch, latest commit, changed files, focused check recommendations, package artifact status and freshness, Codex skill install state, local URLs, and the Playground URL. It is read-only and does not start wp-env.
 
 `preflight` is the normal fast local gate before a commit or push. It runs `status`, then `ci`, without requiring Docker/wp-env. Use `release:check` before publishing or release-minded changes.
 

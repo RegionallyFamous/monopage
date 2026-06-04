@@ -42,8 +42,8 @@ console.log(indent(changedCheck.stdout.trim() || changedCheck.stderr.trim() || "
 
 console.log("");
 console.log("Artifacts");
-printArtifact(pluginZip);
-printArtifact(themeZip);
+printArtifact(pluginZip, ["plugins/monopage"]);
+printArtifact(themeZip, ["themes/monopage-canvas"]);
 
 console.log("");
 console.log("Codex Skill");
@@ -114,7 +114,7 @@ function parseArgs(args) {
   return parsed;
 }
 
-function printArtifact(relativePath) {
+function printArtifact(relativePath, sourceDirs = []) {
   const file = path.join(root, relativePath);
   if (!fs.existsSync(file)) {
     console.log(`- ${relativePath}: missing`);
@@ -122,7 +122,70 @@ function printArtifact(relativePath) {
   }
 
   const stats = fs.statSync(file);
-  console.log(`- ${relativePath}: ${formatBytes(stats.size)}`);
+  const freshness = artifactFreshness(stats.mtimeMs, sourceDirs);
+  const suffix = freshness ? ` (${freshness})` : "";
+  console.log(`- ${relativePath}: ${formatBytes(stats.size)}${suffix}`);
+}
+
+function artifactFreshness(artifactMtimeMs, sourceDirs) {
+  if (!sourceDirs.length) {
+    return "";
+  }
+
+  const newest = newestPackageInput(sourceDirs);
+  if (!newest) {
+    return "fresh";
+  }
+
+  if (artifactMtimeMs + 1000 < newest.mtimeMs) {
+    return `stale; newest input: ${newest.relativePath}`;
+  }
+
+  return "fresh";
+}
+
+function newestPackageInput(sourceDirs) {
+  let newest = null;
+
+  for (const sourceDir of sourceDirs) {
+    walkPackageInput(path.join(root, sourceDir));
+  }
+
+  return newest;
+
+  function walkPackageInput(dir) {
+    if (!fs.existsSync(dir)) {
+      return;
+    }
+
+    for (const entry of fs.readdirSync(dir, { withFileTypes: true })) {
+      if (shouldSkipPackageInput(entry.name)) {
+        continue;
+      }
+
+      const file = path.join(dir, entry.name);
+      if (entry.isDirectory()) {
+        walkPackageInput(file);
+        continue;
+      }
+
+      if (!entry.isFile()) {
+        continue;
+      }
+
+      const stats = fs.statSync(file);
+      if (!newest || stats.mtimeMs > newest.mtimeMs) {
+        newest = {
+          mtimeMs: stats.mtimeMs,
+          relativePath: path.relative(root, file),
+        };
+      }
+    }
+  }
+}
+
+function shouldSkipPackageInput(name) {
+  return [".DS_Store", "build", "node_modules"].includes(name);
 }
 
 function printSkillStatus() {

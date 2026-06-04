@@ -94,7 +94,7 @@ npm run package:verify
 
 `check:canvas` confirms the Canvas stylesheet is wired for both the Site Editor and the public front end, that CSS asset references are packaged and reasonably sized, and that bundled pattern metadata is valid.
 
-`status` prints the Monopage version, branch, latest commit, working-tree summary, focused check recommendations, current package artifact status, Codex skill install state, local URLs, and the Playground URL.
+`status` prints the Monopage version, branch, latest commit, working-tree summary, focused check recommendations, current package artifact status and freshness, Codex skill install state, local URLs, and the Playground URL.
 
 `preflight` runs `status` and then the Docker-free `ci` gate. Use it before a normal commit or push; use `release:check` when runtime validation and Plugin Check matter.
 
