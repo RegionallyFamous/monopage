@@ -71,6 +71,7 @@ Useful focused checks:
 
 ```bash
 npm run doctor
+npm run status
 npm run check:js
 npm run check:canvas
 npm run check:changed
@@ -91,6 +92,8 @@ npm run package:verify
 ```
 
 `check:canvas` confirms the Canvas stylesheet is wired for both the Site Editor and the public front end, that CSS asset references are packaged and reasonably sized, and that bundled pattern metadata is valid.
+
+`status` prints the Monopage version, branch, latest commit, working-tree summary, focused check recommendations, current package artifact status, local URLs, and the Playground URL.
 
 `check:changed` inspects the current working tree and recommends focused checks for the files that changed. Use `npm run check:changed:run` to run the recommended list.
 

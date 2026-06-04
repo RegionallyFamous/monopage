@@ -59,6 +59,14 @@ npm run check:changed
 
 This inspects changed files and recommends matching checks. Use `npm run check:changed:run` to execute the recommended list.
 
+When orienting in the repo before choosing a workflow, use:
+
+```bash
+npm run status
+```
+
+This prints the current Monopage version, branch, latest commit, changed-file summary, focused check recommendations, package artifact status, local URLs, and Playground URL without starting wp-env.
+
 ## CI Gate
 
 Before a normal push from the Monopage repo, prefer:
@@ -170,8 +178,8 @@ This verifies chained `npm run ...`, `npm test`, and `node scripts/*.mjs` comman
 3. Back up before changing the site:
    - `wp --path=<target> db export monopage-backup-YYYYMMDD-HHMMSS.sql`
 4. Install and activate:
-   - `wp --path=<target> theme install build/monopage-canvas-0.2.35.zip --force --activate`
-   - `wp --path=<target> plugin install build/monopage-0.2.35.zip --force --activate`
+   - `wp --path=<target> theme install build/monopage-canvas-0.2.36.zip --force --activate`
+   - `wp --path=<target> plugin install build/monopage-0.2.36.zip --force --activate`
 5. Run setup:
    - `wp --path=<target> monopage setup`
    - Use `--force-home` only when the user explicitly wants Monopage to replace an existing static front page assignment.
