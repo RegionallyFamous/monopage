@@ -45,6 +45,10 @@ const steps = [
     skip: Boolean(options["skip-package"]),
   },
   {
+    label: "deploy plan safety",
+    command: ["npm", "run", "check:deploy"],
+  },
+  {
     label: "deploy dry run",
     command: ["npm", "run", "deploy:dry-run"],
   },

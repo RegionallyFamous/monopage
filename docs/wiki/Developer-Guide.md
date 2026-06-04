@@ -165,6 +165,7 @@ The test suite runs:
 - JavaScript syntax checks
 - JSON validation
 - Canvas style and asset validation
+- deploy dry-run safety validation
 - one-page link validation for templates and patterns
 - Playground Blueprint and seamless URL validation
 - Codex skill contract validation
@@ -177,6 +178,7 @@ Additional checks:
 npm run doctor
 npm run local:validate
 npm run local:smoke
+npm run check:deploy
 npm run check:playground
 npm run check:skill
 npm run package:verify
@@ -194,11 +196,13 @@ npm run release:check
 
 `check:playground` checks that the public Blueprint installs the expected GitHub theme/plugin directories, refreshes the Canvas front-page template, lands in the Site Editor canvas, and that `playground:url` keeps the outer Playground toolbar hidden with seamless mode.
 
+`check:deploy` checks that the dry-run deploy plan packages and verifies ZIPs before WP-CLI changes, backs up before installing, installs the theme before the plugin, validates before status, and keeps `--force-home`, `--force-template`, and `--check-http` opt-in by default.
+
 `check:skill` checks that `skills/monopage-deploy/SKILL.md` and `agents/openai.yaml` preserve the required Monopage agent contract: one-page navigation, Site Editor `front-page` editing, block-first design, generated-image handling, deploy backups, force flag safety, and validation commands.
 
 `package:verify` checks the current version's built plugin and theme ZIPs for required files, correct version metadata, expected top-level folders, and forbidden bundled paths.
 
-`release:check` runs repository checks, doctor, a local template refresh plus runtime validation, a rendered-homepage smoke check, Plugin Check, package builds, package content verification, deploy dry-run, and the Playground URL generator. Use `npm run release:check:dry-run` to inspect the sequence. Use `node scripts/release-check.mjs --skip-local --skip-plugin-check` only when Docker/wp-env is unavailable, then run those skipped gates on a real WordPress runtime before release.
+`release:check` runs repository checks, doctor, a local template refresh plus runtime validation, a rendered-homepage smoke check, Plugin Check, package builds, package content verification, deploy plan safety validation, deploy dry-run, and the Playground URL generator. Use `npm run release:check:dry-run` to inspect the sequence. Use `node scripts/release-check.mjs --skip-local --skip-plugin-check` only when Docker/wp-env is unavailable, then run those skipped gates on a real WordPress runtime before release.
 
 ## Runtime Validation
 
@@ -273,6 +277,7 @@ The package script runs version metadata checks before building.
 Dry run:
 
 ```bash
+npm run check:deploy
 npm run deploy:dry-run
 node scripts/deploy-monopage.mjs --dry-run --path=/path/to/wordpress
 ```

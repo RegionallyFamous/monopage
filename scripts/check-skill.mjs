@@ -36,6 +36,7 @@ const skillRequirements = [
   ["template refresh command", "npm run local:refresh-template"],
   ["homepage smoke command", "npm run local:smoke"],
   ["Playground check command", "npm run check:playground"],
+  ["deploy plan check command", "npm run check:deploy"],
   ["WP-CLI install check", "wp --path=<target> core is-installed"],
   ["backup before deploy", "wp --path=<target> db export"],
   ["setup command", "wp --path=<target> monopage setup"],

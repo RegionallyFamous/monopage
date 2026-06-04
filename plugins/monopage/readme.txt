@@ -4,7 +4,7 @@ Tags: site editor, one page, block theme, wp-cli
 Requires at least: 6.5
 Tested up to: 7.0
 Requires PHP: 7.4
-Stable tag: 0.2.22
+Stable tag: 0.2.23
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -39,6 +39,9 @@ wp monopage focus enable
 wp monopage focus disable
 
 == Changelog ==
+
+= 0.2.23 =
+* Add deploy dry-run safety validation.
 
 = 0.2.22 =
 * Refresh default Canvas with future-agency Riso art and sharper starter copy.

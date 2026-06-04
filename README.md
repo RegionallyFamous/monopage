@@ -58,6 +58,7 @@ Useful focused checks:
 ```bash
 npm run doctor
 npm run check:canvas
+npm run check:deploy
 npm run check:links
 npm run check:playground
 npm run check:skill
@@ -67,6 +68,8 @@ npm run package:verify
 ```
 
 `check:canvas` confirms the Canvas stylesheet is wired for both the Site Editor and the public front end, that CSS asset references are packaged and reasonably sized, and that bundled pattern metadata is valid.
+
+`check:deploy` confirms the dry-run deployment plan packages and verifies before WP-CLI changes, backs up before installs, installs the theme before the plugin, validates before status, and keeps force/HTTP flags opt-in by default.
 
 `check:links` confirms the default front-page template and bundled patterns only use on-page links and that every `#anchor` target exists.
 
@@ -139,6 +142,7 @@ Artifacts are written into `build/`.
 Preview the deployment command sequence:
 
 ```bash
+npm run check:deploy
 npm run deploy:dry-run
 node scripts/deploy-monopage.mjs --dry-run --path=/path/to/wordpress
 ```
