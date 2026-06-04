@@ -1,12 +1,13 @@
 {
   "name": "wpop",
-  "version": "0.2.1",
+  "version": "0.2.2",
   "private": true,
   "description": "WordPress One Pager plugin, canvas theme, and Codex deployment skill.",
   "scripts": {
     "lint:php": "find plugins/wpop themes/wpop-canvas -name '*.php' -print0 | xargs -0 -n1 php -l",
-    "check:js": "node --check plugins/wpop/assets/site-editor.js && node --check scripts/package.mjs && node --check scripts/deploy-wpop.mjs && node --check scripts/local-setup.mjs && node --check scripts/playground-url.mjs && node --check scripts/validate-json.mjs",
+    "check:js": "node --check plugins/wpop/assets/site-editor.js && node --check scripts/check-template-links.mjs && node --check scripts/package.mjs && node --check scripts/deploy-wpop.mjs && node --check scripts/local-setup.mjs && node --check scripts/playground-url.mjs && node --check scripts/validate-json.mjs",
     "check:json": "node scripts/validate-json.mjs",
+    "check:links": "node scripts/check-template-links.mjs",
     "package": "node scripts/package.mjs",
     "package:dry-run": "node scripts/package.mjs --dry-run",
     "playground:url": "node scripts/playground-url.mjs",
@@ -15,7 +16,7 @@
     "local:stop": "wp-env stop",
     "local:setup": "node scripts/local-setup.mjs",
     "local:status": "wp-env run cli wp wpop status",
-    "test": "npm run lint:php && npm run check:js && npm run check:json && npm run package:dry-run"
+    "test": "npm run lint:php && npm run check:js && npm run check:json && npm run check:links && npm run package:dry-run"
   },
   "devDependencies": {
     "@wordpress/env": "^11.5.0"

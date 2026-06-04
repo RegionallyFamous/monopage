@@ -4,7 +4,7 @@ Tags: site editor, one page, block theme, wp-cli
 Requires at least: 6.5
 Tested up to: 6.9
 Requires PHP: 7.4
-Stable tag: 0.2.1
+Stable tag: 0.2.2
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -34,6 +34,9 @@ wp wpop focus enable
 wp wpop focus disable
 
 == Changelog ==
+
+= 0.2.2 =
+* Keep starter-template navigation strictly on-page and add a template-link check.
 
 = 0.2.1 =
 * Load Canvas styles in the Site Editor and clean template serialization warnings.
