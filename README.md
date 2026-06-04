@@ -59,6 +59,14 @@ npm run check:versions
 
 `check:links` confirms the default front-page template and bundled patterns only use on-page links and that every `#anchor` target exists.
 
+Run the full release gate before publishing or pushing a release-minded change:
+
+```bash
+npm run release:check
+```
+
+Use `npm run release:check:dry-run` to preview the sequence. In environments without Docker or wp-env, use `node scripts/release-check.mjs --skip-local --skip-plugin-check` and run those checks later on a WordPress runtime.
+
 ## Plugin Check
 
 With Docker running:

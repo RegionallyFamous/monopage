@@ -1,11 +1,11 @@
 {
   "name": "monopage",
-  "version": "0.2.14",
+  "version": "0.2.15",
   "private": true,
   "description": "Monopage plugin, canvas theme, and Codex deployment skill.",
   "scripts": {
     "lint:php": "find plugins/monopage themes/monopage-canvas -name '*.php' -print0 | xargs -0 -n1 php -l",
-    "check:js": "node --check plugins/monopage/assets/site-editor.js && node --check scripts/check-canvas-theme.mjs && node --check scripts/check-template-links.mjs && node --check scripts/check-versions.mjs && node --check scripts/doctor.mjs && node --check scripts/package.mjs && node --check scripts/deploy-monopage.mjs && node --check scripts/install-skill.mjs && node --check scripts/local-setup.mjs && node --check scripts/playground-url.mjs && node --check scripts/plugin-check.mjs && node --check scripts/set-version.mjs && node --check scripts/validate-json.mjs",
+    "check:js": "node --check plugins/monopage/assets/site-editor.js && node --check scripts/check-canvas-theme.mjs && node --check scripts/check-template-links.mjs && node --check scripts/check-versions.mjs && node --check scripts/doctor.mjs && node --check scripts/package.mjs && node --check scripts/deploy-monopage.mjs && node --check scripts/install-skill.mjs && node --check scripts/local-setup.mjs && node --check scripts/playground-url.mjs && node --check scripts/plugin-check.mjs && node --check scripts/release-check.mjs && node --check scripts/set-version.mjs && node --check scripts/validate-json.mjs",
     "check:json": "node scripts/validate-json.mjs",
     "check:canvas": "node scripts/check-canvas-theme.mjs",
     "check:links": "node scripts/check-template-links.mjs",
@@ -18,6 +18,8 @@
     "plugin:check": "node scripts/plugin-check.mjs --wp-env",
     "plugin:check:runtime": "node scripts/plugin-check.mjs --wp-env --runtime",
     "plugin:check:dry-run": "node scripts/plugin-check.mjs --wp-env --runtime --dry-run",
+    "release:check": "node scripts/release-check.mjs",
+    "release:check:dry-run": "node scripts/release-check.mjs --dry-run",
     "skill:install": "node scripts/install-skill.mjs --unlink-legacy",
     "skill:install:dry-run": "node scripts/install-skill.mjs --dry-run --unlink-legacy",
     "version:set": "node scripts/set-version.mjs",

@@ -171,6 +171,14 @@ npm run plugin:check
 npm run plugin:check:runtime
 ```
 
+Full release gate:
+
+```bash
+npm run release:check
+```
+
+`release:check` runs repository checks, doctor, local runtime validation, Plugin Check, package builds, deploy dry-run, and the Playground URL generator. Use `npm run release:check:dry-run` to inspect the sequence. Use `node scripts/release-check.mjs --skip-local --skip-plugin-check` only when Docker/wp-env is unavailable, then run those skipped gates on a real WordPress runtime before release.
+
 ## Runtime Validation
 
 Monopage includes a WP-CLI health check for deployed or local installs:
@@ -275,6 +283,7 @@ The `monopage-deploy` skill should guide agents to:
 - use generated raster images when the theme or docs need real visual energy
 - save project-bound images into the repo
 - run `npm test` before packaging
+- run `npm run release:check` before release-minded changes when Docker/wp-env are available
 - run `wp monopage validate --require-focus` after setup when a WordPress runtime is available
 - run Plugin Check before release when a WordPress runtime is available
 - back up before deployment
