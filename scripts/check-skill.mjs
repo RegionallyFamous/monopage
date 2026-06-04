@@ -32,7 +32,7 @@ const skillRequirements = [
   ["theme.json first", "Prefer `theme.json`"],
   ["custom CSS restraint", "Use custom CSS only when WordPress block settings cannot express"],
   ["core blocks first", "Use core blocks first"],
-  ["Canvas patterns first", "Use Canvas patterns before inventing"],
+  ["no bundled patterns", "Do not add bundled Canvas patterns"],
   ["link check command", "npm run check:links"],
   ["Canvas check command", "npm run check:canvas"],
   ["test command", "npm test"],

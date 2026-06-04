@@ -15,8 +15,7 @@ Use this skill to deploy, validate, and lightly customize Monopage sites safely 
 - The site title in Monopage Canvas should be non-linking in the starter template, because the header is a one-page scroll map rather than a site-wide navigation bar.
 - Use the core Navigation block for the header menu with custom `#anchor` links. Do not fake navigation with Button blocks plus custom CSS unless the user explicitly wants button-like nav.
 - Add new sections by giving the target block a stable anchor and linking to that anchor. Prefer clear section names over generic anchors.
-- Prefer bundled Monopage Canvas patterns for common sections such as offers, proof, pricing, FAQs, and final CTAs.
-- Bundled patterns must obey the same one-page link rule as the starter template.
+- Do not add bundled Canvas patterns by default. The starter `front-page` template is the demo and source of inspiration.
 - Edit the saved `front-page` template in the Site Editor. Do not treat the routing `Home` page's blank content as the source of truth for the visible homepage.
 - If the backend Page editor appears blank, inspect or open the Site Editor `front-page` template. The routing `Home` page should redirect there on Monopage Canvas sites.
 - Focus Mode should keep the Site Editor canvas direct and calm: top toolbar enabled, Distraction Free mode disabled, Spotlight/focus mode disabled, and the left navigation/sidebar toggle unavailable.
@@ -39,19 +38,19 @@ Use this skill to deploy, validate, and lightly customize Monopage sites safely 
 
 - Prefer `theme.json` and block attributes for global typography, colors, spacing, button defaults, Navigation styling, and Site Title styling.
 - Use custom CSS only when WordPress block settings cannot express the behavior cleanly: sticky header, hero background images, responsive safety rules, pseudo-elements, scroll margins, and bespoke editorial treatments.
-- Before adding CSS, ask whether the same effect belongs in `theme.json`, block `style` attributes, a core block setting, or a reusable block pattern.
+- Before adding CSS, ask whether the same effect belongs in `theme.json`, block `style` attributes, or a core block setting.
 - Keep cards at 8px radius or less, avoid nested cards, and keep sections as full-width bands or block groups rather than decorative card stacks.
 - Use core blocks first: Group, Columns, Navigation, Buttons, Details, Table, Quote, Separator, Spacer, Site Title, Heading, Paragraph, and List.
-- Use Canvas patterns before inventing a new section from scratch when the requested section matches an existing pattern.
+- Keep the Canvas theme template-first. Do not add pattern inserter clutter unless the user explicitly asks for reusable patterns.
 - If changing theme assets or CSS, run `npm run check:canvas`.
 
 ## Template And Pattern Checks
 
-When changing `themes/monopage-canvas/templates/front-page.html` or `themes/monopage-canvas/patterns/*.php`:
+When changing `themes/monopage-canvas/templates/front-page.html`:
 
 1. Keep all hard-coded links on-page.
 2. Run `npm run check:links`.
-3. Run `npm run check:canvas` when changing Canvas CSS, front-end styling, editor styling, theme assets, pattern category registration, or bundled pattern metadata.
+3. Run `npm run check:canvas` when changing Canvas CSS, front-end styling, editor styling, theme assets, or template structure.
 4. Run `npm test` before packaging or deploying.
 5. If a user explicitly asks for an off-page link, note that it is outside the default Monopage one-page rule and do not add it to the primary starter menu unless they confirm.
 
@@ -199,9 +198,8 @@ This verifies chained `npm run ...`, `npm test`, and `node scripts/*.mjs` comman
 6. Validate:
    - `wp --path=<target> monopage validate --require-focus`
    - Add `--check-http` only when the target can serve its `home_url()` to WP-CLI during validation.
-   - Treat `canvas_pattern_links` failures as a theme-package problem: bundled patterns must keep links on-page and target known anchors.
    - `wp --path=<target> monopage status --format=json`
-   - Confirm starter-template and bundled-pattern links target existing on-page anchors if the template or patterns were customized: `npm run check:links`
+   - Confirm starter-template links target existing on-page anchors if the template was customized: `npm run check:links`
    - Confirm Canvas styles and CSS assets are wired for both the Site Editor and front end if the theme was customized: `npm run check:canvas`
    - Smoke the rendered local homepage after Canvas template or asset changes: `npm run local:smoke`
    - Smoke Focus Mode admin redirects and chrome hiding on local wp-env after admin or Site Editor changes: `npm run local:admin-smoke`

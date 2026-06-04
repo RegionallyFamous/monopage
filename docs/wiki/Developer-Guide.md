@@ -13,7 +13,7 @@ The wiki is the developer source of truth. Product intent, one-page rules, archi
 ## Architecture
 
 - `plugins/monopage/monopage.php` owns setup, Focus Mode, admin redirects, the hidden public admin bar, and WP-CLI commands. It intentionally does not add a Monopage dashboard menu or settings page.
-- `themes/monopage-canvas/` owns the default block theme, `theme.json`, `templates/front-page.html`, and bundled section patterns.
+- `themes/monopage-canvas/` owns the default block theme, `theme.json`, and `templates/front-page.html`.
 - `skills/monopage-deploy/` teaches Codex agents how to package, deploy, customize, and validate Monopage sites.
 - `playground/blueprint.json` installs the plugin and theme into WordPress Playground and refreshes the default Canvas template for the demo.
 - `scripts/` contains validation, packaging, Plugin Check, local setup, and deployment helpers.
@@ -21,7 +21,7 @@ The wiki is the developer source of truth. Product intent, one-page rules, archi
 ## Project Layout
 
 - `plugins/monopage/`: setup, Focus Mode, admin redirects, Site Editor defaults, WP-CLI commands, and no dashboard settings menu.
-- `themes/monopage-canvas/`: the block-first Canvas theme, default `front-page.html`, Riso-style assets, and insertable one-page section patterns.
+- `themes/monopage-canvas/`: the block-first Canvas theme, default `front-page.html`, and Riso-style assets.
 - `scripts/`: local setup, validation, Plugin Check, responsive smoke tests, packaging, deploy helpers, and release gates.
 - `skills/monopage-deploy/`: the Codex skill for deploying, validating, and customizing Monopage sites.
 - `playground/blueprint.json`: the WordPress Playground demo blueprint.
@@ -72,12 +72,12 @@ Working principles:
 - Focus Mode simplifies the authoring path, but WordPress capabilities remain the security boundary.
 - Use core blocks first: Group, Columns, Navigation, Buttons, Details, Table, Quote, Separator, Spacer, Site Title, Heading, Paragraph, and List.
 - Prefer `theme.json` and block settings for global typography, colors, spacing, button defaults, Navigation styling, and Site Title styling.
-- Use bundled Monopage Canvas patterns when adding common sections so new content inherits the same one-page structure.
+- Keep Monopage Canvas template-first. The starter `front-page` template is the demo and source of inspiration.
 - Use custom CSS only where it earns its keep: hero imagery, sticky header behavior, mobile safety, scroll margins, pseudo-elements, and editorial treatments core blocks cannot express cleanly.
 
 ## One-Page Navigation
 
-Default Monopage links must stay on the same page. This applies to the starter template and bundled Canvas patterns.
+Default Monopage links must stay on the same page. This applies to the starter template.
 
 Use anchors such as:
 
@@ -105,27 +105,20 @@ Validation:
 npm run check:links
 ```
 
-## Canvas Patterns
+## Canvas Template
 
-Monopage Canvas ships insertable section patterns in `themes/monopage-canvas/patterns/`.
+Monopage Canvas intentionally does not ship bundled block patterns.
 
-Current patterns:
+The default `front-page.html` is the product demo and the source of inspiration. Keeping the theme template-first avoids extra inserter clutter and keeps the editing experience centered on one page.
 
-- `Offer Lab` (`monopage-canvas/offer-lab`): three-card offer packaging.
-- `Proof Strip` (`monopage-canvas/proof-strip`): dark results/metrics band.
-- `Pricing Deck` (`monopage-canvas/pricing-deck`): three-plan pricing section.
-- `Question Stack` (`monopage-canvas/question-stack`): compact FAQ section.
-- `Final Push` (`monopage-canvas/final-push`): closing call-to-action band.
+Template rules:
 
-Pattern rules:
-
-- Register patterns under the `monopage-canvas` category.
 - Use core blocks and existing Canvas classes before adding CSS.
 - Keep CTAs on-page with `#anchor` links.
-- Give new full-section patterns a stable, unique anchor.
-- Run `npm run check:links` and `npm run check:canvas` after pattern changes.
+- Give new full sections stable, unique anchors.
+- Run `npm run check:links` and `npm run check:canvas` after template changes.
 
-Patterns should be useful campaign sections, not decorative filler. They should give editors a complete section they can insert, retitle, and tune without leaving the one-page model.
+Do not add bundled patterns unless that is an explicit product decision. If reusable sections are needed later, they should follow the same one-page anchor rules and should earn their place as a separate feature.
 
 ## Block-First Theme Work
 
@@ -136,7 +129,7 @@ Prefer:
 - `theme.json` for palette, font presets, button defaults, Navigation defaults, Site Title defaults, spacing scale, and layout sizes.
 - Block attributes for alignment, text alignment, block gaps, widths, colors, and core block behavior.
 - Core blocks for structure and content.
-- Bundled patterns for repeated one-page sections.
+- The default `front-page.html` template for repeated one-page structure.
 
 Use custom CSS only when WordPress block settings cannot express the behavior cleanly:
 
@@ -252,7 +245,7 @@ For documentation-only edits, run:
 npm run check:docs
 ```
 
-For Canvas template, pattern, or theme work, keep the one-page link and block-first rules in view, then run the matching checks:
+For Canvas template or theme work, keep the one-page link and block-first rules in view, then run the matching checks:
 
 ```bash
 npm run check:links
@@ -285,7 +278,7 @@ The test suite runs:
 - deploy dry-run safety validation
 - documented command validation
 - repository hygiene validation
-- one-page link validation for templates and patterns
+- one-page link validation for the template
 - package script reference validation
 - Playground Blueprint and seamless URL validation
 - Codex skill contract validation
@@ -405,8 +398,6 @@ Validation checks:
 - active block theme and Monopage Canvas state
 - saved `front-page` template
 - template links and anchor targets
-- registered Monopage Canvas patterns
-- bundled Canvas pattern links and anchor targets
 - Focus Mode state
 - generated home and Site Editor URLs
 - optional homepage HTTP response
@@ -493,7 +484,7 @@ The `monopage-deploy` skill should guide agents to:
 - keep links on-page
 - use the Site Editor `front-page` template as the visible homepage
 - prefer `theme.json` and block settings before custom CSS
-- use bundled Canvas patterns for common section work
+- keep the Canvas theme template-first and avoid bundled pattern clutter
 - use generated raster images when the theme or docs need real visual energy
 - save project-bound images into the repo
 - run `npm run status` when orienting in the repo

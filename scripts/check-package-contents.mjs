@@ -48,11 +48,6 @@ const packages = [
       "monopage-canvas/templates/front-page.html",
       "monopage-canvas/templates/index.html",
       "monopage-canvas/templates/page.html",
-      "monopage-canvas/patterns/offer-lab.php",
-      "monopage-canvas/patterns/proof-strip.php",
-      "monopage-canvas/patterns/pricing-deck.php",
-      "monopage-canvas/patterns/question-stack.php",
-      "monopage-canvas/patterns/final-push.php",
       "monopage-canvas/assets/monopage-riso-hero.jpg",
       "monopage-canvas/assets/monopage-riso-flow.jpg",
       "monopage-canvas/assets/monopage-riso-launch.jpg",
@@ -80,6 +75,7 @@ const forbiddenPatterns = [
   /\.sql$/i,
   /\.zip$/i,
   /(^|\/)vendor\//,
+  /^monopage-canvas\/patterns\//,
 ];
 const failures = [];
 

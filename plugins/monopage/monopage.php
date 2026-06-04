@@ -3,7 +3,7 @@
  * Plugin Name:       Monopage
  * Plugin URI:        https://github.com/RegionallyFamous/monopage
  * Description:       Monopage focuses WordPress around the Site Editor and a single homepage template.
- * Version:           0.2.46
+ * Version:           0.2.47
  * Requires at least: 6.5
  * Requires PHP:      7.4
  * Author:            Regionally Famous
@@ -16,7 +16,7 @@
 
 defined( 'ABSPATH' ) || exit;
 
-define( 'MONOPAGE_VERSION', '0.2.46' );
+define( 'MONOPAGE_VERSION', '0.2.47' );
 define( 'MONOPAGE_FILE', __FILE__ );
 define( 'MONOPAGE_DIR', plugin_dir_path( __FILE__ ) );
 define( 'MONOPAGE_URL', plugin_dir_url( __FILE__ ) );
@@ -369,13 +369,15 @@ function monopage_seed_default_front_page_template( $force_template = false ) {
 		return new WP_Error( 'monopage_missing_template', __( 'Monopage Canvas front-page template is missing.', 'monopage' ) );
 	}
 
+	$template_excerpt = __( 'A focused one-page campaign canvas with anchor navigation, proof, pricing, answers, and a clear next step.', 'monopage' );
+
 	if ( $existing_template instanceof WP_Post ) {
 		$updated_template_id = wp_update_post(
 			array(
 				'ID'           => $existing_template->ID,
 				'post_status'  => 'publish',
 				'post_title'   => __( 'Front Page', 'monopage' ),
-				'post_excerpt' => __( 'Default Monopage one-page marketing homepage.', 'monopage' ),
+				'post_excerpt' => $template_excerpt,
 				'post_content' => $content,
 			),
 			true
@@ -396,7 +398,7 @@ function monopage_seed_default_front_page_template( $force_template = false ) {
 			'post_status'  => 'publish',
 			'post_title'   => __( 'Front Page', 'monopage' ),
 			'post_name'    => 'front-page',
-			'post_excerpt' => __( 'Default Monopage one-page marketing homepage.', 'monopage' ),
+			'post_excerpt' => $template_excerpt,
 			'post_content' => $content,
 		),
 		true
@@ -677,37 +679,6 @@ function monopage_get_validation_checks( $args = array() ) {
 		);
 	}
 
-	if ( $canvas_active && class_exists( 'WP_Block_Patterns_Registry' ) ) {
-		$pattern_count = monopage_get_registered_canvas_pattern_count();
-		monopage_add_validation_check(
-			$checks,
-			'canvas_patterns',
-			$pattern_count > 0 ? 'pass' : 'fail',
-			'error',
-			sprintf(
-				/* translators: %d: Number of registered Monopage Canvas patterns. */
-				__( '%d Monopage Canvas patterns are registered.', 'monopage' ),
-				$pattern_count
-			)
-		);
-
-		if ( $pattern_count > 0 ) {
-			$pattern_link_result = monopage_validate_canvas_pattern_links( $template_content );
-			monopage_add_validation_check(
-				$checks,
-				'canvas_pattern_links',
-				$pattern_link_result['valid'] ? 'pass' : 'fail',
-				'error',
-				$pattern_link_result['valid'] ? sprintf(
-					/* translators: 1: Number of Monopage Canvas patterns. 2: Number of anchors available across the template and patterns. */
-					__( '%1$d Monopage Canvas patterns keep links on-page across %2$d known anchors.', 'monopage' ),
-					$pattern_count,
-					$pattern_link_result['anchor_count']
-				) : implode( ' ', $pattern_link_result['messages'] )
-			);
-		}
-	}
-
 	$focus_status = $status['focus_enabled'] ? 'pass' : ( $args['require_focus'] ? 'fail' : 'warn' );
 	monopage_add_validation_check(
 		$checks,
@@ -849,28 +820,6 @@ function monopage_validate_template_links( $content ) {
 }
 
 /**
- * Validate that Canvas pattern links stay on-page and target known anchors.
- *
- * @param string $template_content Saved or fallback front-page template content.
- * @return array
- */
-function monopage_validate_canvas_pattern_links( $template_content = '' ) {
-	$sources = array();
-
-	if ( '' !== trim( $template_content ) ) {
-		$sources['front-page template'] = $template_content;
-	}
-
-	foreach ( monopage_get_registered_canvas_patterns() as $pattern ) {
-		if ( ! empty( $pattern['content'] ) && is_scalar( $pattern['content'] ) ) {
-			$sources[ $pattern['name'] ] = (string) $pattern['content'];
-		}
-	}
-
-	return monopage_validate_content_links( $sources );
-}
-
-/**
  * Validate that links across content sources stay on-page and target known anchors.
  *
  * @param array $sources Content keyed by source label.
@@ -992,37 +941,6 @@ function monopage_extract_template_links( $content ) {
 	}
 
 	return array_values( array_unique( $links ) );
-}
-
-/**
- * Count registered Monopage Canvas patterns.
- *
- * @return int
- */
-function monopage_get_registered_canvas_pattern_count() {
-	return count( monopage_get_registered_canvas_patterns() );
-}
-
-/**
- * Get registered Monopage Canvas patterns.
- *
- * @return array[]
- */
-function monopage_get_registered_canvas_patterns() {
-	if ( ! class_exists( 'WP_Block_Patterns_Registry' ) ) {
-		return array();
-	}
-
-	$patterns = WP_Block_Patterns_Registry::get_instance()->get_all_registered();
-	$canvas_patterns = array();
-
-	foreach ( $patterns as $pattern ) {
-		if ( isset( $pattern['name'] ) && 0 === strpos( $pattern['name'], 'monopage-canvas/' ) ) {
-			$canvas_patterns[] = $pattern;
-		}
-	}
-
-	return $canvas_patterns;
 }
 
 /**

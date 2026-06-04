@@ -75,11 +75,11 @@ function addRules() {
   }
 
   if (has(isCanvasFileNeedingThemeChecks)) {
-    add("npm run check:canvas", "Canvas theme styling, assets, or patterns changed");
+    add("npm run check:canvas", "Canvas theme styling, assets, or template structure changed");
   }
 
-  if (has(isTemplateOrPatternFile)) {
-    add("npm run check:links", "template or pattern links may have changed");
+  if (has(isTemplateFile)) {
+    add("npm run check:links", "template links may have changed");
   }
 
   if (has(isVisualCanvasFile)) {
@@ -205,8 +205,8 @@ function isCanvasFileNeedingThemeChecks(file) {
   return isCanvasFile(file) && !isMetadataOnlyVersionChange(file);
 }
 
-function isTemplateOrPatternFile(file) {
-  return file === "themes/monopage-canvas/templates/front-page.html" || /^themes\/monopage-canvas\/patterns\/.+\.php$/.test(file);
+function isTemplateFile(file) {
+  return file === "themes/monopage-canvas/templates/front-page.html";
 }
 
 function isVisualCanvasFile(file) {

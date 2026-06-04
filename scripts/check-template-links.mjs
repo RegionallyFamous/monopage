@@ -6,7 +6,6 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const root = path.resolve(__dirname, "..");
 const themeDir = path.join(root, "themes/monopage-canvas");
 const template = path.join(themeDir, "templates/front-page.html");
-const patternDir = path.join(themeDir, "patterns");
 const linkPattern = /href=(["'])(.*?)\1/g;
 const idPattern = /\bid=(["'])(.*?)\1/g;
 const blockAnchorPattern = /"anchor"\s*:\s*"([^"]+)"/g;
@@ -29,32 +28,13 @@ for (const source of sources) {
 }
 
 function collectSources() {
-  const found = [
+  return [
     {
       label: "front-page template",
       file: template,
       html: fs.readFileSync(template, "utf8"),
     },
   ];
-
-  if (!fs.existsSync(patternDir)) {
-    return found;
-  }
-
-  const patternFiles = fs
-    .readdirSync(patternDir)
-    .filter((file) => file.endsWith(".php"))
-    .sort();
-
-  for (const file of patternFiles) {
-    found.push({
-      label: `pattern ${file}`,
-      file: path.join(patternDir, file),
-      html: fs.readFileSync(path.join(patternDir, file), "utf8"),
-    });
-  }
-
-  return found;
 }
 
 function collectAnchors(source) {
@@ -142,7 +122,7 @@ function checkLink(source, href) {
 }
 
 if (invalidLinks.length || malformedBlocks.length || malformedTargets.length || missingTargets.length || duplicateIds.length || duplicateAnchors.length) {
-  console.error("Monopage Canvas template and pattern links must stay on-page and target existing sections:");
+  console.error("Monopage Canvas template links must stay on-page and target existing sections:");
 
   if (invalidLinks.length) {
     console.error("");
@@ -186,7 +166,7 @@ if (invalidLinks.length || malformedBlocks.length || malformedTargets.length || 
 
   if (duplicateAnchors.length) {
     console.error("");
-    console.error("Bundled section anchors must be unique across the starter template and patterns:");
+    console.error("Section anchors must be unique in the starter template:");
     for (const id of duplicateAnchors) {
       console.error(`- ${id}`);
     }
@@ -195,7 +175,7 @@ if (invalidLinks.length || malformedBlocks.length || malformedTargets.length || 
   process.exit(1);
 }
 
-console.log(`Template and pattern links stay on-page and target ${anchors.size} anchors.`);
+console.log(`Template links stay on-page and target ${anchors.size} anchors.`);
 
 function decodeHashTarget(href) {
   try {
