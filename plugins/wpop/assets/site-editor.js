@@ -21,12 +21,10 @@
 	}
 
 	function forceTopToolbar() {
-		setPreference("core", "fixedToolbar", true);
-		setPreference("core", "distractionFree", false);
-		setPreference("core/edit-site", "fixedToolbar", true);
-		setPreference("core/edit-site", "distractionFree", false);
-		setPreference("core/edit-post", "fixedToolbar", true);
-		setPreference("core/edit-post", "distractionFree", false);
+		if (setPreference("core", "fixedToolbar", true)) {
+			setPreference("core", "distractionFree", false);
+			return;
+		}
 
 		["core/edit-site", "core/edit-post"].forEach(function (storeName) {
 			var store = wp.data.select(storeName);
