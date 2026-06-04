@@ -1,0 +1,8 @@
+interface:
+  display_name: "Monopage"
+  short_description: "Build and deploy one-page WordPress sites"
+  brand_color: "#2868FF"
+  default_prompt: "Use $monopage-deploy to customize or deploy this Monopage site while keeping navigation on the same page."
+
+policy:
+  allow_implicit_invocation: true

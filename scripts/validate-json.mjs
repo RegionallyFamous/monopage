@@ -8,7 +8,7 @@ const files = [
   ".wp-env.json",
   "package.json",
   "playground/blueprint.json",
-  "themes/wpop-canvas/theme.json",
+  "themes/monopage-canvas/theme.json",
 ];
 
 for (const file of files) {

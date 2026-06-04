@@ -1,9 +1,9 @@
 {
 	"plugins": [
-		"./plugins/wpop"
+		"./plugins/monopage"
 	],
 	"themes": [
-		"./themes/wpop-canvas"
+		"./themes/monopage-canvas"
 	],
 	"config": {
 		"WP_DEBUG": true,
@@ -11,4 +11,3 @@
 		"WP_ENVIRONMENT_TYPE": "local"
 	}
 }
-

@@ -77,7 +77,7 @@
 			]
 		},
 		"typography": {
-			"fluid": true,
+			"fluid": false,
 			"fontFamilies": [
 				{
 					"slug": "system-sans",

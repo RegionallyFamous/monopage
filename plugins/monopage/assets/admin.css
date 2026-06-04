@@ -1,0 +1,108 @@
+.monopage-wrap {
+	max-width: 1180px;
+}
+
+.monopage-lede {
+	color: #3c434a;
+	font-size: 1.08rem;
+	max-width: 760px;
+}
+
+.monopage-grid {
+	display: grid;
+	grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+	gap: 16px;
+	margin-top: 24px;
+}
+
+.monopage-panel {
+	background: #fff;
+	border: 1px solid #dcdcde;
+	border-radius: 6px;
+	box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04);
+	padding: 18px;
+}
+
+.monopage-panel h2 {
+	margin-top: 0;
+}
+
+.monopage-status-list {
+	display: grid;
+	gap: 10px;
+	margin: 0 0 16px;
+}
+
+.monopage-status-list div {
+	border-bottom: 1px solid #f0f0f1;
+	display: grid;
+	gap: 4px;
+	padding-bottom: 10px;
+}
+
+.monopage-status-list dt {
+	color: #646970;
+	font-weight: 600;
+}
+
+.monopage-status-list dd {
+	margin: 0;
+}
+
+.monopage-actions {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 8px;
+}
+
+.monopage-checkbox {
+	display: block;
+	margin: 12px 0;
+}
+
+.monopage-panel pre {
+	background: #1d2327;
+	border-radius: 6px;
+	color: #f0f6fc;
+	overflow-x: auto;
+	padding: 14px;
+}
+
+body.monopage-sidebar-hidden #adminmenuback,
+body.monopage-sidebar-hidden #adminmenuwrap,
+body.monopage-sidebar-hidden #adminmenu {
+	display: none !important;
+}
+
+body.monopage-sidebar-hidden #wpcontent,
+body.monopage-sidebar-hidden #wpfooter {
+	margin-left: 0 !important;
+}
+
+body.monopage-sidebar-hidden #wpbody-content {
+	padding-bottom: 24px;
+}
+
+body.monopage-sidebar-hidden #collapse-menu {
+	display: none !important;
+}
+
+body.monopage-sidebar-hidden .edit-site-layout__sidebar,
+body.monopage-sidebar-hidden .edit-site-sidebar,
+body.monopage-sidebar-hidden .edit-site-navigation-panel {
+	display: none !important;
+}
+
+body.monopage-sidebar-hidden .edit-site-layout__view-mode-toggle,
+body.monopage-sidebar-hidden .edit-site-layout__view-mode-toggle-button,
+body.monopage-sidebar-hidden .edit-site-header__view-mode-toggle,
+body.monopage-sidebar-hidden .monopage-site-editor-nav-toggle-disabled {
+	display: none !important;
+	pointer-events: none !important;
+}
+
+@media screen and (max-width: 782px) {
+	body.monopage-sidebar-hidden.auto-fold #wpcontent {
+		margin-left: 0 !important;
+	}
+}

@@ -8,10 +8,10 @@ const dryRun = process.argv.includes("--dry-run");
 
 const commands = [
   ["wp-env", "start"],
-  ["wp-env", "run", "cli", "wp", "theme", "activate", "wpop-canvas"],
-  ["wp-env", "run", "cli", "wp", "plugin", "activate", "wpop"],
-  ["wp-env", "run", "cli", "wp", "wpop", "setup", "--force-home"],
-  ["wp-env", "run", "cli", "wp", "wpop", "status"],
+  ["wp-env", "run", "cli", "wp", "theme", "activate", "monopage-canvas"],
+  ["wp-env", "run", "cli", "wp", "plugin", "activate", "monopage"],
+  ["wp-env", "run", "cli", "wp", "monopage", "setup", "--force-home"],
+  ["wp-env", "run", "cli", "wp", "monopage", "status"],
 ];
 
 for (const command of commands) {

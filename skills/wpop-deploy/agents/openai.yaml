@@ -1,8 +1,0 @@
-interface:
-  display_name: "WPOP"
-  short_description: "Build and deploy one-page WordPress sites"
-  brand_color: "#2868FF"
-  default_prompt: "Use $wpop-deploy to customize or deploy this WPOP site while keeping navigation on the same page."
-
-policy:
-  allow_implicit_invocation: true

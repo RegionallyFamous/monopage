@@ -4,7 +4,7 @@ import { fileURLToPath } from "node:url";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const root = path.resolve(__dirname, "..");
-const template = path.join(root, "themes/wpop-canvas/templates/front-page.html");
+const template = path.join(root, "themes/monopage-canvas/templates/front-page.html");
 const html = fs.readFileSync(template, "utf8");
 const linkPattern = /href=(["'])(.*?)\1/g;
 const invalidLinks = [];
@@ -19,7 +19,7 @@ while ((match = linkPattern.exec(html))) {
 }
 
 if (invalidLinks.length) {
-  console.error("WPOP Canvas front-page links must stay on the same page:");
+  console.error("Monopage Canvas front-page links must stay on the same page:");
   for (const href of invalidLinks) {
     console.error(`- ${href}`);
   }

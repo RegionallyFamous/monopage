@@ -13,14 +13,14 @@ const artifacts = [
   {
     label: "plugin",
     cwd: path.join(root, "plugins"),
-    source: "wpop",
-    zip: path.join(root, "build", `wpop-${version}.zip`),
+    source: "monopage",
+    zip: path.join(root, "build", `monopage-${version}.zip`),
   },
   {
     label: "theme",
     cwd: path.join(root, "themes"),
-    source: "wpop-canvas",
-    zip: path.join(root, "build", `wpop-canvas-${version}.zip`),
+    source: "monopage-canvas",
+    zip: path.join(root, "build", `monopage-canvas-${version}.zip`),
   },
 ];
 

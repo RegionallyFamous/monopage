@@ -14,9 +14,9 @@ const wpPath = options.path || "/path/to/wordpress";
 const wpSsh = options.ssh || "";
 const forceHome = Boolean(options["force-home"]);
 const skipPackage = Boolean(options["skip-package"]);
-const pluginZip = path.resolve(root, options["plugin-zip"] || `build/wpop-${version}.zip`);
-const themeZip = path.resolve(root, options["theme-zip"] || `build/wpop-canvas-${version}.zip`);
-const backupName = `wpop-backup-${timestamp()}.sql`;
+const pluginZip = path.resolve(root, options["plugin-zip"] || `build/monopage-${version}.zip`);
+const themeZip = path.resolve(root, options["theme-zip"] || `build/monopage-canvas-${version}.zip`);
+const backupName = `monopage-backup-${timestamp()}.sql`;
 const backupFile = options["backup-file"] || `${wpPath.replace(/\/$/, "")}/${backupName}`;
 
 if (!dryRun && (!options.path || wpPath === "/path/to/wordpress")) {
@@ -45,8 +45,8 @@ const commands = [
   [...wpBase, "db", "export", backupFile],
   [...wpBase, "theme", "install", themeZip, "--force", "--activate"],
   [...wpBase, "plugin", "install", pluginZip, "--force", "--activate"],
-  [...wpBase, "wpop", "setup", ...(forceHome ? ["--force-home"] : [])],
-  [...wpBase, "wpop", "status", "--format=json"],
+  [...wpBase, "monopage", "setup", ...(forceHome ? ["--force-home"] : [])],
+  [...wpBase, "monopage", "status", "--format=json"],
 ];
 
 for (const command of commands) {
@@ -58,7 +58,7 @@ for (const command of commands) {
 }
 
 if (!dryRun) {
-  console.log("WPOP deployment complete.");
+  console.log("Monopage deployment complete.");
 }
 
 function parseArgs(args) {
