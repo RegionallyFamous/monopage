@@ -30,6 +30,11 @@ const steps = [
     skip: Boolean(options["skip-local"]),
   },
   {
+    label: "local admin smoke",
+    command: ["npm", "run", "local:admin-smoke"],
+    skip: Boolean(options["skip-local"]),
+  },
+  {
     label: "Plugin Check",
     command: ["npm", "run", "plugin:check"],
     skip: Boolean(options["skip-plugin-check"]),

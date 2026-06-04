@@ -59,7 +59,7 @@ Before a release-minded commit or deploy from the Monopage repo, prefer:
 npm run release:check
 ```
 
-This runs repository checks, doctor, a local template refresh plus Monopage validation, a rendered-homepage smoke check, Playground Blueprint validation, Plugin Check, package builds, package content verification, deploy plan safety validation, deploy dry-run, and Playground URL generation. Use `npm run release:check:dry-run` to inspect the sequence. If Docker/wp-env is unavailable, use `node scripts/release-check.mjs --skip-local --skip-plugin-check` and run the skipped checks later on a WordPress runtime.
+This runs repository checks, doctor, a local template refresh plus Monopage validation, a rendered-homepage smoke check, authenticated admin smoke check, Playground Blueprint validation, Plugin Check, package builds, package content verification, deploy plan safety validation, deploy dry-run, and Playground URL generation. Use `npm run release:check:dry-run` to inspect the sequence. If Docker/wp-env is unavailable, use `node scripts/release-check.mjs --skip-local --skip-plugin-check` and run the skipped checks later on a WordPress runtime.
 
 When only checking local template changes, use:
 
@@ -76,6 +76,14 @@ npm run local:smoke
 ```
 
 This checks required starter copy, same-page body links, section anchors, and served Canvas image assets on the local homepage. Run it after `local:setup` or `local:refresh-template`.
+
+When checking Focus Mode admin behavior on the local wp-env runtime, use:
+
+```bash
+npm run local:admin-smoke
+```
+
+This logs in as the local admin user, confirms `/wp-admin/` redirects to the Site Editor front-page canvas, confirms generic Site Editor entrypoints redirect to the canvas, confirms Media Library and Monopage controls remain reachable, confirms the routing Home page editor redirects to the Site Editor, and confirms the full-dashboard escape disables the admin redirect. It restores Focus Mode and user escape state after the check.
 
 When changing the Playground demo or URL behavior, use:
 
@@ -104,8 +112,8 @@ This verifies the dry-run deploy plan keeps package verification before WP-CLI c
 3. Back up before changing the site:
    - `wp --path=<target> db export monopage-backup-YYYYMMDD-HHMMSS.sql`
 4. Install and activate:
-   - `wp --path=<target> theme install build/monopage-canvas-0.2.23.zip --force --activate`
-   - `wp --path=<target> plugin install build/monopage-0.2.23.zip --force --activate`
+   - `wp --path=<target> theme install build/monopage-canvas-0.2.24.zip --force --activate`
+   - `wp --path=<target> plugin install build/monopage-0.2.24.zip --force --activate`
 5. Run setup:
    - `wp --path=<target> monopage setup`
    - Use `--force-home` only when the user explicitly wants Monopage to replace an existing static front page assignment.
@@ -118,6 +126,7 @@ This verifies the dry-run deploy plan keeps package verification before WP-CLI c
    - Confirm starter-template and bundled-pattern links target existing on-page anchors if the template or patterns were customized: `npm run check:links`
    - Confirm Canvas styles and CSS assets are wired for both the Site Editor and front end if the theme was customized: `npm run check:canvas`
    - Smoke the rendered local homepage after Canvas template or asset changes: `npm run local:smoke`
+   - Smoke Focus Mode admin redirects and escape behavior on local wp-env after admin or Site Editor changes: `npm run local:admin-smoke`
    - Confirm the public Playground demo path after Blueprint or URL changes: `npm run check:playground`
    - Confirm deploy plan ordering and default safety flags after deployment helper changes: `npm run check:deploy`
    - Run Plugin Check on a local or staging WordPress install before release: `npm run plugin:check`

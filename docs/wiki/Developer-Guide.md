@@ -177,6 +177,7 @@ Additional checks:
 ```bash
 npm run doctor
 npm run local:validate
+npm run local:admin-smoke
 npm run local:smoke
 npm run check:deploy
 npm run check:playground
@@ -194,6 +195,8 @@ npm run release:check
 
 `local:smoke` checks the rendered homepage, required starter copy, same-page body links, section anchors, and served Canvas image assets. Run it after `local:setup` or `local:refresh-template`.
 
+`local:admin-smoke` logs in to the local wp-env admin and checks Focus Mode admin redirect behavior, generic Site Editor canvas redirection, Media Library reachability, Monopage controls, routing Home page editor redirection, and the full-dashboard escape. It restores Focus Mode and user escape state after the check.
+
 `check:playground` checks that the public Blueprint installs the expected GitHub theme/plugin directories, refreshes the Canvas front-page template, lands in the Site Editor canvas, and that `playground:url` keeps the outer Playground toolbar hidden with seamless mode.
 
 `check:deploy` checks that the dry-run deploy plan packages and verifies ZIPs before WP-CLI changes, backs up before installing, installs the theme before the plugin, validates before status, and keeps `--force-home`, `--force-template`, and `--check-http` opt-in by default.
@@ -202,7 +205,7 @@ npm run release:check
 
 `package:verify` checks the current version's built plugin and theme ZIPs for required files, correct version metadata, expected top-level folders, and forbidden bundled paths.
 
-`release:check` runs repository checks, doctor, a local template refresh plus runtime validation, a rendered-homepage smoke check, Plugin Check, package builds, package content verification, deploy plan safety validation, deploy dry-run, and the Playground URL generator. Use `npm run release:check:dry-run` to inspect the sequence. Use `node scripts/release-check.mjs --skip-local --skip-plugin-check` only when Docker/wp-env is unavailable, then run those skipped gates on a real WordPress runtime before release.
+`release:check` runs repository checks, doctor, a local template refresh plus runtime validation, a rendered-homepage smoke check, an authenticated admin smoke check, Plugin Check, package builds, package content verification, deploy plan safety validation, deploy dry-run, and the Playground URL generator. Use `npm run release:check:dry-run` to inspect the sequence. Use `node scripts/release-check.mjs --skip-local --skip-plugin-check` only when Docker/wp-env is unavailable, then run those skipped gates on a real WordPress runtime before release.
 
 ## Runtime Validation
 
@@ -314,6 +317,7 @@ The `monopage-deploy` skill should guide agents to:
 - save project-bound images into the repo
 - run `npm test` before packaging
 - run `npm run release:check` before release-minded changes when Docker/wp-env are available
+- run `npm run local:admin-smoke` after Focus Mode, admin redirect, or Site Editor entrypoint changes when wp-env is available
 - run `wp monopage validate --require-focus` after setup when a WordPress runtime is available
 - run Plugin Check before release when a WordPress runtime is available
 - back up before deployment

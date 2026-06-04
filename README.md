@@ -63,6 +63,7 @@ npm run check:links
 npm run check:playground
 npm run check:skill
 npm run check:versions
+npm run local:admin-smoke
 npm run local:smoke
 npm run package:verify
 ```
@@ -78,6 +79,8 @@ npm run package:verify
 `check:skill` confirms the bundled Codex skill still carries the required one-page, block-first, deployment safety, validation, image-generation, and Focus Mode guidance.
 
 `local:smoke` checks the rendered local homepage, required starter copy, same-page body links, section anchors, and the served Canvas image assets. Run it after `local:setup` or `local:refresh-template`.
+
+`local:admin-smoke` logs in to the local wp-env admin and checks Focus Mode redirects, the Site Editor canvas target, Media Library reachability, Monopage controls, the routing Home page editor redirect, and the full-dashboard escape.
 
 `package:verify` checks the current version's built plugin and theme ZIPs for required files, correct version metadata, expected top-level folders, and forbidden bundled paths.
 

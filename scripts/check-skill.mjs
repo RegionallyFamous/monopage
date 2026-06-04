@@ -35,6 +35,7 @@ const skillRequirements = [
   ["release gate command", "npm run release:check"],
   ["template refresh command", "npm run local:refresh-template"],
   ["homepage smoke command", "npm run local:smoke"],
+  ["admin smoke command", "npm run local:admin-smoke"],
   ["Playground check command", "npm run check:playground"],
   ["deploy plan check command", "npm run check:deploy"],
   ["WP-CLI install check", "wp --path=<target> core is-installed"],
