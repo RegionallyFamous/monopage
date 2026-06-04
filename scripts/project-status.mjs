@@ -63,8 +63,10 @@ console.log("");
 console.log("Next Commands");
 if (changedFiles.length) {
   console.log("- npm run check:changed:run");
+  console.log("- npm run preflight");
   console.log("- npm run release:check");
 } else {
+  console.log("- npm run preflight");
   console.log("- npm run local:review");
   console.log("- npm run release:check");
 }
